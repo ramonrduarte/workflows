@@ -1,0 +1,590 @@
+{
+  "createdAt": "2024-12-02T13:52:28.658Z",
+  "updatedAt": "2024-12-03T12:58:18.712Z",
+  "id": "CRFW49bK9WdO23NU",
+  "name": "Multi Agente",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "eeac2be5-09d4-4cf3-b13f-ce1aaeeb300b",
+              "leftValue": "={{ $json.body.data.message.conversation }}",
+              "rightValue": "REF:",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4bb0786c-cb3e-43a6-8b8a-f5050706c45b",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        340,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.adrofecha.com.br/web_api/auth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89"
+            },
+            {
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "78f708b7-b13c-4503-9de3-bed1987c81a3",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "acess_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "80021112-51c4-422e-a9f3-a83619e3d6da",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d0734408-95b0-45bb-a35b-ae37b60edbdb",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products?access_token={{ $json.acess_token }}&reference={{ $('Code').item.json.codigoitem }}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "dec07eea-e551-436b-af67-b4af9d1e31fc",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Inicializa a variável `message` como string vazia\nlet message = \"\";\n\n// Tenta acessar o campo correto no JSON de entrada\nif ($json.body?.data?.message?.conversation) {\n    message = $json.body.data.message.conversation;\n} else {\n    return {\n        json: {\n            codigoitem: null,\n            debugMessage: \"Campo 'conversation' não encontrado no JSON.\",\n            debugJson: $json\n        }\n    };\n}\n\n// Variável para salvar o código após \"REF:\"\nlet codigoitem = null;\n\n// Tenta capturar o padrão \"REF:\" seguido de espaço em branco e 6 dígitos\nconst match = message.match(/REF:\\s+(\\d{6})/);\n\nif (match) {\n    // Salva o código encontrado na variável codigoitem\n    codigoitem = match[1];\n}\n\n// Retorna o código encontrado ou null, caso não seja encontrado\nreturn {\n    json: {\n        codigoitem: codigoitem,\n    }\n};\n"
+      },
+      "id": "e97946eb-b49c-447a-ab10-a4d70139d0e6",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1bbdf0f4-fff8-4aeb-a6d9-58fe355b40d9",
+              "name": "codigo",
+              "value": "={{ $json.Products[0].Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "4fb88ee9-2fa1-4597-ba45-040c98329d5d",
+              "name": "nome",
+              "value": "={{ $json.Products[0].Product.name }}",
+              "type": "string"
+            },
+            {
+              "id": "470d385b-2b1d-4ca4-b53b-b3d0ee84ac61",
+              "name": "Preco",
+              "value": "={{ $json.Products[0].Product.price }}",
+              "type": "string"
+            },
+            {
+              "id": "5220fc88-a6ba-4fd4-86f1-78d53b7a1926",
+              "name": "url",
+              "value": "={{ $json.Products[0].Product.url.https }}",
+              "type": "string"
+            },
+            {
+              "id": "ddccb112-ae7b-4980-9d1b-50d4f1b16e02",
+              "name": "weight",
+              "value": "={{ $json.Products[0].Product.weight }}",
+              "type": "string"
+            },
+            {
+              "id": "81236a6d-56cc-4b65-8738-d5d9f0bb8c6a",
+              "name": "lenght",
+              "value": "={{ $json.Products[0].Product.length }}",
+              "type": "string"
+            },
+            {
+              "id": "2019c13b-6c69-4b45-9975-60065282830f",
+              "name": "width",
+              "value": "={{ $json.Products[0].Product.weight }}",
+              "type": "string"
+            },
+            {
+              "id": "293a2e70-6260-43e9-a9c2-5895ba558f77",
+              "name": "height",
+              "value": "={{ $json.Products[0].Product.height }}",
+              "type": "string"
+            },
+            {
+              "id": "ac2379a9-1cf0-4340-b222-5400318a68c0",
+              "name": "imagem",
+              "value": "={{ $json.Products[0].Product.ProductImage[0].https }}",
+              "type": "string"
+            },
+            {
+              "id": "494e2e9f-17b4-4937-b400-309d308e1d3b",
+              "name": "id",
+              "value": "={{ $json.Products[0].Product.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f32884ae-f31a-4d5e-b4dd-b578974d33ac",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1420,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products/{{ $json.id }}?access_token={{ $('Edit Fields').item.json.acess_token }}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "cb071e46-4c58-4c5b-b341-5c10fa8b9ffc",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1580,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Captura o campo `description` do JSON retornado pela API\nlet description = $json.Product?.description || \"\";\n\n// Remove todas as tags HTML da descrição\nconst cleanDescription = description.replace(/<[^>]*>/g, \"\").replace(/\\n/g, \"\").trim();\n\n// Retorna a descrição limpa\nreturn {\n    json: {\n        originalDescription: description,\n        cleanDescription: cleanDescription\n    }\n};\n"
+      },
+      "id": "2bdec7d9-e2b4-4281-b3c7-53636ce7a4e7",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cf413450-8eff-4cc7-8329-985aa8897dcb",
+        "options": {}
+      },
+      "id": "4353c0e4-f437-4387-81a1-ab0fd63bff55",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        180,
+        80
+      ],
+      "webhookId": "cf413450-8eff-4cc7-8329-985aa8897dcb"
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "HTTP Request2": [
+      {
+        "json": {
+          "Product": {
+            "ean": "7891194000425",
+            "modified": "2024-12-02 11:58:56",
+            "is_kit": "0",
+            "slug": "seguranca/cadeados/cadeado-papaiz-latao-haste-longa-com-chave-simples",
+            "ncm": "99999999",
+            "activation_date": "2023-12-19",
+            "deactivation_date": "2023-12-20",
+            "deactivation_status_history": "",
+            "id": "98757635",
+            "name": "Cadeado Papaiz Latão Haste Longa com Chave Simples 35/50mm",
+            "title": "",
+            "description": "<p><span font-size:=\"\" noto=\"\" style=\"color: rgb(33, 37, 41); font-family: \">Proteção de longo alcance: possui haste alongada para situações em que a haste normal não alcança a área de fechamento do objeto a ser protegido.</span><br color:=\"\" font-size:=\"\" noto=\"\" style=\"box-sizing: border-box; font-family: \" />\r\n<br color:=\"\" font-size:=\"\" noto=\"\" style=\"box-sizing: border-box; font-family: \" />\r\n<span color:=\"\" font-size:=\"\" noto=\"\" style=\"box-sizing: border-box; font-weight: bolder; font-family: \">» Informações Técnicas:</span><br style=\"box-sizing: border-box; font-family: var(--assa-font-family-body);\" />\r\n<br color:=\"\" font-size:=\"\" noto=\"\" style=\"box-sizing: border-box; font-family: \" />\r\n<span font-size:=\"\" noto=\"\" style=\"color: rgb(33, 37, 41); font-family: \">Produzido em latão maciço, haste de aço cementada e cromada. 2 chaves de latão niqueladas.</span></p>",
+            "description_small": "",
+            "price": "46.60",
+            "cost_price": "0.00",
+            "dollar_cost_price": "0.00",
+            "promotional_price": "0.00",
+            "start_promotion": "0000-00-00",
+            "end_promotion": "0000-00-00",
+            "brand": "Papaiz",
+            "brand_id": "71",
+            "model": "000010",
+            "weight": "200",
+            "length": "5",
+            "width": "2",
+            "height": "9",
+            "stock": "0",
+            "category_id": "97",
+            "category_name": "Cadeados",
+            "available": "1",
+            "available_in_store": "0",
+            "availability": "",
+            "reference": "000010",
+            "hot": "0",
+            "release": "0",
+            "additional_button": "0",
+            "has_variation": "0",
+            "kit_has_variation": "0",
+            "id_campaign": "",
+            "has_acceptance_terms": "0",
+            "has_buy_together": "0",
+            "additional_message": "",
+            "warranty": "",
+            "rating": "0",
+            "count_rating": "0",
+            "quantity_sold": "1",
+            "ProductImage": [
+              {
+                "http": "http://images.tcdn.com.br/img/img_prod/888811/cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg",
+                "https": "https://images.tcdn.com.br/img/img_prod/888811/cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg",
+                "thumbs": {
+                  "30": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/30_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/30_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg"
+                  },
+                  "90": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/90_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/90_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg"
+                  },
+                  "180": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/180_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/180_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_1_8e4132c2171c46b5a1fe4b31ea98151a.jpg"
+                  }
+                }
+              },
+              {
+                "http": "http://images.tcdn.com.br/img/img_prod/888811/cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg",
+                "https": "https://images.tcdn.com.br/img/img_prod/888811/cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg",
+                "thumbs": {
+                  "30": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/30_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/30_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg"
+                  },
+                  "90": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/90_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/90_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg"
+                  },
+                  "180": {
+                    "http": "http://images.tcdn.com.br/img/img_prod/888811/180_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg",
+                    "https": "https://images.tcdn.com.br/img/img_prod/888811/180_cadeado_papaiz_latao_haste_longa_com_chave_simples_35_50mm_98757635_2_ab8af5eb446e783a0486203933a6d654.jpg"
+                  }
+                }
+              }
+            ],
+            "image": "1",
+            "url": {
+              "http": "http://www.adrofecha.com.br/seguranca/cadeados/cadeado-papaiz-latao-haste-longa-com-chave-simples",
+              "https": "https://www.adrofecha.com.br/seguranca/cadeados/cadeado-papaiz-latao-haste-longa-com-chave-simples"
+            },
+            "created": "2021-05-20 09:12:43",
+            "Properties": [],
+            "payment_option": "ou 12x de R$ 4,81 com juros Cart&atilde;o Visa - Vindi",
+            "payment_option_details": [
+              {
+                "display_name": "Cartão Visa - Vindi",
+                "type": "credit_card",
+                "plots": "12",
+                "value": "4.81",
+                "tax": "1.99"
+              }
+            ],
+            "related_categories": [],
+            "release_date": "0000-00-00",
+            "shortcut": "cadeado-papaiz-latao-haste-longa-com-chave-simples-35-50mm",
+            "virtual_product": "",
+            "minimum_stock": "0",
+            "minimum_stock_alert": "0",
+            "promotion_id": "",
+            "included_items": "",
+            "related_products": [],
+            "free_shipping": "0",
+            "current_price": "46.60",
+            "ipi": "0",
+            "acceptance_term_option": "2",
+            "acceptance_term": "",
+            "warranty_days": "0",
+            "availability_days": "0",
+            "cubic_weight": "19",
+            "video": "",
+            "metatag": [],
+            "payment_option_html": "<br />\r\n               <span class='txt-corparcelas'>\r\n                                    <span class='txt-corparcelas'>\r\n                                        <span class='preco-parc2'> ou\r\n                                            <strong class='color'> 12<span>x</span></strong>\r\n                                        </span>\r\n                                    </span>\r\n                                </span>\r\n               <span class='preco-de'> de </span>\r\n                <span class='txt-cadaparcelas'>\r\n                                    <strong class='preco-parc2'>R$\r\n                                        <span>\r\n                                            <span>4<span>,<span>81</span></span></span>\r\n                                        </span>\r\n                                    </strong>\r\n                                </span>\r\n               \r\n               <span class='operadora'> com juros </span>\r\n               <span class='txt-forma-pagamento'>Cart&atilde;o Visa - Vindi</span>\r\n               <!-- 12|4.81|{lower_price}|78 -->",
+            "percentage_discount": "0.000000",
+            "upon_request": "0",
+            "available_for_purchase": "0",
+            "all_categories": [
+              "23",
+              "97"
+            ],
+            "AdditionalInfos": [],
+            "minimum_price": "46.60",
+            "promotional_minimum_price": "0.00",
+            "variant_without_price": "98757635",
+            "variant_without_promotional_price": "98757635",
+            "Variant": [],
+            "tax_group": []
+          }
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "workflows.rdmon.com",
+            "user-agent": "axios/1.7.7",
+            "content-length": "1053",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "workflows.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "Bot",
+            "data": {
+              "key": {
+                "remoteJid": "555193732861@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3EB026106CACDAE0D79EE4"
+              },
+              "pushName": "Ramon",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Oi, quero ver sobre o produto REF: 000010",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "0sTJLf/HhJmeeg==",
+                    "senderTimestamp": "1732371005",
+                    "senderAccountType": "E2EE",
+                    "receiverAccountType": "E2EE",
+                    "recipientKeyHash": "tEt9tQ7hDufrag==",
+                    "recipientTimestamp": "1732533939"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "I5+su4pp8H5DFK5Ifyj2ArRf0o6HWRAsN4nc28Zp2Lw="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1733147605,
+              "instanceId": "96ea36b4-3d1e-4f2e-b56e-17d8168a3180",
+              "source": "web",
+              "chatwootMessageId": 7643,
+              "chatwootInboxId": 6,
+              "chatwootConversationId": 594
+            },
+            "destination": "https://workflows.rdmon.com/webhook-test/cf413450-8eff-4cc7-8329-985aa8897dcb",
+            "date_time": "2024-12-02T10:53:25.910Z",
+            "sender": "555180186979@s.whatsapp.net",
+            "server_url": "https://wsapi.rdmon.com",
+            "apikey": "49E897ED7784-4E34-B382-DD1FCF3E0756"
+          },
+          "webhookUrl": "https://webhooks.rdmon.com/webhook-test/cf413450-8eff-4cc7-8329-985aa8897dcb",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "198ae663-ab1e-4e36-b826-0a9e0ef1a64a",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-02T13:52:28.658Z",
+      "updatedAt": "2024-12-02T13:52:28.658Z",
+      "role": "workflow:owner",
+      "workflowId": "CRFW49bK9WdO23NU",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
