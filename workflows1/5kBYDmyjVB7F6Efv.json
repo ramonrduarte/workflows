@@ -1,0 +1,479 @@
+{
+  "createdAt": "2024-11-18T19:43:54.891Z",
+  "updatedAt": "2025-06-23T20:04:43.762Z",
+  "id": "5kBYDmyjVB7F6Efv",
+  "name": "Tabela itens Imperador",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "81224475-abdc-4042-9cab-0e825a22d3f9",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Products",
+        "options": {}
+      },
+      "id": "d3846786-ceaa-4177-8f82-563fb3af83c0",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        180,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "62617fcf-f196-40f8-a53f-0aeda7455648",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        600,
+        340
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "60177eb8-e266-439c-831c-61326e163b04",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dccfe60e-2e95-4854-931f-892d422dc669",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1300,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "url_tray",
+              "value": "=www.imperadordoslustres.com.br/web_api",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "74bc96ca-b26c-4c32-b90c-d68f1e8efbd3",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -340,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $('Dados').first().json.url_tray }}/auth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "utf-8"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "7275d28a8d58ccf0bfd06b5da45a4a9d9f382944605eaa47c493746333a08c0f"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "37735205a24d753fe94a61c7f7ec426b0cb8d3a82d04207032af26f785b9c8f5"
+            },
+            {
+              "name": "code",
+              "value": "07f1e0cca7a37385f87b57ebd9c4c6406b5649ef67e5eddc8fbd7f1fd22375fb"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "7b0c17df-db97-4ea1-a9b0-28542fe8c549",
+      "name": "Token Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -180,
+        340
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $('Dados').first().json.url_tray }}/products",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Token Tray').first().json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  },
+                  {
+                    "name": "limit",
+                    "value": "50"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": "={{ Math.ceil($response.body.paging.total / $response.body.paging.limit) }}",
+              "requestInterval": {}
+            }
+          }
+        }
+      },
+      "id": "6c3d1e8b-00fd-40d9-a0ee-721e72af5e90",
+      "name": "Consulta Produtos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $('Dados').first().json.url_tray }}/products/7",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Token Tray').first().json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "f0a24e51-0fe1-4cd2-9a1e-7926905fcb3c",
+      "name": "Consulta Produto Por ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        440
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        360,
+        340
+      ],
+      "id": "4ffaed0f-4b87-4963-a705-8031a955ded6",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9e8bd93-fc64-46ef-878d-13adcc56ffe2",
+              "name": "id",
+              "value": "={{ $json.Product.id }}",
+              "type": "string"
+            },
+            {
+              "id": "1314d292-caa2-4ffd-ae07-b42b114bb9eb",
+              "name": "nome",
+              "value": "={{ $json.Product.name }}",
+              "type": "string"
+            },
+            {
+              "id": "e5960d79-ef8c-433c-ba1a-85167572ba9f",
+              "name": "descricao",
+              "value": "={{ $json.Product.description.replace(/<[^>]*>/g, \"\").replace(/\\n/g, \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "4b0a5c65-9635-43a3-8bfa-2f8543f981da",
+              "name": "preco",
+              "value": "={{ $json.Product.price }}",
+              "type": "string"
+            },
+            {
+              "id": "1464b50f-78e1-4b82-8b88-95ddf6b22852",
+              "name": "modelo",
+              "value": "={{ $json.Product.model }}",
+              "type": "string"
+            },
+            {
+              "id": "4f985411-8d23-41e2-8712-2540f5393379",
+              "name": "weight",
+              "value": "={{ $json.Product.weight }}",
+              "type": "string"
+            },
+            {
+              "id": "12185d95-63c2-476c-8cc8-e560b8453788",
+              "name": "length",
+              "value": "={{ $json.Product.length }}",
+              "type": "string"
+            },
+            {
+              "id": "40ded1dc-f819-4cd3-b0ae-38922d6f93bb",
+              "name": "width",
+              "value": "={{ $json.Product.width }}",
+              "type": "string"
+            },
+            {
+              "id": "d0e7ec89-2862-47ac-ab80-3d9dc7b765d9",
+              "name": "height",
+              "value": "={{ $json.Product.height }}",
+              "type": "string"
+            },
+            {
+              "id": "8a75ace0-4cbd-4897-be81-9a2a88cfdf68",
+              "name": "referencia",
+              "value": "={{ $json.Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "340457d0-64e0-4227-aded-d68ae89df66a",
+              "name": "url",
+              "value": "={{ $json.Product.url.https }}",
+              "type": "string"
+            },
+            {
+              "id": "a726f371-cd59-4d86-8f70-4ecb2538bb34",
+              "name": "url_video",
+              "value": "={{ $json.Product.video }}",
+              "type": "string"
+            },
+            {
+              "id": "cf7982ad-e7b0-453b-9fa8-0d5a1d4d795d",
+              "name": "meta_description",
+              "value": "={{ $json.Product.metatag[0].content }}",
+              "type": "string"
+            },
+            {
+              "id": "68239a28-46c7-4dab-a0d4-48e0f2b3ecf5",
+              "name": "meta_keywords",
+              "value": "={{ $json.Product.metatag[1].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        440
+      ],
+      "id": "f0d5ccb4-8c06-4607-95ee-98c0f8b42f74",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta Produto Por ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Consulta Produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta Produtos": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta Produto Por ID": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a7e373ad-49fa-40e5-80fe-cffcb964aa6f",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-11-18T19:43:54.891Z",
+      "updatedAt": "2024-11-18T19:43:54.891Z",
+      "role": "workflow:owner",
+      "workflowId": "5kBYDmyjVB7F6Efv",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
