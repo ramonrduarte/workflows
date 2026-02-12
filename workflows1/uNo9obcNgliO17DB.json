@@ -1,0 +1,151 @@
+{
+  "createdAt": "2024-10-15T13:45:39.119Z",
+  "updatedAt": "2025-06-02T12:00:51.443Z",
+  "id": "uNo9obcNgliO17DB",
+  "name": "Encerra Sessao (CHATWOOT)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Salva dados').item.json[\"baseUrl\"] }}/openai/changeStatus/{{ $('Salva dados').item.json[\"instance\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Salva dados').item.json[\"apikey\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"remoteJid\": \"{{ $('Salva dados').item.json[\"remoteJid\"] }}\",\n    \"status\": \"closed\"\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "6f4d8271-d5f6-4519-98d0-0507ca59308b",
+      "name": "Fecha Openai",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "81330212-e0e9-4195-97d6-cc0eb7d3c17d",
+              "name": "instance",
+              "value": "=Ramon",
+              "type": "string"
+            },
+            {
+              "id": "e1dbf452-c5a7-403b-91ac-02b65543567e",
+              "name": "baseUrl",
+              "value": "https://wsapi.rdmon.com",
+              "type": "string"
+            },
+            {
+              "id": "f4abff80-1f2b-4f42-b77c-f7b55dc0f330",
+              "name": "apikey",
+              "value": "=4C71411DDD9E-4F7E-9C29-0958B1DEB3EB",
+              "type": "string"
+            },
+            {
+              "id": "f2659e1c-ee10-42c0-9780-6050134794b5",
+              "name": "remoteJid",
+              "value": "={{ $('Webhook1').item.json[\"body\"][\"meta\"][\"sender\"][\"identifier\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "25afa80b-a6e9-4720-8b97-fca778a90d71",
+      "name": "Salva dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2cb3591b-39a0-4910-958e-aeb0eb3c0ee8",
+        "options": {}
+      },
+      "id": "b71c4438-f854-46d4-996a-d903e9f14edb",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        320
+      ],
+      "webhookId": "2cb3591b-39a0-4910-958e-aeb0eb3c0ee8"
+    }
+  ],
+  "connections": {
+    "Salva dados": {
+      "main": [
+        [
+          {
+            "node": "Fecha Openai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Salva dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e1d91119-9ca7-4b6a-9c18-ce64aac4346a",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-10-15T13:45:39.119Z",
+      "updatedAt": "2024-10-15T13:45:39.119Z",
+      "role": "workflow:owner",
+      "workflowId": "uNo9obcNgliO17DB",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
