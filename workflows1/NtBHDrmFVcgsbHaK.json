@@ -1,0 +1,440 @@
+{
+  "createdAt": "2025-08-12T10:38:57.479Z",
+  "updatedAt": "2025-08-12T10:38:57.479Z",
+  "id": "NtBHDrmFVcgsbHaK",
+  "name": "Gerador de conteudo",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Gerador de Artigos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Título",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Descrição",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "E-mail",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Keyword",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -928,
+        448
+      ],
+      "id": "3b5a66df-9d55-46f8-82ac-70ce36ed3c8f",
+      "name": "On form submission",
+      "webhookId": "abed3be0-5439-4554-b629-98170cdba8ea"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        624
+      ],
+      "id": "cc356e7b-faf7-4055-983f-e55822e3ffe0",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        1136
+      ],
+      "id": "1fd720e1-7ba5-4760-8e78-9e9d1bab0313",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        976
+      ],
+      "id": "787ac337-f3c6-478c-8507-d61e26a87382",
+      "name": "RevisaoSEO"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        1136
+      ],
+      "id": "d24461c9-ade0-46ac-aa4d-25b28ad5d913",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        976
+      ],
+      "id": "67e66faa-2fec-433c-a6af-06d4a96a238b",
+      "name": "RevisaoOrtografia"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Você deve analisar o texto que será informado e retorná-lo no formato especificado."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        224,
+        448
+      ],
+      "id": "9f108da4-7390-45a4-afbe-10abf816a0a8",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        176,
+        640
+      ],
+      "id": "40618315-2ab3-49cd-bb1c-21e479800262",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"titulo\": \"\",\n\t\"meta_descricao\": \"\",\n    \"corpo_do_texto\": \"\",\n    \"sugestoes_de_titulos\": [\"\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        640
+      ],
+      "id": "0c143ceb-af93-493e-bfbe-20bed141b5a7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "## Ferramentas Auxiliares",
+        "height": 432,
+        "width": 1376,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -656,
+        848
+      ],
+      "typeVersion": 1,
+      "id": "9f6cfe5a-2d86-47e8-8423-fe84b529a84a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Gerador de Conteúdo",
+        "height": 416,
+        "width": 592,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -656,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "56e583ce-b25c-4535-a6c3-fa4d714d919a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Formata a Saída",
+        "height": 416,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "2a6ee289-1fe7-42dc-b974-e9680bb9156d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -576,
+        1136
+      ],
+      "id": "92db4623-8d15-4f8f-8287-2a34852bdd6f",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -544,
+        976
+      ],
+      "id": "f51a07b9-4cb2-4d29-bc93-3729250b58fb",
+      "name": "GeradorTitulos"
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output }}",
+        "destinationKey": "html",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        144,
+        96
+      ],
+      "id": "d1de3624-fa55-4ed3-a004-6303b90e803a",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>My HTML document</title>\n</head>\n<body>\n  <div class=\"container\">\n {{ $json.html }}\n  </div>\n</body>\n</html>\n\n<style>\n.container {\n  background-color: #ffffff;\n  padding: 16px;\n  border-radius: 8px;\n}\n\nh1 {\n  color: #ff6d5a;\n  font-size: 24px;\n  font-weight: bold;\n  padding: 8px;\n}\n\nh2 {\n  color: #909399;\n  font-size: 18px;\n  font-weight: bold;\n  padding: 8px;\n}\n</style>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        96
+      ],
+      "id": "9630fed8-fa7d-472d-a23f-5b23aae06f3a",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "content": "## Preview",
+        "height": 288,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "6daa734f-2893-4f09-a41c-a8e1c4ed31d3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Título: {{ $json['Título'] }}\n\nDescrição: {{ $json['Descrição'] }}\n\nKeyword Principal: {{ $json.Keyword }}",
+        "options": {
+          "systemMessage": "=AGENT:\n  Role: \"Assistente especialista em produção de conteúdo SEO para blogs e mídias sociais em português brasileiro.\"\n  Input: \n    - Keyword principal\n    - Tema geral do conteúdo\n    - Público-alvo\n  Steps:\n    1. Criar um título com a keyword principal que desperte interesse.\n    2. Redigir uma meta descrição persuasiva com até 160 caracteres.\n    3. Escrever uma introdução clara e direta, com a keyword no primeiro parágrafo.\n    4. Desenvolver o corpo do artigo com subtítulos (H2), listas, parágrafos curtos e uso natural da keyword.\n    5. Incluir variações semânticas e seguir boas práticas de SEO.\n    6. Finalizar com uma conclusão que resume e sugere uma ação ao leitor.\n    7. Você deve revisar a ortografia do texto com a ferramenta RevisaoOrtografia.\n    8. Chamar a ferramenta RevisaoSEO para concluir.\n    9. Considerando as Keywords, Título e Conteúdo, adicione ao final do Artigo 5 sugestões de títulos chamando a ferramenta GeradorTitulos.\n  Example: \n    - Keyword: \"marketing de conteúdo\"\n    - Tema: \"como usar marketing de conteúdo para atrair clientes\"\n    - Público: \"pequenos empreendedores e freelancers\"\n    - Resultado: Um artigo com título “Como usar marketing de conteúdo para atrair clientes fiéis”, meta descrição convincente e conteúdo completo, organizado e otimizado para o Google."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -496,
+        448
+      ],
+      "id": "07deedd9-af8e-4097-8e53-dbfd16ecb704",
+      "name": "GeradorPostBlog"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "GeradorPostBlog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "GeradorPostBlog",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GeradorPostBlog": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "Título": "Melhor forma de fazer um café coado",
+          "Descrição": "Faça uma lista de boas práticas para coar um café do tipo especial. fale sobre tipos de coadores e o processo de infusão.",
+          "E-mail": "luizeof@gmail.com",
+          "Keyword": "café coado",
+          "submittedAt": "2025-07-23T20:07:27.970-03:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "a6b11c61-2cfc-4fac-80a8-42d02c0561d0",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-08-12T10:38:57.479Z",
+      "updatedAt": "2025-08-12T10:38:57.479Z",
+      "role": "workflow:owner",
+      "workflowId": "NtBHDrmFVcgsbHaK",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
