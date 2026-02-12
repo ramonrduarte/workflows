@@ -1,0 +1,98 @@
+{
+  "createdAt": "2025-06-23T11:28:17.115Z",
+  "updatedAt": "2025-08-21T18:14:17.068Z",
+  "id": "zZSt98vPacMAgGTg",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "8882bf0b-267e-43b5-96b5-90a542563333",
+        "formTitle": "Tratamento de Tabela",
+        "formDescription": "Importe a tabela",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "data",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e479cb7a-15ee-41b9-abdf-15277e0b5cfc",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        -260,
+        -80
+      ],
+      "webhookId": "8882bf0b-267e-43b5-96b5-90a542563333"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -80
+      ],
+      "id": "0f351fa1-5e55-4855-8ba3-a80c312fc084",
+      "name": "Extract from File"
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5cf5db99-6aab-46df-9f72-21997cc38952",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-06-23T11:28:17.115Z",
+      "updatedAt": "2025-06-23T11:28:17.115Z",
+      "role": "workflow:owner",
+      "workflowId": "zZSt98vPacMAgGTg",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
