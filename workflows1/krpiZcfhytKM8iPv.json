@@ -1,0 +1,285 @@
+{
+  "createdAt": "2025-02-06T17:38:29.731Z",
+  "updatedAt": "2025-02-18T14:21:25.384Z",
+  "id": "krpiZcfhytKM8iPv",
+  "name": "TOKEN TRAY",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "77871579-3bf0-4ae4-8bfe-7ee64de3ab32",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        120,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tokens",
+          "mode": "list",
+          "cachedResultName": "tokens"
+        },
+        "options": {}
+      },
+      "id": "0e1f97fb-1745-4e67-b48f-ae97e9cb7c24",
+      "name": "Pegar Refresh token",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        320,
+        100
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "oZmPlgV8AUw5wxLZ",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tokens",
+          "mode": "list",
+          "cachedResultName": "tokens"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": 0,
+            "token_tray": "={{ $('Refresh Token Tray').first().json.access_token }}",
+            "expires_tray": "={{ $('Refresh Token Tray').first().json.date_expiration_access_token }}",
+            "refresh_token_tray": "={{ $('Refresh Token Tray').first().json.refresh_token }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "token_tray",
+              "displayName": "token_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "expires_tray",
+              "displayName": "expires_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "refresh_token_tray",
+              "displayName": "refresh_token_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "token_bimer",
+              "displayName": "token_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "expires_bimer",
+              "displayName": "expires_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "refresh_token_bimer",
+              "displayName": "refresh_token_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_preco",
+              "displayName": "id_preco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_setor",
+              "displayName": "id_setor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7ddab0f6-5ca2-4335-81be-5c99a4a4f2c4",
+      "name": "Atualiza dados",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        700,
+        100
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "oZmPlgV8AUw5wxLZ",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/auth?refresh_token={{ $('Pegar Refresh token').first().json.refresh_token_tray }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "refresh_token",
+              "value": "={{ $('Pegar Refresh token').first().json.refresh_token_tray }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "5f8f331b-222b-4d2f-b862-5322da2765c2",
+      "name": "Refresh Token Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        100
+      ]
+    }
+  ],
+  "connections": {
+    "Pegar Refresh token": {
+      "main": [
+        [
+          {
+            "node": "Refresh Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refresh Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Atualiza dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Pegar Refresh token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fff824d3-3000-469d-9cf4-079ef52d4e4f",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-02-06T17:38:29.731Z",
+      "updatedAt": "2025-02-06T17:38:29.731Z",
+      "role": "workflow:owner",
+      "workflowId": "krpiZcfhytKM8iPv",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
