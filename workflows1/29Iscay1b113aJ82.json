@@ -1,0 +1,1766 @@
+{
+  "createdAt": "2024-11-18T20:15:44.060Z",
+  "updatedAt": "2025-02-11T17:43:35.857Z",
+  "id": "29Iscay1b113aJ82",
+  "name": "Tabela itens Adrofecha",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "4c486857-923f-497a-af40-c537303c0d98",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "acess_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "42edff7b-dc03-4404-a8b6-909822bd56fd",
+              "name": "id_preco",
+              "value": "00A0000003",
+              "type": "string"
+            },
+            {
+              "id": "c59e99cb-3785-4635-a52f-e577ff2d7372",
+              "name": "id_setor",
+              "value": "00A0000005",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bd1734ef-bd6b-4838-a789-fbb4564d902b",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.adrofecha.com.br/web_api/products",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  },
+                  {
+                    "name": "limit",
+                    "value": "50"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": "={{ Math.ceil($response.body.paging.total / $response.body.paging.limit) }}",
+              "requestInterval": null
+            }
+          }
+        }
+      },
+      "id": "197307ff-cc06-46fe-b498-ac6210d034a2",
+      "name": "Consulta Produtos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.adrofecha.com.br/web_api/products/variants",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Edit Fields').all().first().json.acess_token }}"
+            },
+            {
+              "name": "id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "utf-8"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "85d1153f-d5ec-41f3-ad7a-e70a47624645",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.adrofecha.com.br/web_api/auth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "utf-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89"
+            },
+            {
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "fd10dc12-0a5a-4b76-b381-833e129692cf",
+      "name": "Token Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        240
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e9acca6e-3d8f-468f-bf22-e37d04583bbc",
+      "name": "Replace Me1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2960,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://hhptsnihwfprxnqjbynz.supabase.co/rest/v1/produtos?select=id_tray",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "id": "8deb9d87-32d0-4173-bcc4-0989eabfa67c",
+      "name": "Consulta IDs Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        40
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "YL6AkhgTrmpkF8IB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha os dados retornados pelo node anterior\nconst allItems = $input.all(); // Obtém os dados de todas as páginas\n\n// Mapeie e extraia os campos necessários\nconst results = allItems.flatMap(item => {\n  const products = item.json.Products || []; // Certifique-se de que \"Products\" é o nome correto\n\n  return products.map(productData => {\n    const product = productData.Product || {}; // Navegue para dentro de \"Product\"\n\n    return {\n      id: product.id || \"N/A\",\n      has_variation: product.has_variation,\n    };\n  });\n});\n\n// Retorne os dados filtrados como saída\nreturn results.map(result => ({ json: result }));\n"
+      },
+      "id": "fd6ccaa4-711c-43a4-a9f3-99fd782a07be",
+      "name": "IDs de produtos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ceda77a8-532d-4221-bff4-9a018871b8fc",
+              "name": "source",
+              "value": "=produtos",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f8f66584-609a-40da-825c-543fb7607380",
+      "name": "Ajuste IDs Produtos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        900,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c654f05c-71d8-4f5f-9dd3-a3f39ce0d68c",
+              "name": "id",
+              "value": "={{ $json.id_tray }}",
+              "type": "string"
+            },
+            {
+              "id": "db100b90-c099-4a53-8516-c3cf7abaad33",
+              "name": "source",
+              "value": "supabase",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "159f804f-1012-4d82-919a-fb1f52a7c941",
+      "name": "Ajuste IDs Supabase",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        900,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha todos os dados consolidados do Merge\nconst allData = $input.all();\n\n// Separe os itens com base no campo \"source\"\nconst list1 = allData\n  .filter(item => item.json.source === 'produtos')\n  .map(item => String(item.json.id).trim());\n\nconst list2 = allData\n  .filter(item => item.json.source === 'supabase')\n  .map(item => String(item.json.id).trim());\n\n// Converta a lista 2 em um Set para busca eficiente\nconst set2 = new Set(list2);\n\n// Filtrar IDs que estão na lista 1, mas não na lista 2\nconst difference = list1.filter(id => !set2.has(id));\n\n// Logs para depuração\nconsole.log(\"Lista 1 (Produtos):\", list1);\nconsole.log(\"Lista 2 (Supabase):\", list2);\nconsole.log(\"Diferença (IDs faltando no Supabase):\", difference);\n\n// Retorne os itens diferentes como saída\nreturn difference.map(id => ({ json: { id } }));\n"
+      },
+      "id": "d5ea49f2-cc8b-44e1-96c7-2f6b575ac7b8",
+      "name": "IDs nao cadastrados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        120
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "11de604e-7675-4fc7-88b3-020c12133fa7",
+      "name": "Consulta IDs não cadastrados",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1700,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products/{{$json.id}}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Edit Fields').first().json.acess_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "0cde9b2d-52be-47c2-ac0b-9362cad7cfb8",
+      "name": "Consulta por ID Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1940,
+        240
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "91c7db8f-bdbf-4ec2-9e5b-1282be79d796",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha os dados retornados pelo node anterior\nconst allItems = $input.all(); // Obtém os dados de todas as páginas\n\n// Função para limpar tags HTML de um texto\nfunction stripHtml(html) {\n  if (!html) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  return html.replace(/<[^>]*>/g, '').replace(/\\n/g, '').trim();\n}\n\n// Função para decodificar entidades HTML\nfunction decodeHtmlEntities(text) {\n  if (!text) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  const entities = {\n    amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\",\n    nbsp: ' ', ccedil: 'ç', atilde: 'ã', otilde: 'õ', aacute: 'á',\n    eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ',\n    acirc: 'â', ecirc: 'ê', icirc: 'î', ocirc: 'ô', ucirc: 'û',\n    Agrave: 'À', Aacute: 'Á', Acirc: 'Â', Atilde: 'Ã', Auml: 'Ä', Aring: 'Å',\n    Egrave: 'È', Eacute: 'É', Ecirc: 'Ê', Euml: 'Ë',\n    Igrave: 'Ì', Iacute: 'Í', Icirc: 'Î', Iuml: 'Ï',\n    Ograve: 'Ò', Oacute: 'Ó', Ocirc: 'Ô', Otilde: 'Õ', Ouml: 'Ö',\n    Ugrave: 'Ù', Uacute: 'Ú', Ucirc: 'Û', Uuml: 'Ü',\n    yacute: 'ý', thorn: 'þ', szlig: 'ß', eth: 'ð', yuml: 'ÿ'\n  };\n\n  return text\n    .replace(/&#(\\d+);/g, (match, dec) => String.fromCharCode(dec)) // Entidades numéricas\n    .replace(/&([^;]+);/g, (match, entity) => entities[entity] || match); // Entidades nomeadas\n}\n\n// Função para truncar números e manter duas casas decimais sem arredondar\nfunction truncateToTwoDecimals(value) {\n  if (value === null || value === undefined || value === \"\") return 0.00;\n  let num = Number(value);\n  return Math.floor(num * 100) / 100; // Trunca para 2 casas decimais\n}\n\n// Mapeie e processe os dados necessários\nconst results = allItems.map(item => {\n  const product = item.json; // Agora os dados estão diretamente no json do item\n\n  // Retorne os campos processados\n  return {\n    id_tray: product.id_tray || \"N/A\",\n    referencia: product.referencia || \"N/A\",\n    nome: product.nome || \"N/A\",\n    descricao: decodeHtmlEntities(stripHtml(product.descricao)),\n    available: product.available || \"N/A\",\n    has_variation: product.has_variation || \"N/A\",\n    peso: truncateToTwoDecimals(product.peso),\n    comprimento: truncateToTwoDecimals(product.comprimento),\n    largura: truncateToTwoDecimals(product.largura),\n    altura: truncateToTwoDecimals(product.altura),\n    estoque: truncateToTwoDecimals(product.estoque),\n    preco: truncateToTwoDecimals(product.preco),\n    url: product.url || \"N/A\",\n    imagem1: product.imagem1 || \"N/A\",\n    imagem2: product.imagem2 || \"N/A\",\n    imagem3: product.imagem3 || \"N/A\",\n    imagem4: product.imagem4 || \"N/A\",\n    bimer_id: product.bimer_id || \"N/A\",\n    bimer_estoque: truncateToTwoDecimals(product.bimer_estoque),\n    bimer_preco: truncateToTwoDecimals(product.bimer_preco),\n  };\n});\n\n// Retorne os dados filtrados como saída\nreturn results.map(result => ({ json: result }));\n"
+      },
+      "id": "cf37f2c1-6d81-46e5-9078-203a9f95e4a4",
+      "name": "Ajusta Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2820,
+        240
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "tableId": "produtos",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_tray",
+              "fieldValue": "={{ $json.id_tray }}"
+            },
+            {
+              "fieldId": "referencia_bimer",
+              "fieldValue": "={{ $json.referencia }}"
+            },
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.nome }}"
+            },
+            {
+              "fieldId": "descricao",
+              "fieldValue": "={{ $json.descricao }}"
+            },
+            {
+              "fieldId": "available",
+              "fieldValue": "={{ $json.available }}"
+            },
+            {
+              "fieldId": "has_variation",
+              "fieldValue": "={{ $json.has_variation }}"
+            },
+            {
+              "fieldId": "peso",
+              "fieldValue": "={{ $json.peso }}"
+            },
+            {
+              "fieldId": "comprimento",
+              "fieldValue": "={{ $json.comprimento }}"
+            },
+            {
+              "fieldId": "largura",
+              "fieldValue": "={{ $json.largura }}"
+            },
+            {
+              "fieldId": "altura",
+              "fieldValue": "={{ $json.altura }}"
+            },
+            {
+              "fieldId": "estoque",
+              "fieldValue": "={{ $json.estoque }}"
+            },
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json.url }}"
+            },
+            {
+              "fieldId": "imagem1",
+              "fieldValue": "={{ $json.imagem1 }}"
+            },
+            {
+              "fieldId": "imagem2",
+              "fieldValue": "={{ $json.imagem2 }}"
+            },
+            {
+              "fieldId": "imagem3",
+              "fieldValue": "={{ $json.imagem3 }}"
+            },
+            {
+              "fieldId": "imagem4",
+              "fieldValue": "={{ $json.imagem4 }}"
+            },
+            {
+              "fieldId": "preco",
+              "fieldValue": "={{ $json.preco }}"
+            },
+            {
+              "fieldId": "bimer_id",
+              "fieldValue": "={{ $json.bimer_id }}"
+            },
+            {
+              "fieldId": "bimer_estoque",
+              "fieldValue": "={{ $json.bimer_estoque }}"
+            },
+            {
+              "fieldId": "bimer_preco",
+              "fieldValue": "={{ $json.bimer_preco }}"
+            }
+          ]
+        }
+      },
+      "id": "5943f2e2-11bd-41aa-a653-a52f5562fbe6",
+      "name": "Salva dados",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        20
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "YL6AkhgTrmpkF8IB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ef04945-8eba-41ec-9825-e6569bb4215d",
+              "leftValue": "={{ $json.has_variation }}",
+              "rightValue": "=0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "843d8fbf-b8db-4460-8ba9-09f5f62c586f",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "554c523f-7fe6-4941-a510-79c973e84841",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9934fb36-985f-4e28-b9ff-d7732e361d37",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        700,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3f41eb8e-f288-4c25-99d9-66a9fdc26757",
+      "name": "Consulta IDs não cadastrados1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -80,
+        1120
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 100
+      },
+      "id": "1cb4e584-f08e-41bf-9758-3882a81cb9cb",
+      "name": "Limit1",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        1100
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products/{{$json.id}}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Edit Fields').all().first().json.acess_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "fc07a8e4-3779-4847-9ce5-e48849f24d2d",
+      "name": "Consulta por ID Tray1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        140,
+        1220
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f48ddad4-262c-49bb-b1d9-90d63d71aae4",
+      "name": "Replace Me2",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        700,
+        1220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const product = $json.Product; // Dados do produto principal\nconst variations = product.Variant; // Variações do produto\n\n// Função para limpar tags HTML de um texto\nfunction stripHtml(html) {\n  if (!html) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  return html.replace(/<[^>]*>/g, '').replace(/\\n/g, '').trim();\n}\n\n// Função para decodificar entidades HTML\nfunction decodeHtmlEntities(text) {\n  if (!text) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  const entities = {\n    amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\",\n    nbsp: ' ', ccedil: 'ç', atilde: 'ã', otilde: 'õ', aacute: 'á',\n    eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ',\n    acirc: 'â', ecirc: 'ê', icirc: 'î', ocirc: 'ô', ucirc: 'û',\n    Agrave: 'À', Aacute: 'Á', Acirc: 'Â', Atilde: 'Ã', Auml: 'Ä', Aring: 'Å',\n    Egrave: 'È', Eacute: 'É', Ecirc: 'Ê', Euml: 'Ë',\n    Igrave: 'Ì', Iacute: 'Í', Icirc: 'Î', Iuml: 'Ï',\n    Ograve: 'Ò', Oacute: 'Ó', Ocirc: 'Ô', Otilde: 'Õ', Ouml: 'Ö',\n    Ugrave: 'Ù', Uacute: 'Ú', Ucirc: 'Û', Uuml: 'Ü',\n    yacute: 'ý', thorn: 'þ', szlig: 'ß', eth: 'ð', yuml: 'ÿ'\n  };\n\n  return text\n    .replace(/&#(\\d+);/g, (match, dec) => String.fromCharCode(dec)) // Entidades numéricas\n    .replace(/&([^;]+);/g, (match, entity) => entities[entity] || match); // Entidades nomeadas\n}\n\n// Cria um array com os dados desejados\nconst result = variations.map(variation => ({\n  id: product.id,\n  name: product.name,\n  description: decodeHtmlEntities(stripHtml(product.description)),\n  variation_id: variation.id,\n}));\n\n// Retorna o resultado diretamente (não encapsular em `json` ainda)\nreturn result;\n"
+      },
+      "id": "8fe29461-bb3c-4d6d-8b2d-e676a14fae5d",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        1220
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ed92a923-1024-4f9f-b3af-1ff38d2ee1b2",
+              "name": "id",
+              "value": "={{ $json.variation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "83c77692-ff27-429b-8628-cd85db03e6ef",
+              "name": "source",
+              "value": "variacoes",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d4d10741-eeed-4789-bd9a-8668f86c59ab",
+      "name": "Edit Fields5",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "72c421cf-716f-4023-824b-4e53dee96c07",
+      "name": "Loop Over Items1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        920
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "5112420e-6932-4971-bcaf-1f106e129ef4",
+      "name": "Replace Me3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// 📌 Obter os dados do HTTP Request\nconst httpData = $node[\"HTTP Request\"].json;\nconst bimerid = $node[\"Identificador Bimer\"].json;\nconst bimerestoque = $node[\"Estoque Bimer\"].json;\nconst bimerpreco = $node[\"Preco Bimer\"].json;\n\nif (!httpData || !httpData.Variants || httpData.Variants.length === 0) {\n  throw new Error(\"A resposta da requisição HTTP está vazia ou mal formatada.\");\n}\n\n// 🔹 Função para truncar números e manter duas casas decimais sem arredondar\nfunction truncateToTwoDecimals(value) {\n  if (value === null || value === undefined || value === \"\") return 0.00;\n  let num = Number(value);\n  return Math.floor(num * 100) / 100; // Trunca para 2 casas decimais\n}\n\n// 🔹 Processar a primeira variante retornada pelo HTTP Request\nconst variant = httpData.Variants[0].Variant || {};\nconst variationId = String(variant.id || \"N/A\").trim();\n\n// 📌 DEBUG: Verificando a saída do node \"Consulta IDs não cadastrados1\"\nlet loopData = $items(\"Consulta IDs não cadastrados1\", 0);\n\nif (!loopData || loopData.length === 0) {\n  throw new Error(\"Os dados do node 'Consulta IDs não cadastrados1' estão vazios.\");\n}\n\n// 🔹 Buscar o item correto no loopData com base no variation_id\nconst loopItem = loopData.find(item => \n  String(item.json.variation_id).trim() === variationId\n);\n\n// Helper para acessar imagens de forma segura\nconst getImage = (variantImages, index) => {\n  return variantImages && variantImages[index] && variantImages[index].https\n    ? variantImages[index].https\n    : \"N/A\";\n};\n\nif (!loopItem) {\n  console.error(`⚠️ Nenhum item encontrado para variation_id: ${variationId}`);\n  throw new Error(`Nenhum item correspondente encontrado para o variation_id: ${variationId}`);\n}\n\nconst skuDetails = variant.Sku.map(sku => `${sku.type || \"N/A\"} ${sku.value || \"N/A\"}`).join(\" \");\n\nconst concatenatedNames = `${loopItem.json.name || \"N/A\"} ${skuDetails}`;\n\n// 🔹 Criar o objeto com os dados encontrados\nconst enrichedItem = {\n  json: {\n    id_tray: variant.product_id || \"N/A\",\n    variation_id: variant.id || \"N/A\",\n    nome: concatenatedNames || \"N/A\",\n    descricao: loopItem.json.description || \"N/A\",\n    referencia: variant.reference || \"N/A\",\n    available: variant.available,\n    has_variation: \"1\",\n    estoque: truncateToTwoDecimals(variant.stock),\n    preco: truncateToTwoDecimals(variant.price),\n    peso: truncateToTwoDecimals(variant.weight),\n    comprimento: truncateToTwoDecimals(variant.length),\n    largura: truncateToTwoDecimals(variant.width),\n    altura: truncateToTwoDecimals(variant.height),\n    url: variant.url?.https || \"N/A\",\n    imagem1: getImage(variant.VariantImage, 0),\n    imagem2: getImage(variant.VariantImage, 1),\n    imagem3: getImage(variant.VariantImage, 2),\n    imagem4: getImage(variant.VariantImage, 3),\n    bimer_id: bimerid.ListaObjetos[0].Identificador || \"N/A\",\n    bimer_estoque: truncateToTwoDecimals(bimerestoque.ListaObjetos[0].QuantidadeDisponivel),\n    bimer_preco: truncateToTwoDecimals(bimerpreco.ListaObjetos[0].Valor),\n  }\n};\n\n// 🔹 Retornar o item como array\nreturn [enrichedItem];\n"
+      },
+      "id": "bb9123c9-198b-486e-a70c-7195dbc061fd",
+      "name": "Code3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2180,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://hhptsnihwfprxnqjbynz.supabase.co/rest/v1/produtos?select=variation_id",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "id": "5e81e775-1f9a-4002-9c36-f7fe06a60c77",
+      "name": "Consulta IDs Variacoes Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -440,
+        860
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "YL6AkhgTrmpkF8IB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b143f893-1eeb-4731-a089-47e614200004",
+              "name": "id",
+              "value": "={{ $json.variation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "cbeb74fe-c410-48ee-8698-07397c4cb0f5",
+              "name": "source",
+              "value": "supabase",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "df8f2178-06b9-42ee-a66a-3ed974d97012",
+      "name": "Ajuste IDs Variacoes",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha todos os dados consolidados do Merge\nconst allData = $input.all();\n\n// Separe os itens com base no campo \"source\"\nconst list1 = allData\n  .filter(item => item.json.source === 'variacoes')\n  .map(item => String(item.json.id).trim());\n\nconst list2 = allData\n  .filter(item => item.json.source === 'supabase')\n  .map(item => String(item.json.id).trim());\n\n// Converta a lista 2 em um Set para busca eficiente\nconst set2 = new Set(list2);\n\n// Filtrar IDs que estão na lista 1, mas não na lista 2\nconst difference = list1.filter(id => !set2.has(id));\n\n// Logs para depuração\nconsole.log(\"Lista 1 (variacoes):\", list1);\nconsole.log(\"Lista 2 (Supabase):\", list2);\nconsole.log(\"Diferença (IDs faltando no Supabase):\", difference);\n\n// Retorne os itens diferentes como saída\nreturn difference.map(id => ({ json: { id } }));\n"
+      },
+      "id": "5febb4ca-e80b-479f-a40f-96c57b9cfc53",
+      "name": "IDs nao cadastrados1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 100
+      },
+      "id": "4dc6a69c-77b4-4a34-a958-026397e14b4b",
+      "name": "Limit2",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        900,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/produtos?codigo={{ $('HTTP Request').item.json.Variants[0].Variant.reference }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b61786bd-c7c4-4a03-aeaa-a70240587ed0",
+      "name": "Identificador Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/01/produtos/{{ $json.ListaObjetos[0].Identificador }}/estoque?identificadorSetor=00A0000005&dataReferencia={{ $now.toFormat('yyyy-MM-dd') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e91737c3-b628-4aeb-9c12-71fc59fc9e64",
+      "name": "Estoque Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/empresas/1/produtos/{{ $('Identificador Bimer').item.json.ListaObjetos[0].Identificador }}/precos/00A0000003",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c64f66f9-4073-402b-8e8c-d73c6a50be35",
+      "name": "Preco Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2000,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"0c79e6fcfbe6528780934f772dd450f7\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n\n}",
+        "options": {}
+      },
+      "id": "1b2b0edd-d2e2-4514-b955-cb6328ee65cd",
+      "name": "Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1520,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/produtos?codigo={{ $('Consulta por ID Tray').item.json.Product.reference }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "73caa08c-3bea-4c22-baa3-410d6fda1cb6",
+      "name": "Identificador Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/01/produtos/{{ $json.ListaObjetos[0].Identificador }}/estoque?identificadorSetor=00A0000005&dataReferencia={{ $now.toFormat('yyyy-MM-dd') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token1').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1c379357-ad65-4810-b672-8094085aefac",
+      "name": "Estoque Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2380,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://177.204.252.25:8084/api/empresas/1/produtos/{{ $('Identificador Bimer1').item.json.ListaObjetos[0].Identificador }}/precos/00A0000003",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token1').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4bfb1f12-28e6-40da-9a24-5794e76252c1",
+      "name": "Preco Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"0c79e6fcfbe6528780934f772dd450f7\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n\n}",
+        "options": {}
+      },
+      "id": "992496d2-7dbb-4ac4-a219-47a383e347f1",
+      "name": "Token1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2100,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08a8d739-f2b2-45db-8280-2e4d94aa6606",
+              "name": "id_tray",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f3cf847d-7026-4878-b05d-ba1568026e7d",
+              "name": "referencia",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "f85dcbe2-97d4-4c7b-820d-b2f49d8253ac",
+              "name": "nome",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.name }}",
+              "type": "string"
+            },
+            {
+              "id": "18d4afa5-cda0-4a91-846d-c2727a2465d3",
+              "name": "descricao",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.description }}",
+              "type": "string"
+            },
+            {
+              "id": "d0cd86ca-c197-4bb8-8e67-583142a14014",
+              "name": "available",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.available }}",
+              "type": "string"
+            },
+            {
+              "id": "1fa85d83-f596-4fac-a478-d73e9ae1abc5",
+              "name": "has_variation",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.has_variation }}",
+              "type": "string"
+            },
+            {
+              "id": "bfafcd2f-21be-43fb-b9bb-3faa492bcae6",
+              "name": "peso",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.height }}",
+              "type": "number"
+            },
+            {
+              "id": "59302b82-c516-4f43-9b39-92adbf2293df",
+              "name": "comprimento",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.length }}",
+              "type": "number"
+            },
+            {
+              "id": "0bfb8c6a-8ce3-4a07-a1cd-5add99f0724c",
+              "name": "largura",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.width }}",
+              "type": "string"
+            },
+            {
+              "id": "fae77af0-aa1c-4e3f-a6e5-671894639df3",
+              "name": "altura",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.height }}",
+              "type": "number"
+            },
+            {
+              "id": "99bad68f-8116-41c0-8b38-4864e060a1d1",
+              "name": "estoque",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.stock }}",
+              "type": "number"
+            },
+            {
+              "id": "420e19e4-7e8f-4328-a1c3-edcf171e8e57",
+              "name": "preco",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.price }}",
+              "type": "number"
+            },
+            {
+              "id": "3a9d34eb-fc26-4b26-916d-9700b164418a",
+              "name": "url",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.url.https }}",
+              "type": "string"
+            },
+            {
+              "id": "95ac320c-7417-42d6-8054-026545439738",
+              "name": "imagem1",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.ProductImage[0].https }}",
+              "type": "string"
+            },
+            {
+              "id": "39acc1da-793e-4155-9fed-73c0a01afc42",
+              "name": "imagem2",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.ProductImage[1].https }}",
+              "type": "string"
+            },
+            {
+              "id": "bb667f55-49ad-4b14-bf9c-a5bec1fcfc80",
+              "name": "imagem3",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.ProductImage[2].https}}",
+              "type": "string"
+            },
+            {
+              "id": "a8672eaa-dee3-4605-a14d-296aca31d78f",
+              "name": "imagem4",
+              "value": "={{ $('Consulta por ID Tray').item.json.Product.ProductImage[3].https}}",
+              "type": "string"
+            },
+            {
+              "id": "17cfe509-416f-4c12-8ff4-e80456e3d006",
+              "name": "bimer_id",
+              "value": "={{ $('Identificador Bimer1').item.json.ListaObjetos[0].Identificador }}",
+              "type": "string"
+            },
+            {
+              "id": "963be3eb-26d6-4f8b-a2b3-e4238969b483",
+              "name": "bimer_estoque",
+              "value": "={{ $('Estoque Bimer1').item.json.ListaObjetos[0].QuantidadeDisponivel }}",
+              "type": "number"
+            },
+            {
+              "id": "8389e5b9-c441-4f78-90ce-b59539d245ae",
+              "name": "bimer_preco",
+              "value": "={{ $('Preco Bimer1').item.json.ListaObjetos[0].Valor }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af7a1aad-ee94-4e33-b800-168746c44ed0",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2660,
+        240
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "320b0892-e4df-42ec-b640-01be92dfa485",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "produtos",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_tray",
+              "fieldValue": "={{ $json.id_tray }}"
+            },
+            {
+              "fieldId": "referencia_bimer",
+              "fieldValue": "={{ $json.referencia }}"
+            },
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.nome }}"
+            },
+            {
+              "fieldId": "descricao",
+              "fieldValue": "={{ $json.descricao }}"
+            },
+            {
+              "fieldId": "available",
+              "fieldValue": "={{ $json.available }}"
+            },
+            {
+              "fieldId": "has_variation",
+              "fieldValue": "={{ $json.has_variation }}"
+            },
+            {
+              "fieldId": "peso",
+              "fieldValue": "={{ $json.peso }}"
+            },
+            {
+              "fieldId": "comprimento",
+              "fieldValue": "={{ $json.comprimento }}"
+            },
+            {
+              "fieldId": "largura",
+              "fieldValue": "={{ $json.largura }}"
+            },
+            {
+              "fieldId": "altura",
+              "fieldValue": "={{ $json.altura }}"
+            },
+            {
+              "fieldId": "estoque",
+              "fieldValue": "={{ $json.estoque }}"
+            },
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json.url }}"
+            },
+            {
+              "fieldId": "imagem1",
+              "fieldValue": "={{ $json.imagem1 }}"
+            },
+            {
+              "fieldId": "imagem2",
+              "fieldValue": "={{ $json.imagem2 }}"
+            },
+            {
+              "fieldId": "imagem3",
+              "fieldValue": "={{ $json.imagem3 }}"
+            },
+            {
+              "fieldId": "imagem4",
+              "fieldValue": "={{ $json.imagem4 }}"
+            },
+            {
+              "fieldId": "preco",
+              "fieldValue": "={{ $json.preco }}"
+            },
+            {
+              "fieldId": "bimer_id",
+              "fieldValue": "={{ $json.bimer_id }}"
+            },
+            {
+              "fieldId": "bimer_estoque",
+              "fieldValue": "={{ $json.bimer_estoque }}"
+            },
+            {
+              "fieldId": "bimer_preco",
+              "fieldValue": "={{ $json.bimer_preco }}"
+            },
+            {
+              "fieldId": "variation_id",
+              "fieldValue": "={{ $json.variation_id }}"
+            }
+          ]
+        }
+      },
+      "id": "3474e579-f247-4d55-81ec-f6d53f4c595e",
+      "name": "Salva dados1",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        820
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "YL6AkhgTrmpkF8IB",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "b343d882-a8e3-482d-b2ee-cbdf6c7d30fe",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        420,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "id": "2499758a-6b3c-4156-b57d-b715eb5ab204",
+      "name": "Limit3",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        120
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "edc03823-391c-41c4-806e-6bdccaa41ce5",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1100,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 50
+      },
+      "id": "0dd8a64b-ffc8-4324-be6f-aaf724f90217",
+      "name": "Limit",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        820,
+        620
+      ]
+    }
+  ],
+  "connections": {
+    "Consulta Produtos": {
+      "main": [
+        [
+          {
+            "node": "IDs de produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me1": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Consulta Produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs Supabase": {
+      "main": [
+        [
+          {
+            "node": "Ajuste IDs Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajuste IDs Produtos": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Ajuste IDs Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IDs nao cadastrados": {
+      "main": [
+        [
+          {
+            "node": "Limit3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs não cadastrados": {
+      "main": [
+        [
+          {
+            "node": "Salva dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta por ID Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajusta Dados": {
+      "main": [
+        [
+          {
+            "node": "Replace Me1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva dados": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IDs de produtos": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Ajuste IDs Produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs não cadastrados1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta por ID Tray1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta por ID Tray1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me2": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Replace Me2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Salva dados1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Replace Me3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs Variacoes Supabase": {
+      "main": [
+        [
+          {
+            "node": "Ajuste IDs Variacoes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajuste IDs Variacoes": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IDs nao cadastrados1": {
+      "main": [
+        [
+          {
+            "node": "Limit2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificador Bimer": {
+      "main": [
+        [
+          {
+            "node": "Estoque Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estoque Bimer": {
+      "main": [
+        [
+          {
+            "node": "Preco Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token": {
+      "main": [
+        [
+          {
+            "node": "Identificador Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preco Bimer": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificador Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Estoque Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estoque Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Preco Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token1": {
+      "main": [
+        [
+          {
+            "node": "Identificador Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preco Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta por ID Tray": {
+      "main": [
+        [
+          {
+            "node": "Token1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Ajusta Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva dados1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "IDs nao cadastrados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs Supabase",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit3": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "IDs nao cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "28d6e12b-9be5-438b-8c2f-c54115ac9568",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-11-18T20:15:44.060Z",
+      "updatedAt": "2024-11-18T20:15:44.060Z",
+      "role": "workflow:owner",
+      "workflowId": "29Iscay1b113aJ82",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
