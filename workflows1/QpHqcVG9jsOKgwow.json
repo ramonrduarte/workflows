@@ -1,0 +1,624 @@
+{
+  "createdAt": "2025-05-24T12:18:25.763Z",
+  "updatedAt": "2025-06-02T11:59:49.793Z",
+  "id": "QpHqcVG9jsOKgwow",
+  "name": "CHAT",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "bc578d44-ae5c-4a85-bd5c-e6469b103d07",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        80
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "produtos",
+        "description": "Voce é um atendente de uma loja de ferragens, a Casa Adrofecha./[Voce é muito prestativo, tira todas as dúvidas do cliente usando somente o conteudodas tabelas que tem acesso. nõa usar informações de fora que não condizem com o sistema."
+      },
+      "id": "ac7eae29-b525-4c60-851d-1b357d610012",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "cc34b2bd-2b89-44c5-91be-d2db08b65cb3",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        420
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "49d16604-25ab-483b-809a-1420d6d64656",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        260
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "produtos_vector",
+          "mode": "list",
+          "cachedResultName": "produtos_vector"
+        },
+        "options": {}
+      },
+      "id": "fe38741e-a49e-4153-97e7-1fa8edeee27a",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        280
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "HeJdAW2wxf1JX0Ed",
+          "name": "SUPABASE"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Mensagem }}",
+        "options": {
+          "systemMessage": "=Você é um atendente da loja Casa Adrofecha, especializada em ferragens. Responda aos clientes de forma atenciosa, educada e breve. Ofereça links para os produtos apenas no formato https://site.com/produto, sem deixar URLs puras visíveis no texto para evitar previews indesejados no WhatsApp.\n\nUse marcadores ou negrito para destacar características técnicas. Nunca inicie ou finalize uma mensagem com um link, e evite enviar links em linhas sozinhas.\n\nNome do cliente: {{ $json['Nome da pessoa'] }}\nData atual: {{ $now }}\n\nUse apenas `*` (um asterisco de cada lado) para destacar trechos com negrito, **não use dois asteriscos**.\n\nNunca tente incorporar links (ex: [texto](link)). Sempre envie a URL pura (ex: https://site.com/produto), sem envolvê-la em texto.\n\nNunca finalize ou comece a mensagem com um link."
+        }
+      },
+      "id": "0cdb8e6b-7c7f-44e4-b4b1-2eec0e80ca56",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -840,
+        -140
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "33572272-6d06-4a3b-9f63-524bff94ec95",
+        "options": {}
+      },
+      "id": "f1212b62-57dc-4627-abe2-2ff95ef92e2a",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1300,
+        -140
+      ],
+      "webhookId": "33572272-6d06-4a3b-9f63-524bff94ec95"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b30f25d2-91ea-449f-a3d1-77258b791fe3",
+              "name": "Quem mandou",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "daabd70a-f816-4b3a-871c-815b9bc957fb",
+              "name": "Instancia",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "162cde37-2bb4-4925-b265-be6651a06541",
+              "name": "Mensagem",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b2caf8a7-cf61-40c9-9b54-fa1079208e0c",
+              "name": "id da mensagem",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "1628fed1-2243-4b83-98a6-f733ea516f4f",
+              "name": "Nome da pessoa",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1080,
+        -140
+      ],
+      "id": "2c24e6a8-a8ac-4c6e-886e-3048ef938f69",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json['Quem mandou'] }}",
+        "sessionTTL": 3600,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -760,
+        80
+      ],
+      "id": "ffd7bfc8-a18e-4069-97b6-6dc2b0d88395",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Dados').item.json['Quem mandou'] }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "778d81b8-5f82-4551-84fd-714cef5f2847",
+      "name": "Resposta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -480
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const resposta = $json.output;\nconst numero = $json.numero;\n\nconst linhas = resposta.split('\\n');\n\n// Listas para construir os blocos\nconst itens = [];\nlet blocoTexto = [];\n\nfor (const linha of linhas) {\n  const textoLimpo = linha.trim();\n  if (textoLimpo === '') continue;\n\n  // Corrigir negrito ** -> *\n  let textoCorrigido = textoLimpo.replace(/\\*\\*(.*?)\\*\\*/g, '*$1*');\n\n  // Remover links com markdown -> deixa apenas o link\n  textoCorrigido = textoCorrigido.replace(/\\[.*?\\]\\((https?:\\/\\/[^\\s)]+)\\)/g, '$1');\n\n  // Verifica se é uma imagem Markdown\n  const markdownImagem = /\\!\\[.*?\\]\\((https?:\\/\\/[^\\s]+?\\.(jpg|jpeg|png|gif))\\)/i.exec(textoCorrigido);\n\n  // Verifica se é link direto de imagem\n  const linkImagem = /(https?:\\/\\/[^\\s]+?\\.(jpg|jpeg|png|gif))/i.exec(textoCorrigido);\n\n  if (markdownImagem || linkImagem) {\n    if (blocoTexto.length) {\n      itens.push({\n        tipo: 'texto',\n        conteudo: blocoTexto.join('\\n'),\n        numero\n      });\n      blocoTexto = [];\n    }\n\n    itens.push({\n      tipo: 'imagem',\n      conteudo: markdownImagem ? markdownImagem[1] : linkImagem[0],\n      numero\n    });\n  } else {\n    blocoTexto.push(textoCorrigido);\n  }\n}\n\nif (blocoTexto.length) {\n  itens.push({\n    tipo: 'texto',\n    conteudo: blocoTexto.join('\\n'),\n    numero\n  });\n}\n\nreturn itens.map(item => ({ json: item }));\n"
+      },
+      "name": "MCP - Pensar",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -140
+      ],
+      "id": "0514846c-1e9c-48ed-a36e-44f8b52cf98d"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.tipo }}",
+              "value2": "texto"
+            }
+          ]
+        }
+      },
+      "id": "224c531a-cc27-4587-a69c-2ea41242181e",
+      "name": "IF - É Texto?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "number",
+              "value": "={{ $('Dados').item.json['Quem mandou'] }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.conteudo }}"
+            },
+            {
+              "name": "linkPreview",
+              "value": "={{ false }}"
+            }
+          ]
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        }
+      },
+      "name": "Enviar Texto",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -180
+      ],
+      "id": "5f15d4e4-4bec-4044-b659-699d6adb69c3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -120,
+        -140
+      ],
+      "id": "124e77af-b53e-48ab-aa48-f171967ab233",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        820,
+        20
+      ],
+      "id": "9cc56796-1bd9-42d6-b61d-466e6094c9f0"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendMedia/Bots",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "number",
+              "value": "={{ $('Dados').item.json['Quem mandou'] }}"
+            },
+            {
+              "name": "mediatype",
+              "value": "image"
+            },
+            {
+              "name": "mimetype",
+              "value": "image/png"
+            },
+            {
+              "name": "media",
+              "value": "={{ $json.conteudo }}"
+            }
+          ]
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        }
+      },
+      "name": "Enviar Imagens",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        500,
+        40
+      ],
+      "id": "392fa853-bfb1-4787-a7c1-82c2e13f0cdf"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"number\": \"{{ $('Dados').item.json['Quem mandou'] }}\",\n  \"text\": \"{{ $json.conteudo }}\",\n  \"linkPreview\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        -460
+      ],
+      "id": "cba8a31b-6098-418b-b18f-c45df8ba1a6e",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "MCP - Pensar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP - Pensar": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - É Texto?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Imagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "IF - É Texto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Texto": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Imagens": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2425b0ec-65d0-417c-b175-4c06a7c57ad0",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-05-24T12:18:25.763Z",
+      "updatedAt": "2025-05-24T12:18:25.763Z",
+      "role": "workflow:owner",
+      "workflowId": "QpHqcVG9jsOKgwow",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
