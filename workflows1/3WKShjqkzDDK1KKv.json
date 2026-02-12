@@ -1,0 +1,302 @@
+{
+  "createdAt": "2024-10-23T13:59:48.822Z",
+  "updatedAt": "2024-11-18T17:46:15.061Z",
+  "id": "3WKShjqkzDDK1KKv",
+  "name": "Converter imagem (BIMER)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "options": {}
+      },
+      "id": "cec450d5-2246-467d-8cd3-817c1afcff32",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['URL ADROFECHA'] }}/api/produtos?codigo={{ $('Salvar Token, Codigo e URL').item.json[\"codigo produto\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"access_token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "769cfe00-0974-4e94-90da-b23085aee7b9",
+      "name": "Consulta Codigo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "891e0d0e-edae-4c74-9fa2-925bdb8e423d",
+              "name": "acess token",
+              "value": "={{ $('Token').item.json[\"access_token\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6cd8dc5b-b84d-4ae4-9f98-60e6928a5bf5",
+              "name": "codigo produto",
+              "value": "={{ $('Webhook').item.json[\"body\"][\"codigo do informado\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6405008f-9ba5-4e7f-8c56-6f85b9e41790",
+              "name": "URL ADROFECHA",
+              "value": "=http://177.204.252.25:8084",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "82384546-b950-410c-b0d2-d643fb3fe65f",
+      "name": "Salvar Token, Codigo e URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "329a26e6-31ae-4269-9b98-f54a25009bb4",
+              "name": "Descrição",
+              "value": "={{ $('Consulta Codigo').item.json[\"ListaObjetos\"][0][\"Nome\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1cb59780-d90f-4b10-8fc0-0020cc0c43be",
+              "name": "Identificador",
+              "value": "={{ $('Consulta Codigo').item.json[\"ListaObjetos\"][0][\"Identificador\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "290919f9-6f44-4977-971f-20d5c6e34949",
+      "name": "Salvar Descrição, Identificador",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"c6f8e33ee8560aa56f04a8f8cc8d75ee\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n\n}",
+        "options": {}
+      },
+      "id": "05001163-b1d7-4417-80ae-7ca98e47dae9",
+      "name": "Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Salvar Token, Codigo e URL').item.json[\"URL ADROFECHA\"] }}/api/produtos/{{ $('Salvar Descrição, Identificador').item.json[\"Identificador\"] }}/imagem",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"acess token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0d26aabc-eb43-4341-b615-abd84d0866ed",
+      "name": "Consulta imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "=ListaObjetos[0].Imagem.Conteudo",
+        "options": {}
+      },
+      "id": "27a293ab-1d4e-47a2-a9ad-0f67c9dc7731",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1340,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "imagem",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7863f327-7aac-44bd-beeb-2db245628d8e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        420,
+        300
+      ],
+      "webhookId": "b2293cb2-007e-41be-ac17-0f1ec8206538"
+    }
+  ],
+  "connections": {
+    "Consulta Codigo": {
+      "main": [
+        [
+          {
+            "node": "Salvar Descrição, Identificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Token, Codigo e URL": {
+      "main": [
+        [
+          {
+            "node": "Consulta Codigo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Descrição, Identificador": {
+      "main": [
+        [
+          {
+            "node": "Consulta imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token": {
+      "main": [
+        [
+          {
+            "node": "Salvar Token, Codigo e URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta imagem": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a7002132-6f7c-4649-a075-72d29be102cc",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-10-23T13:59:48.822Z",
+      "updatedAt": "2024-10-23T13:59:48.822Z",
+      "role": "workflow:owner",
+      "workflowId": "3WKShjqkzDDK1KKv",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
