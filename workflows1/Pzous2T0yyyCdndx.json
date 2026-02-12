@@ -1,0 +1,539 @@
+{
+  "createdAt": "2025-05-22T12:57:34.219Z",
+  "updatedAt": "2025-06-23T11:23:03.932Z",
+  "id": "Pzous2T0yyyCdndx",
+  "name": "Tratamento de Imagem",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "8882bf0b-267e-43b5-96b5-90a542563333",
+        "formTitle": "Go 2 Market",
+        "formDescription": "Envie uma foto do produto e uma descrição e entraremos em contato com você com materiais de marketing profissionais.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "data",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Título do produto",
+              "placeholder": "Toothpaste",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Descrição do produto",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "name@example.com",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8f4b8827-5c84-4dbc-8022-2cfa7fead143",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        -20,
+        440
+      ],
+      "webhookId": "8882bf0b-267e-43b5-96b5-90a542563333"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Product: {{ $('n8n Form Trigger').item.json['Título do produto'] }}\nDescription: {{ $('n8n Form Trigger').item.json['Descrição do produto'] }}",
+        "options": {
+          "systemMessage": "#Overview\nYou are a world-class marketing strategist and an expert text-to-image prompt engineer specializiing in creating hyper-realist, high-quality product photography prompts for AI image generation models.\n\n## Your Objective\nWhen given a product description, your task is to craft a detailed, professional prompt that results in a hyper-realistic, clean, and visually stunning product image suitable for marketing material advertising campagns, or e-commerce platforms.\n\n## Key Requirements\n- Focus on Hyper-realistic, professional studio photography\n- Mantain a clean, minimalistic and elegant visual style \n- Highlight the product as the man subject with sharp detail and perfect lighting\n- Use backgrounds that complement but do not overpower the product (e.g, soft gradient, light-colored, or puew white)\n- Include proffessional lighting details such as \"softbox lighting\", \"studio lights\", or \"natural soft shadows\"\n- Emphasize realism, texture, and color accuracy\n- Mantain a high-end, premium look and feel\n- If applicable suggest a subtle setting that enchances the products story (e.g a luxury kitchen counter for a high-end blender)\n\n## Output Format\n- While a single text-to-image prompt optimized for a professional AI Image model\n- Be direct and descriptive without using excessive words\n- Avoid unnecessary repetition or adjectives that do not enchance the image quality\n- Ensure the prompt is complete and ready for direct input into an AI model\n\n## Tone\nProfessional, precise, clean, and optimized for maximum realism and marketing impact\n\n#Example Input\n\"A premium wireless Bluetooth speaker in matte black, cylindrical shape, modern design\"\n\n#Example Output\n\"Hyper-realistic product photo of a premium matte black wireless Bluetooth speaker with a cylindrical modern design, centered on a clean white studio background, softbox lighting with natural shadows, sharp focus on texture and material, minimalistic, professional advertising shot\"\n\nImage to Video Prompt\n\nCreate a highly professional marketing video from the provided product photo. Simulate a smooth, realistic 3D turntable rotation aroud the product, as if the product is slowly rotating in place. The movement should be continuos, slow, and elegant -- no sudden pans, jerks, or camera cuts. Always keep the entire product fully in frame, centered, and clearly visible at all times. Avoid zooming in or cropping. Focus on a premium, clean, and modern aesthetic that feels suitablefor commercial marketing materials. No flashy effects, trasitions, or overlay -- only  a subtle, realistic 3D rotation that highlights the product in the most polished way possible."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        300,
+        440
+      ],
+      "id": "c244ee88-3e69-446e-923d-e9502320071e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        660
+      ],
+      "id": "634efe2e-1bd9-4833-99fb-8a4caa55d174",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1060,
+        440
+      ],
+      "id": "a9329150-4020-4ec6-9df7-42f9397642e5",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        440
+      ],
+      "id": "d551c40e-f5cf-444c-93e9-3566a2e68543",
+      "name": "IMGBB",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "RkQOpiFJpqDoYLEX",
+          "name": "IMGBB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        140,
+        440
+      ],
+      "id": "54075654-a4e7-480a-9d48-216acb54b385",
+      "name": "IMGBB1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "RkQOpiFJpqDoYLEX",
+          "name": "IMGBB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.dev.runwayml.com/v1/image_to_video",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Runway-Version",
+              "value": "2024-11-06"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "promptImage",
+              "value": "={{ $json.data.url }}"
+            },
+            {
+              "name": "model",
+              "value": "gen4_turbo"
+            },
+            {
+              "name": "promptText",
+              "value": "Image to Video Prompt  Create a highly professional marketing video from the provided product photo. Simulate a smooth, realistic 3D turntable rotation aroud the product, as if the product is slowly rotating in place. The movement should be continuos, slow, and elegant -- no sudden pans, jerks, or camera cuts. Always keep the entire product fully in frame, centered, and clearly visible at all times. Avoid zooming in or cropping. Focus on a premium, clean, and modern aesthetic that feels suitablefor commercial marketing materials. No flashy effects, trasitions, or overlay -- only  a subtle, realistic 3D rotation that highlights the product in the most polished way possible."
+            },
+            {
+              "name": "duration",
+              "value": "10"
+            },
+            {
+              "name": "ratio",
+              "value": "960:960"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        660
+      ],
+      "id": "1bd518bc-9c53-4e2f-a192-05629869e7a7",
+      "name": "Gera Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "vrFBXdWt4pEXiAq1",
+          "name": "Runway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.dev.runwayml.com/v1/tasks/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ YOUR API KEY }}"
+            },
+            {
+              "name": "X-Runway-Version",
+              "value": "2024-11-06"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        660
+      ],
+      "id": "7a65dea0-1881-424a-a930-296be0447175",
+      "name": "Pega Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "vrFBXdWt4pEXiAq1",
+          "name": "Runway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0860325c-07cb-4583-b14d-5b32748af526",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "RUNNING",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        660
+      ],
+      "id": "3e79015c-e164-4c85-b7f2-f3cfc88c80f9",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1400,
+        780
+      ],
+      "id": "8299c608-4b84-4836-92e4-cd998acd5d82",
+      "name": "Wait",
+      "webhookId": "84f4ec54-8bc2-4d26-9a30-fc82d64330d2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('IMGBB1').item.json.data.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        440
+      ],
+      "id": "42118224-b028-4ce8-b32d-dd7dbf57b5fb",
+      "name": "Baixa Imagem"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/edits",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "=data"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "model",
+              "value": "gpt-image-1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        440
+      ],
+      "id": "1889683f-89c5-424f-8497-1776fb109030",
+      "name": "Gera Imagem",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wL2QaLRJw0w3bZYg",
+          "name": "OpenAi"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "IMGBB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Baixa Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "IMGBB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IMGBB1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IMGBB": {
+      "main": [
+        [
+          {
+            "node": "Gera Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gera Video": {
+      "main": [
+        [
+          {
+            "node": "Pega Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Video": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Pega Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixa Imagem": {
+      "main": [
+        [
+          {
+            "node": "Gera Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gera Imagem": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "ee8769e3-6758-4b78-ac59-7ab23e519c88",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-05-22T12:57:34.219Z",
+      "updatedAt": "2025-05-22T12:57:34.219Z",
+      "role": "workflow:owner",
+      "workflowId": "Pzous2T0yyyCdndx",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
