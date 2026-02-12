@@ -1,0 +1,371 @@
+{
+  "createdAt": "2024-12-14T18:32:23.166Z",
+  "updatedAt": "2024-12-16T11:41:56.979Z",
+  "id": "X7vLjYyBiK1qs26o",
+  "name": "Consulta Ultima nota",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "http://177.204.252.25:8084/api/documentos/emitentes",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "codigoEmpresa",
+              "value": "1"
+            },
+            {
+              "name": "dataInicial",
+              "value": "={{ $('Data').item.json.Data.toDateTime().format('yyyy-MM-dd') }}"
+            },
+            {
+              "name": "dataFinal",
+              "value": "={{ $('Data').item.json.Data.toDateTime().format('yyyy-MM-dd') }}"
+            },
+            {
+              "name": "limite",
+              "value": "25"
+            },
+            {
+              "name": "pagina",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "pagina",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.Paginacao.Pagina >= $response.Paginacao.TotalPagina }}",
+              "limitPagesFetched": true,
+              "maxRequests": 20
+            }
+          }
+        }
+      },
+      "id": "11ae2d2b-d0fc-48fb-9d72-aa6c5020e6a0",
+      "name": "Consulta Numero Nota",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "ListaObjetos",
+        "options": {}
+      },
+      "id": "be9b15f5-7aa4-4327-b561-cfb54da444cd",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        660,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7aecae15-9bc9-42e2-aeb8-76a51826a15a",
+              "leftValue": "={{ $json.TipoDocumento }}",
+              "rightValue": "F",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1ab646d6-b9ed-4b23-b684-8ca73c6708e5",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f37c2256-4cf2-491d-b957-a29dbd50ad4c",
+              "name": "numeros",
+              "value": "={{ $json.Numero }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e609448d-2362-4fc9-9dc1-ce95b16cbf1b",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obter os dados do nó anterior\nconst items = $input.all();\n\n// Extrair os valores numéricos da propriedade \"numeros\"\nconst numeros = items.map(item => parseInt(item.json.numeros, 10));\n\n// Encontrar o maior valor\nconst maiorValor = Math.max(...numeros);\n\n// Retornar o maior valor como resposta\nreturn [\n  {\n    json: {\n      maiorValor\n    }\n  }\n];\n"
+      },
+      "id": "c6f266f0-24f7-49f3-9a6b-7c87e6b7c611",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        240
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d5c832b7-b5b7-4939-b582-25ebc86ea779",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "subtractFromDate",
+        "magnitude": "={{ $json.Data }}",
+        "duration": 10,
+        "outputFieldName": "DataComeco",
+        "options": {}
+      },
+      "id": "146b49c8-881a-4cb7-9ae8-6cce9ca634ec",
+      "name": "DataComeco",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "outputFieldName": "Data",
+        "options": {}
+      },
+      "id": "85314380-b67c-4a9c-bde2-7f3f99986b65",
+      "name": "Data",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        100,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "client_id",
+              "value": "IntegracaoBimer.js"
+            },
+            {
+              "name": "grant_type",
+              "value": "password"
+            },
+            {
+              "name": "username",
+              "value": "bimerapi"
+            },
+            {
+              "name": "nonce",
+              "value": "123"
+            },
+            {
+              "name": "password",
+              "value": "c6f8e33ee8560aa56f04a8f8cc8d75ee"
+            },
+            {
+              "name": "client_secret",
+              "value": "5738da543c4a78db569b43944caae630"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "3d2bc8d5-8daa-4be0-965c-5a6cd431fac6",
+      "name": "Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Consulta Numero Nota": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataComeco": {
+      "main": [
+        [
+          {
+            "node": "Consulta Numero Nota",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "DataComeco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "33c3c82d-897b-4092-92d6-f2b5e1350905",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-14T18:32:23.166Z",
+      "updatedAt": "2024-12-14T18:32:23.166Z",
+      "role": "workflow:owner",
+      "workflowId": "X7vLjYyBiK1qs26o",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
