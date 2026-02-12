@@ -1,0 +1,392 @@
+{
+  "createdAt": "2025-01-06T12:47:39.729Z",
+  "updatedAt": "2025-01-06T12:48:01.987Z",
+  "id": "6y0IEk22nyOePfkd",
+  "name": "CustomerLocation_export",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "231b6f6a-7270-46bf-a735-740bff7815d1",
+              "name": "Google_api_key",
+              "value": "---COLOQUE SUA KEY ----",
+              "type": "string"
+            },
+            {
+              "id": "99095f8d-0e63-40f6-b212-d293131be505",
+              "name": "base_location",
+              "value": "-5.08921,-42.8016",
+              "type": "string"
+            },
+            {
+              "id": "a37b209f-db4f-410a-8a61-36dea887f617",
+              "name": "city",
+              "value": "Teresina - Piauí",
+              "type": "string"
+            },
+            {
+              "id": "6a509ec8-8a08-4ed4-9e5e-aa7fa6a20822",
+              "name": "address",
+              "value": "={{ $json.query?.address }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        320
+      ],
+      "id": "5763fb4c-887f-44fb-9766-d1bd3a99651d",
+      "name": "Config"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        320
+      ],
+      "id": "647c3289-d094-4a00-9f47-3df89e4d360a",
+      "name": "Start"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': $('SetResponse').last()?.json?.response\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        240
+      ],
+      "id": "b91d3763-7233-4254-942f-46b99a5087df",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nconst items = $input.all()[0]?.json?.results || []\n\n//console.log('items->',items) \n\nitems.forEach(item => {\n\n//console.log('item->',item) \n  \nif (item.geometry && item.geometry.location) {\n  \n            const {lat, lng} = item.geometry.location;\n            const formatted_address = item?.formatted_address\n\n            // Adiciona o resultado formatado ao array de saída\n            output.push({\n                json: {lat:lat, long:lng,formatted_address} // Cada item contém um objeto `json`\n            });\n        }\n})\n\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        500
+      ],
+      "id": "8995e1e4-f307-42d5-9337-7140a0c146c7",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/geocode/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $json.Google_api_key }}"
+            },
+            {
+              "name": "address",
+              "value": "={{ $json.address }}+'-'+{{ $json.city }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        140
+      ],
+      "id": "5efbf8ef-0467-4253-bf74-e7eefe35fef2",
+      "name": "GoogleMaps_Address-HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2e7ae981-d9de-43f9-a35e-a2be8d2a5c10",
+              "leftValue": "={{ $json.lat }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "18aca563-2174-498e-8629-ad4e86f7fc2e",
+              "leftValue": "={{ $json.long }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        500
+      ],
+      "id": "86494d2c-df34-4ba7-9b1a-c272b9ea140e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/distancematrix/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{$('Config').item.json.Google_api_key }}"
+            },
+            {
+              "name": "destinations",
+              "value": "={{ $json.lat }},{{ $json.long }}"
+            },
+            {
+              "name": "origins",
+              "value": "={{ $('Config').item.json.base_location }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        160
+      ],
+      "id": "47d666aa-bf43-4f27-bf24-4fe141c92678",
+      "name": "Google_Distance_Matrix"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e6b65215-2ba3-4f14-b1c1-6e8a900fcf11",
+              "name": "response",
+              "value": "=Endereço econtrado:\n{{ $json.destination_addresses[0] }}\n\nDistância até o estabelecimento (em Km)):\n{{ $json.rows[0].elements[0].distance.text }}\n\nCoordenadas:\nlatitude: {{ $('Code1').item.json.lat }}\nlongitude: {{ $('Code1').item.json.long }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        160
+      ],
+      "id": "d95409db-90cb-4298-adeb-b6749f2cddba",
+      "name": "SetResponse"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e6b65215-2ba3-4f14-b1c1-6e8a900fcf11",
+              "name": "response",
+              "value": "=Endereço  econtrado:\n\n- Endereço desconhecido\n\nDistância até o estabelecimento (em Km)):\n- Não é possível determinar a distância\n\nErro:\n\nCoordenadas geográficas não localizadas para o endereço informado.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        500
+      ],
+      "id": "6bef3f6b-2f10-4f1b-a031-d8728708d39f",
+      "name": "SetResponse1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': $('SetResponse').last()?.json?.response\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        380
+      ],
+      "id": "254befe0-ec87-4bba-8e31-14441052a02c",
+      "name": "Code2"
+    }
+  ],
+  "connections": {
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "GoogleMaps_Address-HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleMaps_Address-HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google_Distance_Matrix",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SetResponse1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google_Distance_Matrix": {
+      "main": [
+        [
+          {
+            "node": "SetResponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetResponse": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetResponse1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "query": {
+            "address": "Av. Raul Lopes, 880, Condomínio Poty Premier, Sala 1101, Centro"
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "3cfd7241-09d4-4960-885f-2931d537ae0f",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-01-06T12:47:28.226Z",
+      "updatedAt": "2025-01-06T12:47:28.226Z",
+      "id": "lWDlEo4vLqFeOPYm",
+      "name": "delivery"
+    }
+  ],
+  "shared": [
+    {
+      "createdAt": "2025-01-06T12:47:39.729Z",
+      "updatedAt": "2025-01-06T12:47:39.729Z",
+      "role": "workflow:owner",
+      "workflowId": "6y0IEk22nyOePfkd",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
