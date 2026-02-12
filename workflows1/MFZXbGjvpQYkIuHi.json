@@ -1,0 +1,203 @@
+{
+  "createdAt": "2025-01-06T12:49:59.950Z",
+  "updatedAt": "2025-01-06T12:49:59.950Z",
+  "id": "MFZXbGjvpQYkIuHi",
+  "name": "SendWhatsappInvoice_export",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.evolution_api_url }}/message/sendText/{{ $json.evolution_api_instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $json.evolution_api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.phone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "88616157-076c-40ad-be0e-50d02f4f181b",
+      "name": "Evolution API - HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "84c558d0-84db-4ca3-91e6-b1d2f7cee2a7",
+              "name": "evolution_api_url",
+              "value": "---COLOQUE URL KEY ----",
+              "type": "string"
+            },
+            {
+              "id": "6bd91ace-5be1-4488-b7a7-d6df4e248c0d",
+              "name": "evolution_api_instance",
+              "value": "---COLOQUE SUA INSTANCIA ----",
+              "type": "string"
+            },
+            {
+              "id": "57075094-e509-446e-8316-baa9a2833c85",
+              "name": "evolution_api_key",
+              "value": "---COLOQUE SUA KEY ----",
+              "type": "string"
+            },
+            {
+              "id": "8b85fccf-8060-435e-9dd5-fca0424d87f4",
+              "name": "phone",
+              "value": "5586981612061",
+              "type": "string"
+            },
+            {
+              "id": "c5c7188e-e8cc-481c-ab38-5ce0fa8d0aae",
+              "name": "text",
+              "value": "={{ $json.query.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        240
+      ],
+      "id": "cb1d8e5e-1f1f-4dc2-b2c4-685dd41706b9",
+      "name": "Config"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': \"Mensagem envia ao restaurante\"\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        360
+      ],
+      "id": "31c279d4-51f6-4e1f-a922-ca32ec621321",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        340,
+        360
+      ],
+      "id": "b5a174a7-b42b-42af-8548-614ab3c20afc",
+      "name": "Start"
+    }
+  ],
+  "connections": {
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Evolution API - HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API - HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "query": {
+            "message": "Cliente: André Alencar, 558681612061\nEndereço: Av. Raul Lopes, 880 - Jóquei, Teresina - PI, 64048-065, Brazil\nProdutos:\nPizza grande calabresa - R$ 34,90\nRefrigerante em lata (Coca-Cola) - R$ 5,90\nTotal: R$ 40,80"
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "463f7f3e-02cc-4152-aee0-f3f081c2cc58",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-01-06T12:47:28.226Z",
+      "updatedAt": "2025-01-06T12:47:28.226Z",
+      "id": "lWDlEo4vLqFeOPYm",
+      "name": "delivery"
+    }
+  ],
+  "shared": [
+    {
+      "createdAt": "2025-01-06T12:49:59.950Z",
+      "updatedAt": "2025-01-06T12:49:59.950Z",
+      "role": "workflow:owner",
+      "workflowId": "MFZXbGjvpQYkIuHi",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
