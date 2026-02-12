@@ -1,0 +1,752 @@
+{
+  "createdAt": "2025-02-18T13:59:28.014Z",
+  "updatedAt": "2025-02-18T14:03:14.424Z",
+  "id": "sbBp9dvLiKmlkjgG",
+  "name": "Produtos Sem Variacao",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "eec6059b-a73b-449c-8aab-04b54a0a4005",
+      "name": "Replace Me1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b5dae8a3-52a1-4f35-ac1d-53b8920028d4",
+      "name": "Consulta IDs não cadastrados",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        420,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/{{ $json.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Postgres').first().json.token_tray }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "588d56ec-1f74-4aa0-8d3a-76f6394d15b3",
+      "name": "Consulta por ID Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "554c523f-7fe6-4941-a510-79c973e84841",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "abdd62e8-d6e1-4178-8ec8-6cdbc33e6ea5",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/01/produtos/{{ $('Identificador Bimer1').item.json.ListaObjetos[0].Identificador }}/estoque?identificadorSetor={{ $('Postgres').first().json.id_setor }}&dataReferencia={{ $now.toFormat('yyyy-MM-dd') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Postgres').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "da73387f-c737-4629-ad17-2b9977fd77d9",
+      "name": "Estoque Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/empresas/1/produtos/{{ $('Identificador Bimer1').first().json.ListaObjetos[0].Identificador }}/precos/{{ $('Postgres').first().json.id_preco }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Postgres').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0bcf10e7-6a39-4107-b9dc-7b25ac5a9bc8",
+      "name": "Preco Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08a8d739-f2b2-45db-8280-2e4d94aa6606",
+              "name": "id_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f3cf847d-7026-4878-b05d-ba1568026e7d",
+              "name": "referencia",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "99bad68f-8116-41c0-8b38-4864e060a1d1",
+              "name": "estoque_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.stock }}",
+              "type": "number"
+            },
+            {
+              "id": "420e19e4-7e8f-4328-a1c3-edcf171e8e57",
+              "name": "preco_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.price }}",
+              "type": "number"
+            },
+            {
+              "id": "0c3bb03f-2a7e-4aec-913c-5d94cbdc8fb8",
+              "name": "has_variation",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.has_variation }}",
+              "type": "string"
+            },
+            {
+              "id": "3e9e7341-d873-4dfc-81db-84c394859f05",
+              "name": "estoque_bimer",
+              "value": "={{ Math.floor($('Estoque Bimer1').first().json.ListaObjetos[0].QuantidadeDisponivel * 100) / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "734775ec-cb3b-441d-9ad7-f7bc1c713e5a",
+              "name": "preco_bimer",
+              "value": "={{ $('Preco Bimer1').first().json.ListaObjetos[0].Valor }}",
+              "type": "number"
+            },
+            {
+              "id": "92a1b533-fded-4eb8-89a8-2952bd41eb6b",
+              "name": "id_bimer",
+              "value": "={{ $('Identificador Bimer1').first().json.ListaObjetos[0].Identificador }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b032ef70-4191-4513-8911-3a24749266e4",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13d83c86-6ce6-4d51-b3f5-d033922367a4",
+              "leftValue": "={{ $json.preco_tray }}",
+              "rightValue": "={{ $json.preco_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "8b1a8d0b-46d0-4d09-a683-5618ec9b8929",
+              "leftValue": "={{ $json.estoque_tray }}",
+              "rightValue": "={{ $json.estoque_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "9c10d0b2-df0a-484f-9b18-17d20aca97e9",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1640,
+        440
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "285bb460-c19b-44da-a207-4aaa2a7c6a7b",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2080,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f877395-78a3-4b04-b162-affc17fc6680",
+              "name": "atualizar",
+              "value": "sim",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "443f1acb-7e35-455e-bd35-e1b99b71bb42",
+      "name": "Atualiza (Sim)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1880,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "849a67a5-acf6-49c8-a594-31295456a7bb",
+              "name": "atualizar",
+              "value": "nao",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "fcfd5189-4773-493b-ad98-c5411450ffbf",
+      "name": "Atualizar (Nao)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1880,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13fbebad-6fb6-4057-ad5c-0d5a3cde5c7d",
+              "leftValue": "={{ $json.atualizar }}",
+              "rightValue": "sim",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6f3e503a-6900-4269-9952-a9c945a3af59",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        760,
+        160
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "90b06e50-82a1-499f-90de-65e9a7a09166",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f1321fa8-f76e-4518-9d0c-71cd7b90d8aa",
+      "name": "Edita Itens na Tray",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        980,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/{{ $json.id_tray }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Tokens').first().json.token_tray }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "stock",
+              "value": "={{ $json.estoque_bimer }}"
+            },
+            {
+              "name": "price",
+              "value": "={{ $json.preco_bimer }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "8c398d77-2d23-4630-b4be-7a665d687190",
+      "name": "Atualiza dados por ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/produtos?codigo={{ $('Consulta por ID Tray').item.json.Product.reference }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Postgres').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5c9998fb-f258-4f92-9015-ecb1c826f73b",
+      "name": "Identificador Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "Atualização de produtos Pronta"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "961cf477-f9d4-4834-9cb3-0286e79327b7",
+      "name": "Mensagem Termino de Tarefa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "qrknPs3tMP1aGIce",
+          "mode": "list",
+          "cachedResultName": "TOKEN BIMER"
+        },
+        "options": {}
+      },
+      "id": "f5e0e784-929e-445e-8aca-ce7981f41bcf",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "krpiZcfhytKM8iPv",
+          "mode": "list",
+          "cachedResultName": "TOKEN TRAY"
+        },
+        "options": {}
+      },
+      "id": "288ff141-2c54-429f-9eff-e0966a9ea9fb",
+      "name": "Execute Workflow1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        200
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "16980b7f-eaf1-48e2-834b-adfd26d6712d",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "Replace Me1": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs não cadastrados": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta por ID Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta por ID Tray": {
+      "main": [
+        [
+          {
+            "node": "Identificador Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estoque Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Preco Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preco Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza (Sim)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar (Nao)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Replace Me1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza (Sim)": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar (Nao)": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens na Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens na Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita Itens na Tray": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Termino de Tarefa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza dados por ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza dados por ID": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificador Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Estoque Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "bf0fb530-e5af-4aba-b077-71beb46c094e",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-02-18T13:59:28.014Z",
+      "updatedAt": "2025-02-18T13:59:28.014Z",
+      "role": "workflow:owner",
+      "workflowId": "sbBp9dvLiKmlkjgG",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
