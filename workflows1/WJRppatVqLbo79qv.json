@@ -1,0 +1,2193 @@
+{
+  "createdAt": "2025-06-06T13:22:01.559Z",
+  "updatedAt": "2025-06-09T20:25:53.309Z",
+  "id": "WJRppatVqLbo79qv",
+  "name": "AGENTE SDR",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# ✨ Fluxo de Conversação do Agente (Envio e Reset de Mensagens)\n\nEste fluxo recebe as mensagens agregadas do usuário, injeta o histórico de conversa em memória Redis, envia o conteúdo para o agente LangChain (GPT-4o-mini) com prompt e contexto, captura a resposta gerada, publica-a de volta no Chatwoot e limpa o buffer de mensagens no Redis.\n\n1. 💬 **contentMesssage**  \n   - Atribui a variável `content` com todas as mensagens agregadas (`$('messageAgregated').item.json.messageUser`).\n2. 🧠 **memoryConversation**  \n   - Carrega ou inicializa a memória da conversa em Redis, usando `sessionKey` customizado (TTL de 900 s) para manter o contexto.\n3. 🤖 **modelConversation**  \n   - Seleciona o modelo **gpt-4o-mini** para processar a mensagem no agente.\n4. 🛠 **agentConversation**  \n   - Orquestra a chamada ao agente LangChain: injeta `content`, `memory` e `model`, aplica o prompt definido (regras de funil, tom e formato de saída) e gera o campo `output`.\n5. ✍️ **setOutput**  \n   - Extrai a resposta do agente (`$json.output`) para a variável `output`.\n6. 🌐 **sendChatwootMessage**  \n   - Envia via HTTP POST a resposta ao Chatwoot, em `/api/v1/accounts/:account_id/conversations/:conversation_id/messages` com `message_type=outgoing`.\n7. 🧹 **resetMessageAgregated**  \n   - Deleta a key `inputMessage-[conversation_id]` no Redis, reiniciando o buffer de mensagens para a próxima iteração.\n8. 🏁 **endConversation**  \n   - Encerra o envio da resposta.\n",
+        "height": 1020,
+        "width": 1140,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2280,
+        1440
+      ],
+      "typeVersion": 1,
+      "id": "ebf2633e-5984-4c7a-8311-f46ad385d8f9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# 🔄 Atualiza dados Baserow\n\nEste fluxo busca um lead no Baserow com base no `conversation_id`, verifica se já existe na tabela, cria um novo registro caso não seja encontrado e, por fim, mescla o objeto de lead resultante para uso nos próximos passos.\n\n1. 🔍 **getBaserowLead**  \n   - Consulta a tabela do Baserow (databaseId 35889, tableId 529224) filtrando pelo campo de `conversation_id` (`field 4405423`) e retorna, no máximo, um registro.\n2. 🤔 **testExist**  \n   - Avalia se o array retornado por **getBaserowLead** está vazio.  \n   - **true** → não encontrou nenhum lead (payload vazio).  \n   - **false** → já existe um lead com esse `conversation_id`.\n3. ➕ **createBaserowLead**  \n   - Quando **testExist** for **true**, cria um novo registro na mesma tabela definindo o campo `4405423` como o `conversation_id` recebido.\n4. 🔗 **appendLead**  \n   - Mescla a saída de **createBaserowLead** (ramo “true”) ou de **getBaserowLead** (ramo “false”) e encaminha o objeto final adiante no fluxo.\n",
+        "height": 760,
+        "width": 1140,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2280,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "5d3d085e-c2bd-410a-8262-7e6afc8ab703",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=inputMessage-{{ $('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id }}",
+        "value": "={{ \n  ($json.messageUser || '') \n  + ($json.messageUser ? '\\n' : '') \n  + $('webhookDataChatwoot').item.json.body.conversation.messages[0].content \n}}",
+        "keyType": "string"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        2080
+      ],
+      "id": "957b929e-11f1-4ba3-9196-5b8b91c428d1",
+      "name": "messageInsert",
+      "notesInFlow": true,
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      },
+      "notes": "- insere mensagens na key (inputMessage-conversationid) de forma incremental."
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ String($('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id) }}",
+        "value": "={{ $json.currentDate }}",
+        "keyType": "string",
+        "expire": true,
+        "ttl": 600
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        2080
+      ],
+      "id": "4c932bca-60eb-4803-99e9-80adf9bf1dc1",
+      "name": "setCurrentDate",
+      "notesInFlow": true,
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      },
+      "notes": "- Insere a data corrente deste fluxo como valor da chave que será o 'conversationid' do chatwoot.\n\n- Deste modo não há problema o tipo de canal de entrada se é whatsapp, Instagram ou outros."
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "currentDate",
+        "key": "={{ String($('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id) }}",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        2280
+      ],
+      "id": "0e95c66f-df42-4851-83c1-da6ea83e2d2a",
+      "name": "getFutureDate",
+      "notesInFlow": true,
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      },
+      "notes": "Retorna a data futura da key. \n\nSim ela pode ser futura pois durante o WAIT que está configurando antes desse node, o cliente pode ter enviado outra mensagem durante este período de espera"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messageUser",
+        "key": "=inputMessage-{{ $('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id }}",
+        "keyType": "string",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        2080
+      ],
+      "id": "9129df93-8111-4603-b5ea-197293f9288e",
+      "name": "getMessage",
+      "notesInFlow": true,
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      },
+      "notes": "- Verifica se há mensagens do cliente na chave (Key)\n- objetivo de pedir esse GET é para incrementar novas mensagens na mesma chave sem perder as antigas."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "b50066ef-17e2-4cb5-8447-f3c3f4693521",
+              "leftValue": "={{ $('setCurrentDate').item.json.currentDate }}",
+              "rightValue": "={{ $json.currentDate }}\n",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9b091705-eb84-42e0-9bdc-d6bbf4a7de8e",
+      "name": "confereFutureTime",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        2280
+      ],
+      "notesInFlow": true,
+      "notes": "Aqui comparamos se a data da mesma key que pegamos durante o WAIT é mais recente que a data deste fluxo que está rodando agora."
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messageUser",
+        "key": "=inputMessage-{{ $('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        2280
+      ],
+      "id": "a870b28a-65e1-42ba-a758-30a5f1c448be",
+      "name": "messageAgregated",
+      "notesInFlow": true,
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      },
+      "notes": "- Retorna as mensagens agregadas"
+    },
+    {
+      "parameters": {
+        "content": "## ⚡️ Message deBounce (Agregador de Mensagens)\n\nEste fluxo coleta e agrupa múltiplas mensagens enviadas pelo cliente em um curto intervalo (debounce), armazenando-as incrementamente no Redis e aguardando o tempo configurado antes de liberar o lote de mensagens ao agente. Assim evita-se que o agente seja acionado para cada fragmento de texto e melhora-se a eficiência no atendimento.\n\n1. ⏰ **setDateTime**  \n   - Define a data/hora atual no fuso **America/Sao_Paulo**.\n2. 💾 **setCurrentDate**  \n   - Grava o timestamp atual em Redis na key `<conversation_id>`, com **expire de 600 s**.\n3. 🔍 **getMessage**  \n   - Recupera o valor existente em `inputMessage-<conversation_id>`, para compor mensagens de forma incremental.\n4. ➕ **messageInsert**  \n   - Insere a nova mensagem do usuário em `inputMessage-<conversation_id>`, preservando o histórico anterior.\n5. 📦 **messageAgregated**  \n   - Retorna todas as mensagens agregadas até o momento, antes de entrar no período de wait.\n6. ⏳ **tempoEspera**  \n   - Aguarda o tempo de debounce (definido pela variável `debounce`), para agregar possíveis mensagens subsequentes.\n7. 🔮 **getFutureDate**  \n   - Após o WAIT, lê o novo timestamp armazenado em `<conversation_id>`.\n8. ⚖️ **confereFutureTime**  \n   - Compara o timestamp inicial (de `setCurrentDate`) com o futuro (de `getFutureDate`):  \n     - **Se o timestamp futuro for igual ou posterior**, significa que outra mensagem chegou antes do fim do WAIT → interrompe o fluxo sem limpar as mensagens agregadas.  \n     - Caso contrário, prossegue e libera o batch de mensagens ao agente.\n",
+        "height": 1020,
+        "width": 1180,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1060,
+        1440
+      ],
+      "typeVersion": 1,
+      "id": "cb4ec312-b175-4a0a-978b-d877a2503c91",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('setVariables').item.json.debounce }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        2280
+      ],
+      "id": "7a9ce3f7-4773-4d57-a577-a2664aebcfe2",
+      "name": "tempoEspera",
+      "webhookId": "1da3e712-f30e-4b8a-8d98-ac18fea97639",
+      "notesInFlow": true,
+      "notes": "Selecione o tempo de deBounce (tempo para agregar mensagens multiplas do cliente dentro de um mesmo espaço de tempo evitando que o agente responda todas as mensagens picotadas do cliente.)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "35831818-2b6c-4e05-ba38-d6d1e2bc09ca",
+              "name": "content",
+              "value": "={{ $('messageAgregated').item.json.messageUser }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2320,
+        2020
+      ],
+      "id": "371f1e59-0c10-433d-9540-21a64cb0c413",
+      "name": "contentMesssage"
+    },
+    {
+      "parameters": {
+        "content": "# 📝 Limpar dados do agente\n\n**Gatilho:** Cliente digita `resetar`\n\nAo receber esse comando, o fluxo realiza uma limpeza completa da sessão e do lead: zera a memória armazenada no Redis, remove o registro do lead no Baserow, envia confirmação ao usuário via Chatwoot, exclui os dados de contato e, por fim, encerra o processo de limpeza.\n\n1. 🧹 **resetRedisMemory**  \n   - Limpa a memória armazenada no Redis para este lead.  \n2. 🔍 **findBaserowLead**  \n   - Localiza a linha do lead no Baserow.  \n3. 🗑️ **deleteBaserowLead**  \n   - Exclui o registro do lead no Baserow.  \n4. 📩 **sendChatwootMsgReset**  \n   - Envia uma mensagem de confirmação ao usuário via Chatwoot.  \n5. 🚫 **removeChatwootContact**  \n   - Remove todos os dados do contato no Chatwoot.  \n6. 🏁 **endCleaningOperation**  \n   - Encerra o processo de limpeza.  \n\n> 💡 Ao final, toda a “memória” do agente é reiniciada e o lead é removido dos sistemas.",
+        "height": 760,
+        "width": 1180,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1060,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "8cf4378a-41a4-4ba7-983a-958ec68b967f",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# 🎬 Entrada e Tratamentos Iniciais\n\nEste bloco inicial prepara tudo antes de aplicar as regras de negócio: captura o payload do Chatwoot, extrai e organiza os dados-chave em variáveis, descarta mensagens do próprio agente, define parâmetros de contexto (URL base, chave de memória e tempo de debounce) e detecta o comando de “reset” para acionar o fluxo de limpeza.\n\n1. 📬 **webhookDataChatwoot**  \n   - Recebe o payload da mensagem enviada pelo Chatwoot.  \n2. 📝 **payloadResume**  \n   - Organiza e resume os dados principais em variáveis:  \n     - `account_id`  \n     - `conversation_id`  \n     - `inbox_id`  \n     - `content`  \n     - `message_type`  \n     - `contact`  \n3. 🔽 **filterFromMe**  \n   - Filtra apenas mensagens do tipo **incoming**, descartando envios do próprio agente.  \n4. ⚙️ **setVariables**  \n   - Define variáveis de contexto para o fluxo:  \n     - `baseUrl` (URL do Chatwoot) \n     - `memory` (chave de memória no Redis)  \n     - `debounce` (tempo mínimo entre interações)  \n5. 🔍 **messageReset**  \n   - Verifica se o conteúdo da mensagem é `resetar-ia` para acionar o fluxo de limpeza.  \n",
+        "height": 1020,
+        "width": 1020
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1440
+      ],
+      "typeVersion": 1,
+      "id": "ebe6ddd7-cf1e-4dc7-89e3-9a19f4c7ee80",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f81a0d1-c831-4ebd-93ab-631631197d8a",
+              "name": "account_id",
+              "value": "={{ $json.body.account.id }}",
+              "type": "number"
+            },
+            {
+              "id": "bfc1fbaa-7bae-4b08-80cd-d85c80c265a6",
+              "name": "conversation_id",
+              "value": "={{ $json.body.conversation.messages[0].conversation_id }}",
+              "type": "number"
+            },
+            {
+              "id": "b407f7ae-3b85-41c0-ab02-e7a4885fcbce",
+              "name": "inbox_id",
+              "value": "={{ $json.body.conversation.contact_inbox.inbox_id }}",
+              "type": "number"
+            },
+            {
+              "id": "a1148ba9-e2d3-4ff3-a2d8-251f29865841",
+              "name": "content",
+              "value": "={{ $json.body.conversation.messages[0].content }}",
+              "type": "string"
+            },
+            {
+              "id": "364a98b6-8705-44dd-9aab-e87e1cc901e2",
+              "name": "message_type",
+              "value": "={{ $json.body.message_type }}",
+              "type": "string"
+            },
+            {
+              "id": "75d42f45-0e00-4145-bb77-3120ac96a301",
+              "name": "contact",
+              "value": "={{ $json.body.conversation.meta.sender.removeField(\"additional_attributes\").removeField(\"thumbnail\").removeField(\"identifier\").removeField(\"blocked\").removeField(\"type\") }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        2100
+      ],
+      "id": "f3fd5d36-ba6f-4844-a547-3c926f1fd0e9",
+      "name": "payloadResume"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0b5a79c8-a926-4a8c-9ea2-49e6ac21a0f9",
+              "leftValue": "={{ $json.message_type }}",
+              "rightValue": "incoming",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        2100
+      ],
+      "id": "28e54ed5-49b2-4e74-bfbb-67759837217a",
+      "name": "filterFromMe"
+    },
+    {
+      "parameters": {
+        "content": "# 🤝 Gerencia de status e follow-up da jornada do cliente\n\nEste trecho do fluxo injeta o histórico de conversas, executa um chain LLM para identificar o estágio do lead no funil de vendas, aplica correções à resposta, e produz um JSON estruturado com o status e próximos passos para o follow-up.\n\n1. 💾 **memoryChat**  \n   - Usa o nó Redis Chat Memory para recuperar o histórico de conversas do lead (sessionKey personalizado, TTL de 900 s e janela de contexto de 100 mensagens).\n2. 🧠 **chatMemory**  \n   - Consolida e formata os dados de `memoryChat` como memória ativa para o chain LLM.\n3. 🤖 **funnelStageChain**  \n   - Envia ao modelo (gpt-4o-mini) um prompt que define o “Agente Talk”, seus objetivos e etapas do funil, junto com o histórico de mensagens. Habilita um output parser interno.\n4. 🛠️ **outputParser**  \n   - Aplica um “autofixing” na resposta bruta para garantir:\n     - Campos “serviços” em minúsculas, sem sufixo “ api” e “evolution” uniformizado.\n     - Somente incluir interesses e serviços explicitamente mencionados pelo cliente.\n5. 🔄 **modelParser**  \n   - Reenvia a saída corrigida ao modelo (gpt-4.1-mini) usando um prompt de parsing para gerar um JSON válido.\n6. 📦 **structuredOutput**  \n   - Converte o JSON do `modelParser` em um objeto final estruturado conforme o schema desejado (nome, e-mail, interesses, serviços, urgência, etapa_funil, score, etc.).\n\n",
+        "height": 1820,
+        "width": 980,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3460,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "42f3546f-7e7b-4d4a-98b6-f1bc16005c3c",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('setVariables').item.json.memory }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        1180
+      ],
+      "id": "b712d176-fef8-4a9a-9712-aa300b12906a",
+      "name": "resetRedisMemory",
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "databaseId": 239291,
+        "tableId": 529224,
+        "rowId": "={{ $('findBaserowLead').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        1180
+      ],
+      "id": "5e2625d5-1e7c-48ad-ab68-99ef1c397e92",
+      "name": "deleteBaserowLead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $('setVariables').item.json.baseUrl }}/api/v1/accounts/{{ $('payloadResume').item.json.account_id }}/contacts/{{ $('payloadResume').item.json.contact.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        1180
+      ],
+      "id": "aa373efd-85be-4c08-9f88-677c8cd3853d",
+      "name": "removeChatwotContact",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('setVariables').item.json.baseUrl }}/api/v1/accounts/{{ $('payloadResume').item.json.account_id }}/conversations/{{ $('payloadResume').item.json.conversation_id }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=Memória do Agente resetada com sucesso!"
+            },
+            {
+              "name": "message_type",
+              "value": "outgoing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1700,
+        1180
+      ],
+      "id": "6c7c462f-92ea-4756-80be-4f52cefa893f",
+      "name": "sendChatwootMsgReset",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "databaseId": 239291,
+        "tableId": 568173,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 4405423,
+                "value": "={{ $('payloadResume').item.json.conversation_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        1180
+      ],
+      "id": "43a4a485-8e39-42b9-b6bf-10e339b912f4",
+      "name": "findBaserowLead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        1180
+      ],
+      "id": "8503ab42-dc3f-4c15-9636-df1667b97579",
+      "name": "endCleaningOperation"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a30fce78-af2b-4e89-9b30-83713f6ffe71",
+              "leftValue": "={{ $('webhookDataChatwoot').item.json.body.conversation.messages[0].content }}",
+              "rightValue": "resetar-ia",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        760,
+        2100
+      ],
+      "id": "ea2ab173-b82e-4df3-ad95-ebcf8d32e27b",
+      "name": "messageReset"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1c39dce1-e4e6-4fd2-b573-a1c4fa23945f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        60,
+        2100
+      ],
+      "id": "cc042d39-0b28-4418-847e-1889c618ba4a",
+      "name": "webhookDataChatwoot",
+      "webhookId": "1c39dce1-e4e6-4fd2-b573-a1c4fa23945f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "68ad9904-120b-421e-ad44-49418f0f7a73",
+              "name": "baseUrl",
+              "value": "https://chat.agenciasynca.com.br",
+              "type": "string"
+            },
+            {
+              "id": "30e97a42-d144-469a-82c3-b030ad7305c0",
+              "name": "memory",
+              "value": "=memory-{{ $json.conversation_id }}",
+              "type": "string"
+            },
+            {
+              "id": "0b8eea99-4d4b-4e8c-a16d-a319b04cacc9",
+              "name": "debounce",
+              "value": 10,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        580,
+        2100
+      ],
+      "id": "00fcc358-f1c4-4434-970b-0d3bda5038e0",
+      "name": "setVariables"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('setVariables').first().json.baseUrl }}/api/v1/accounts/{{ $('payloadResume').first().json.account_id }}/contacts/{{ $('payloadResume').first().json.contact.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $('updateBaserowLead').item.json.nome }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $('updateBaserowLead').item.json.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5240,
+        1340
+      ],
+      "id": "9259978e-2e38-4e2b-b92e-437acce80243",
+      "name": "updateChatwootContact",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 239291,
+        "tableId": 529224,
+        "rowId": "={{ $('appendLead').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4214466,
+              "fieldValue": "={{ $json.email }}"
+            },
+            {
+              "fieldId": 4214463,
+              "fieldValue": "={{ $json.nome }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        5020,
+        1340
+      ],
+      "id": "c1ee3df8-f260-45f3-bf12-5ae730a09c6a",
+      "name": "updateBaserowLead",
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "918e3c88-66f4-483b-9c6c-c790984f6e92",
+              "name": "nome",
+              "value": "={{ $json.output.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "3caf3f92-e7f3-4e69-8a5e-9f824f10949e",
+              "name": "email",
+              "value": "={{ $json.output['e-mail'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4800,
+        1340
+      ],
+      "id": "6f835cef-4b4b-461f-b47b-7a6de4f3d89b",
+      "name": "getContactData"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('setVariables').first().json.baseUrl }}/api/v1/accounts/{{ $('payloadResume').first().json.account_id }}/conversations/{{ $('payloadResume').first().json.conversation_id }}/labels",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "labels",
+              "value": "={{ $('processAllLabels').item.json.labels }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5000,
+        1980
+      ],
+      "id": "85906044-f9b6-4d6e-865d-95fa9b1338c3",
+      "name": "updateChatwootLabels",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 239291,
+        "tableId": 529224,
+        "rowId": "={{ $('appendLead').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4405515,
+              "fieldValue": "={{ $json.output.servicos\n     .join(', ')\n     .toLowerCase()          // transforme tudo em minúsculo\n     .normalize('NFD')       // separa letras dos acentos\n     .replace(/\\p{M}/gu, '') // elimina todos os acentos, deixando só as letras\n}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        4800,
+        1660
+      ],
+      "id": "698d1a10-2033-448c-be45-c1de05caf060",
+      "name": "updateBaserowServices",
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 239291,
+        "tableId": 529224,
+        "rowId": "={{ $('appendLead').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4405519,
+              "fieldValue": "={{ $json.output.interesses\n     .join(', ')\n     .toLowerCase()          // transforme tudo em minúsculo\n     .normalize('NFD')       // separa letras dos acentos\n     .replace(/\\p{M}/gu, '') // elimina todos os acentos, deixando só as letras\n}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        4800,
+        1500
+      ],
+      "id": "9a293410-4218-4b05-8adb-359f3e435614",
+      "name": "updateBaserowInterests",
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// 1. Puxa labels da conversa\nconst labelsChatwoot = $('webhookDataChatwoot').first().json.body.conversation.labels || [];\n\n// 2. Puxa interesses e serviços do node “Switch”, dentro de output\nconst interesses = $('dataClassifier').first().json.output.interesses || [];\nconst servicos   = $('dataClassifier').first().json.output.servicos    || [];\n\n// 3. Junta tudo num único array\nconst arrayPrincipal = [\n  ...labelsChatwoot,\n  ...interesses,\n  ...servicos,\n];\n\n// 4. Define o que deve ser excluído\nconst arrayExclusao = [\n  \"entrega_realizada\",\n  \"envio_proposta_ou_link\",\n  \"fechado_aguardando_pagamento\",\n  \"follow_up_negociacao\",\n  \"novo_contato\",\n  \"pagamento_confirmado\",\n  \"pos_venda\",\n  \"validacao_qualificacao\"\n];\n\n// 5. Filtra removendo o que está em arrayExclusao\nlet filtrado = arrayPrincipal.filter(item => !arrayExclusao.includes(item));\n\n// 6. Adiciona a etapa atual do funil\nfiltrado.push(\n  $('dataClassifier').first().json.output.etapa_funil\n    .toLowerCase()          // deixa tudo em minúsculo\n    .normalize('NFD')       // separa letras dos acentos\n    .replace(/\\p{M}/gu, '') // remove todos os acentos, deixando só as letras\n);\n\n// 7. Garante valores únicos\nfiltrado = Array.from(new Set(filtrado));\n\n// 8. Grava de volta em labels\n$json.labels = filtrado;\n\nreturn $input.item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4800,
+        1980
+      ],
+      "id": "57b39f0f-31f9-4b3a-99f9-6988cc030459",
+      "name": "processAllLabels"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 239291,
+        "tableId": 529224,
+        "rowId": "={{ $('appendLead').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4405410,
+              "fieldValue": "={{ $json.output.etapa_funil\n     .toLowerCase()          // transforme tudo em minúsculo\n     .normalize('NFD')       // separa letras dos acentos\n     .replace(/\\p{M}/gu, '') // elimina todos os acentos, deixando só as letras\n}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        4800,
+        1820
+      ],
+      "id": "39a4f7cf-3fae-4552-b89f-c8633d90cfca",
+      "name": "updateBaserowStatus",
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.nome.isNotEmpty() && $json.output['e-mail'].isNotEmpty() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "e4a03eea-d47b-4b30-bf44-c3c552d3067e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "identificado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7c4b7e81-8960-4fd8-8b31-e83a33e8bfd9",
+                    "leftValue": "={{ $json.output.interesses }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "interesses"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bf071cde-2e5d-435d-989f-96a436d8c0a2",
+                    "leftValue": "={{ $json.output.servicos }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "servicos"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b7b1368b-8abe-4c37-9cb5-c039cccb13de",
+                    "leftValue": "={{ $json.output.etapa_funil }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "etapa_funil"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5ac6196a-40f9-4e27-8f56-c46eab913688",
+                    "leftValue": "={{ $json.output.interesses.isNotEmpty() || $json.output.servicos.isNotEmpty() || $json.output.etapa_funil.isNotEmpty()}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "atualiza_tags"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        4520,
+        1620
+      ],
+      "id": "a8b7bff6-5673-41f7-ba3f-906f3fc4905a",
+      "name": "dataClassifier"
+    },
+    {
+      "parameters": {
+        "options": {
+          "timezone": "America/Sao_Paulo"
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        2080
+      ],
+      "id": "e07624e2-8cd1-47f6-a2fb-a9c497d35660",
+      "name": "setDateTime"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('setVariables').item.json.memory }}",
+        "sessionTTL": 900,
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2640,
+        2240
+      ],
+      "id": "89044e71-ced6-49ca-8fc9-84d3f267ac4f",
+      "name": "memoryConversation",
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2460,
+        2240
+      ],
+      "id": "f8087733-4f86-4668-9df4-2b25bbbdf69f",
+      "name": "modelConversation",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c8bd00f-f34f-40fe-807f-74787d882d92",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2840,
+        2020
+      ],
+      "id": "3279483c-c739-4cce-ab87-377505de4da2",
+      "name": "setOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('setVariables').item.json.baseUrl }}/api/v1/accounts/{{ $('payloadResume').item.json.account_id }}/conversations/{{ $('payloadResume').item.json.conversation_id }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "message_type",
+              "value": "outgoing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3040,
+        2020
+      ],
+      "id": "09453a0a-972f-4e61-8161-412d350e794f",
+      "name": "sendChatwootMessage",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=inputMessage-{{ $('webhookDataChatwoot').item.json.body.conversation.messages[0].conversation_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        2220
+      ],
+      "id": "690c6b3d-de2e-423b-b0f8-3ecb253c89df",
+      "name": "resetMessageAgregated",
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.content }}",
+        "options": {
+          "systemMessage": "=agente_whatsapp:\n  nome: \"Agente Talk\"\n  objetivo: \"Classificar leads interessados em serviços de instalação ou consultoria para n8n, Chatwoot, Evolution API e direcionar para o estágio adequado do funil de vendas.\"\n  tom: \"amigável, direto, profissional\"\n  dados_contato: {{ $('payloadResume').item.json.contact.toJsonString() }}\n  modo_de_Atendimento:\n    - seja gentil e proativo\n    - faça apenas umas pergunta por vez\n    - sua primeira interação deve ser ativa já algo como: estamos felizes que vocÊ entrou em contato e estamos dispostos a te ajudar com sua infraestrutura de marketing e vendas.\n  etapas_funil:\n    - nome: \"novo_contato\"\n      gatilhos:\n        - lead inicia conversa\n      ações:\n        - solicitar: nome, e-mail\n        - perguntar: \"Como você nos conheceu?\"\n        - perguntar: \"Você está buscando ajuda com instalação ou consultoria?\"\n      proximo_estagio: \"validacao_qualificacao\"\n\n    - nome: \"validacao_qualificacao\"\n      gatilhos:\n        - lead respondeu interesse inicial\n      ações:\n        - perguntar: \"Qual dos serviços você precisa? (n8n, Chatwoot, Evolution API, Consultoria)\"\n        - perguntar: \"Você já tentou instalar por conta própria?\"\n        - perguntar: \"Já possui um servidor VPS ou domínio próprio?\"\n        - perguntar: \"Esse projeto é urgente?\"\n      critérios_avançar:\n        - lead tem necessidade clara\n        - lead forneceu dados básicos\n        - lead demonstrou intenção de contratação\n      proximo_estagio: \"envio_proposta_ou_link\"\n\n    - nome: \"envio_proposta_ou_link\"\n      gatilhos:\n        - lead qualificado\n      ações:\n        - caso_consultoria: \"Enviar proposta com escopo e valor por hora\"\n        - caso_instalacao: \"Enviar link de contratação com detalhes do serviço\"\n        - orientar: \"Após o pagamento, nossa equipe técnica entra em contato para agendamento\"\n\n    - valores_consultoria:\n        - consultoria_por_hora: \"R$ 250,00\"\n        - pacote_10_horas: \"R$ 2.000,00\"\n        - você primeiro oferece 2 horas de consultoria para diagnóstico e um onborading de como será resolvido, mas o o cliente pode já contratar mais horas se for da vnotade dele.\n    \n      proximo_estagio: \"follow_up_negociacao\"\n\n    - nome: \"follow_up_negociacao\"\n      gatilhos:\n        - proposta enviada mas sem resposta\n      ações:\n        - enviar lembrete amigável\n        - perguntar se há dúvidas técnicas\n        - compartilhar: depoimentos e cases de sucesso\n\n    - nome: \"fechado_aguardando_pagamento\"\n      gatilhos:\n        - lead aceitou proposta mas não pagou\n      ações:\n        - reforçar importância do agendamento\n        - reenviar link de pagamento\n        - solicitar comprovante (se necessário)\n\n    - nome: \"pagamento_confirmado\"\n      gatilhos:\n        - pagamento confirmado\n      ações:\n        - separar por tipo de serviço\n        - criar tarefa técnica ou agendamento\n        - avisar equipe técnica\n\n    - nome: \"entrega_realizada\"\n      gatilhos:\n        - serviço entregue\n      ações:\n        - enviar acesso ou relatório final\n        - perguntar: \"Ficou tudo certo? Podemos usar seu feedback como um case?\"\n        - marcar projeto como concluído\n\n    - nome: \"pos_venda\"\n      gatilhos:\n        - entrega finalizada com sucesso\n      ações:\n        - oferecer manutenção ou plano de suporte\n        - convidar para comunidade\n        - incluir lead na newsletter\n\n  saída_desejada: \n    formato: JSON\n    exemplo:\n      {\n        \"nome\": \"João\",\n        \"telefone\": \"+55 11 99999-9999\",\n        \"interesse\": \"instalação\",\n        \"serviço\": \"Chatwoot\",\n        \"urgência\": \"alta\",\n        \"etapa_funil\": \"envio_proposta_ou_link\",\n        \"resposta\" : \"Olá bom dia tudo bem?\" \n      }\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        2500,
+        2020
+      ],
+      "id": "1dd08685-82d0-4f4d-87e9-9d7f17a5475c",
+      "name": "agentConversation"
+    },
+    {
+      "parameters": {
+        "databaseId": 239291,
+        "tableId": 568173,
+        "limit": 1,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 4564396,
+                "value": "={{ $('payloadResume').item.json.conversation_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        1180
+      ],
+      "id": "902111f2-0a58-4efc-9dff-14fa56507541",
+      "name": "getBaserowLead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "04a27288-4ab7-44fb-bfef-adb478190619",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2480,
+        1180
+      ],
+      "id": "75f51c4d-9655-40d0-a57d-3618bfe5f91d",
+      "name": "testExist"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 239291,
+        "tableId": 568173,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4405423,
+              "fieldValue": "={{ $('payloadResume').item.json.conversation_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2740,
+        1060
+      ],
+      "id": "0e9eb908-00ba-46bf-b229-645282a238cc",
+      "name": "createBaserowLead",
+      "credentials": {
+        "baserowApi": {
+          "id": "bBXjsArYgkYz5Ma2",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        2980,
+        1180
+      ],
+      "id": "ecf9139a-334d-408b-a3f6-f248c03dd245",
+      "name": "appendLead"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        3540,
+        1260
+      ],
+      "id": "6f977daa-527c-43ab-98f6-51ca258d0bcf",
+      "name": "chatMemory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('setVariables').first().json.memory }}",
+        "sessionTTL": 900,
+        "contextWindowLength": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        3520,
+        1460
+      ],
+      "id": "1219812a-01a5-409d-9304-b645a4aa66e9",
+      "name": "memoryChat",
+      "credentials": {
+        "redis": {
+          "id": "2Uu2MbBra4m90DUJ",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3880,
+        1460
+      ],
+      "id": "d9965a16-f9c1-4b54-bff6-acfb845a8e0c",
+      "name": "modelChat",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "prompt": "=Instructions:\n- Para o campo \"serviços\": converta tudo para minúsculas, remova o sufixo \" api\" e transforme qualquer variação de \"evolution api\" (ou \"evolution\") em \"evolution\".\n--------------\n{instructions}\n--------------\nCompletion:\n--------------\n{completion}\n--------------\n\nAbove, the Completion did not satisfy the constraints given in the Instructions.\nError:\n--------------\n{error}\n--------------\n\nPlease try again. Please only respond with an answer that satisfies the constraints laid out in the Instructions:"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        4000,
+        1460
+      ],
+      "id": "f985d8ac-5780-4d09-924a-987ea6c17e83",
+      "name": "outputParser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3980,
+        1620
+      ],
+      "id": "27100448-d61c-452c-977a-700b1d843a4b",
+      "name": "modelParser",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"nome\": \"\",\n\"e-mail\": \"\",\n\"interesses\": [\"\"],\n\"servicos\": [\"\"],\n\"urgência\": \"\",\n\"etapa_funil\": \"\",\n\"score\"  : 0\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4140,
+        1620
+      ],
+      "id": "6159585c-072b-4d1c-a0d8-03e6b165d293",
+      "name": "structuredOutput"
+    },
+    {
+      "parameters": {
+        "content": "# 🗂️ Sincronização de dados do lead no Baserow e Chatwoot\n\nEste fluxo recebe as saídas do classifier, atualiza os campos do lead no Baserow (nome, e-mail, interesses, serviços e etapa do funil), agrega as labels e, por fim, sincroniza tudo com o contato e a conversa no Chatwoot.\n\n1. 🎯 **dataClassifier**  \n   - Classifica as flags de saída (`identificado`, `interesses`, `servicos`, `etapa_funil`, `atualiza_tags`) a partir do JSON `output`.\n2. ✏️ **getContactData**  \n   - Extrai `output.nome` e `output['e-mail']` para as variáveis `nome` e `email`.\n3. 💾 **updateBaserowLead**  \n   - Atualiza a linha do lead no Baserow (nome e e-mail) usando o `rowId` de `appendLead`.\n4. 🔄 **updateChatwootContact**  \n   - Envia um PUT para o endpoint de contatos do Chatwoot, atualizando nome e e-mail.\n5. 📝 **updateBaserowInterests**  \n   - Atualiza no Baserow o campo “interesses” com o array de interesses (lowercase, separado por vírgula).\n6. 🛠️ **updateBaserowServices**  \n   - Atualiza no Baserow o campo “serviços” com o array de serviços (lowercase, sem sufixo “ api”).\n7. 🚦 **updateBaserowStatus**  \n   - Atualiza no Baserow o campo “status” (etapa_funil) em lowercase.\n8. 🔍 **processAllLabels**  \n   - Agrega as labels da conversa do Chatwoot, interesses e serviços, filtra tags indesejadas, adiciona a etapa atual e gera um array único de labels.\n9. 🔔 **updateChatwootLabels**  \n   - Envia um POST para aplicar as labels processadas na conversa do Chatwoot.\n10. 🏁 **endProcessing**  \n     - Encerra o processamento dos dados do fluxo.\n",
+        "height": 1820,
+        "width": 1240,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4480,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "00a2aa2c-dd5a-4dea-ad2e-0ec3dc8cdb2e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3040,
+        2220
+      ],
+      "id": "526682d2-2b75-4c66-bcb7-9f00c18d3bb6",
+      "name": "endConversation"
+    },
+    {
+      "parameters": {
+        "content": "# 🛠️ Configuração Inicial desse Workflow\nAntes de executar o workflow, preencha as variáveis e credenciais abaixo:\n---\n### 🌐 Variáveis de Ambiente\n- **`baseUrl`**: URL pública da instância Chatwoot  \n  _Ex.:_ `https://chat.seudominio.com`\n- **`memory`**: Prefixo de chave para sessão no Redis  \n  _Ex.:_ `session:[conversation_id]`\n- **`debounce`**: Tempo de debounce em segundos  \n  _Ex.:_ `30`\n\n### 🔗 Webhook Chatwoot\n- **webhookDataChatwoot**  \n\n### 🗄️ Credenciais Redis\n- **Overview / Credentials**\n\n### 📊 Credenciais Baserow\n- **Overview / Credentials**\n\n### 🔐 Credenciais Chatwoot\n- **Overview / Credentials**\n\n### 🧠 Credenciais OpenAI\n- **Overview / Credentials**\n\n### ✍️ Autor / Contato\n- **Nome**: Promovaweb\n- **E-mail**: contato@promovaweb.com\n- **WhatsApp**: +55 (11) 9 7671-5006\n",
+        "height": 760,
+        "width": 1020,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "38f554e5-a517-4223-bfff-48cd90c327c0",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        5520,
+        1660
+      ],
+      "id": "c624ddbe-5b2b-4cc4-956a-44a04a54e1b0",
+      "name": "endProcessing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=agente_whatsapp:\n  nome: \"Agente Talk\"\n  objetivo: \"Classificar leads interessados em serviços de instalação ou consultoria para n8n, Chatwoot, Evolution API e direcionar para o estágio adequado do funil de vendas.\"\n  tom: \"amigável, direto, profissional\"\n  dados_contato: [Execute node ‘payloadResume’ for preview]\n  modo_de_Atendimento:\n    - seja gentil e proativo\n    - faça apenas umas pergunta por vez\n    - sua primeira interação deve ser ativa já algo como: estamos felizes que vocÊ entoru em contato e estamos dispostos a te ajudar com sua infraestrutura de marketing e vendas.\n  etapas_funil:\n    - nome: \"novo_contato\"\n      gatilhos:\n        - lead inicia conversa\n      ações:\n        - solicitar: nome, e-mail\n        - perguntar: \"Como você nos conheceu?\"\n        - perguntar: \"Você está buscando ajuda com instalação ou consultoria?\"\n      proximo_estagio: \"validacao_qualificacao\"\n\n    - nome: \"validacao_qualificacao\"\n      gatilhos:\n        - lead respondeu interesse inicial\n      ações:\n        - perguntar: \"Qual dos serviços você precisa? (n8n, chatwoot, Evolution API, Consultoria)\"\n        - perguntar: \"Você já tentou instalar por conta própria?\"\n        - perguntar: \"Já possui um servidor VPS ou domínio próprio?\"\n        - perguntar: \"Esse projeto é urgente?\"\n      critérios_avançar:\n        - lead tem necessidade clara\n        - lead forneceu dados básicos\n        - lead demonstrou intenção de contratação\n      proximo_estagio: \"envio_proposta_ou_link\"\n\n    - nome: \"envio_proposta_ou_link\"\n      gatilhos:\n        - lead qualificado\n      ações:\n        - caso_consultoria: \"Enviar proposta com escopo e valor por hora\"\n        - caso_instalacao: \"Enviar link de contratação com detalhes do serviço\"\n        - orientar: \"Após o pagamento, nossa equipe técnica entra em contato para agendamento\"\n\n    - valores_consultoria:\n        - consultoria_por_hora: \"R$ 250,00\"\n        - pacote_10_horas: \"R$ 2.000,00\"\n        - você primeiro oferece 2 horas de consultoria para diagnóstico e um onborading de como será resolvido, mas o o cliente pode já contratar mais horas se for da vnotade dele.\n    \n      proximo_estagio: \"follow_up_negociacao\"\n\n    - nome: \"follow_up_negociacao\"\n      gatilhos:\n        - proposta enviada mas sem resposta\n      ações:\n        - enviar lembrete amigável\n        - perguntar se há dúvidas técnicas\n        - compartilhar: depoimentos e cases de sucesso\n\n    - nome: \"fechado_aguardando_pagamento\"\n      gatilhos:\n        - lead aceitou proposta mas não pagou\n      ações:\n        - reforçar importância do agendamento\n        - reenviar link de pagamento\n        - solicitar comprovante (se necessário)\n\n    - nome: \"pagamento_confirmado\"\n      gatilhos:\n        - pagamento confirmado\n      ações:\n        - separar por tipo de serviço\n        - criar tarefa técnica ou agendamento\n        - avisar equipe técnica\n\n    - nome: \"entrega_realizada\"\n      gatilhos:\n        - serviço entregue\n      ações:\n        - enviar acesso ou relatório final\n        - perguntar: \"Ficou tudo certo? Podemos usar seu feedback como um case?\"\n        - marcar projeto como concluído\n\n    - nome: \"pos_venda\"\n      gatilhos:\n        - entrega finalizada com sucesso\n      ações:\n        - oferecer manutenção ou plano de suporte\n        - convidar para comunidade\n        - incluir lead na newsletter\n\n  saída_desejada: \n    formato: JSON\n    exemplo:\n      {\n        \"nome\": \"João\",\n        \"telefone\": \"+55 11 99999-9999\",\n        \"interesse\": \"instalação\",\n        \"serviço\": \"chatwoot\",\n        \"urgência\": \"alta\",\n        \"etapa_funil\": \"envio_proposta_ou_link\",\n        \"resposta\" : \"Olá bom dia tudo bem?\" \n      }\n   instrução extra com relação a saida_Desejada:\n     - quando for montar o array de serviços no caso da 'evolution API' preciso que sempre nunca use o nome comercial \"Evolution API\" e somente use \"evolution\"\n     - o cliente já demonstrou explicitamente o interesse dele? Se é consultoria ou instalação? Se não o array de interesses deve ir vazio. Só deve haver atributos no array interesses se o cliente escolher explicitamente uma opção ou as duas.\n     - o cliente já demonstrou explicitamente os serviços que ele precisa? se ele não falou você não deve pressupor e colocar na saída do array de serviços, serviços dos quais o cliente não mencionou. A saída neste caso deve ser vazia.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={{ $json.messages.toJsonString() }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3880,
+        1260
+      ],
+      "id": "c6d6104c-c0d2-4ee6-8147-504164fa7654",
+      "name": "funnelStageChain"
+    }
+  ],
+  "connections": {
+    "setCurrentDate": {
+      "main": [
+        [
+          {
+            "node": "getMessage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getMessage": {
+      "main": [
+        [
+          {
+            "node": "messageInsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageInsert": {
+      "main": [
+        [
+          {
+            "node": "messageAgregated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getFutureDate": {
+      "main": [
+        [
+          {
+            "node": "confereFutureTime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageAgregated": {
+      "main": [
+        [
+          {
+            "node": "tempoEspera",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "confereFutureTime": {
+      "main": [
+        [
+          {
+            "node": "getBaserowLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tempoEspera": {
+      "main": [
+        [
+          {
+            "node": "getFutureDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contentMesssage": {
+      "main": [
+        [
+          {
+            "node": "agentConversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "payloadResume": {
+      "main": [
+        [
+          {
+            "node": "filterFromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filterFromMe": {
+      "main": [
+        [
+          {
+            "node": "setVariables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "resetRedisMemory": {
+      "main": [
+        [
+          {
+            "node": "findBaserowLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deleteBaserowLead": {
+      "main": [
+        [
+          {
+            "node": "sendChatwootMsgReset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "removeChatwotContact": {
+      "main": [
+        [
+          {
+            "node": "endCleaningOperation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendChatwootMsgReset": {
+      "main": [
+        [
+          {
+            "node": "removeChatwotContact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "findBaserowLead": {
+      "main": [
+        [
+          {
+            "node": "deleteBaserowLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageReset": {
+      "main": [
+        [
+          {
+            "node": "resetRedisMemory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "setDateTime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhookDataChatwoot": {
+      "main": [
+        [
+          {
+            "node": "payloadResume",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setVariables": {
+      "main": [
+        [
+          {
+            "node": "messageReset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateBaserowLead": {
+      "main": [
+        [
+          {
+            "node": "updateChatwootContact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getContactData": {
+      "main": [
+        [
+          {
+            "node": "updateBaserowLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "processAllLabels": {
+      "main": [
+        [
+          {
+            "node": "updateChatwootLabels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateBaserowServices": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateBaserowInterests": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateBaserowStatus": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dataClassifier": {
+      "main": [
+        [
+          {
+            "node": "getContactData",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "updateBaserowInterests",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "updateBaserowServices",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "updateBaserowStatus",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "processAllLabels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setDateTime": {
+      "main": [
+        [
+          {
+            "node": "setCurrentDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memoryConversation": {
+      "ai_memory": [
+        [
+          {
+            "node": "agentConversation",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "modelConversation": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "agentConversation",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setOutput": {
+      "main": [
+        [
+          {
+            "node": "sendChatwootMessage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendChatwootMessage": {
+      "main": [
+        [
+          {
+            "node": "resetMessageAgregated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agentConversation": {
+      "main": [
+        [
+          {
+            "node": "setOutput",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getBaserowLead": {
+      "main": [
+        [
+          {
+            "node": "testExist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "testExist": {
+      "main": [
+        [
+          {
+            "node": "createBaserowLead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "appendLead",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "createBaserowLead": {
+      "main": [
+        [
+          {
+            "node": "appendLead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "appendLead": {
+      "main": [
+        [
+          {
+            "node": "chatMemory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chatMemory": {
+      "main": [
+        [
+          {
+            "node": "funnelStageChain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memoryChat": {
+      "ai_memory": [
+        [
+          {
+            "node": "chatMemory",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "modelChat": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "funnelStageChain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "outputParser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "funnelStageChain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "modelParser": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "outputParser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "structuredOutput": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "outputParser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "resetMessageAgregated": {
+      "main": [
+        [
+          {
+            "node": "endConversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateChatwootLabels": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateChatwootContact": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "funnelStageChain": {
+      "main": [
+        [
+          {
+            "node": "dataClassifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "webhookDataChatwoot": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.agenciasynca.com.br",
+            "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.3.3p89",
+            "content-length": "4403",
+            "accept": "application/json",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "5.161.234.171",
+            "cf-ipcountry": "US",
+            "cf-ray": "947f7fd2e9880a09-IAD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "content-type": "application/json",
+            "x-forwarded-for": "162.158.79.50",
+            "x-forwarded-host": "webhooks.agenciasynca.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "3465f15b6c7e",
+            "x-real-ip": "162.158.79.50"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "account": {
+              "id": 1,
+              "name": "Agência Synca"
+            },
+            "additional_attributes": {},
+            "content_attributes": {},
+            "content_type": "text",
+            "content": "n8n, Evolution API e Chatwoot.",
+            "conversation": {
+              "additional_attributes": {},
+              "can_reply": true,
+              "channel": "Channel::Api",
+              "contact_inbox": {
+                "id": 98,
+                "contact_id": 51,
+                "inbox_id": 8,
+                "source_id": "16f18a45-7428-4f08-b30d-a147812c98f1",
+                "created_at": "2025-05-30T15:21:33.923Z",
+                "updated_at": "2025-05-30T15:21:33.923Z",
+                "hmac_verified": false,
+                "pubsub_token": "mvCdX7ibdrMa4f98HnW7Ji4m"
+              },
+              "id": 52,
+              "inbox_id": 8,
+              "messages": [
+                {
+                  "id": 1102,
+                  "content": "n8n, Evolution API e Chatwoot.",
+                  "account_id": 1,
+                  "inbox_id": 8,
+                  "conversation_id": 52,
+                  "message_type": 0,
+                  "created_at": 1748621401,
+                  "updated_at": "2025-05-30T16:10:01.952Z",
+                  "private": false,
+                  "status": "sent",
+                  "source_id": "WAID:3EB0403D6A8899BE7DE26B",
+                  "content_type": "text",
+                  "content_attributes": {},
+                  "sender_type": "Contact",
+                  "sender_id": 51,
+                  "external_source_ids": {},
+                  "additional_attributes": {},
+                  "processed_message_content": "n8n, Evolution API e Chatwoot.",
+                  "sentiment": {},
+                  "conversation": {
+                    "assignee_id": null,
+                    "unread_count": 1,
+                    "last_activity_at": 1748621401,
+                    "contact_inbox": {
+                      "source_id": "16f18a45-7428-4f08-b30d-a147812c98f1"
+                    }
+                  },
+                  "sender": {
+                    "additional_attributes": {},
+                    "custom_attributes": {},
+                    "email": "eu@edisonmartinsmkt.com.br",
+                    "id": 51,
+                    "identifier": "557999777712@s.whatsapp.net",
+                    "name": "Edison",
+                    "phone_number": "+557999777712",
+                    "thumbnail": "https://chat.agenciasynca.com.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBWdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--fb127d481a99ce8d2f792404bc1856750a46644c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a1f63818a5159f71dca8446fe68168fe417ce5/486046254_682389010925031_1927930849538126769_n.jpg",
+                    "blocked": false,
+                    "type": "contact"
+                  }
+                }
+              ],
+              "labels": [
+                "instalação",
+                "consultoria",
+                "n8n",
+                "Evolution",
+                "validacao_qualificacao"
+              ],
+              "meta": {
+                "sender": {
+                  "additional_attributes": {},
+                  "custom_attributes": {},
+                  "email": "eu@edisonmartinsmkt.com.br",
+                  "id": 51,
+                  "identifier": "557999777712@s.whatsapp.net",
+                  "name": "Edison",
+                  "phone_number": "+557999777712",
+                  "thumbnail": "https://chat.agenciasynca.com.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBWdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--fb127d481a99ce8d2f792404bc1856750a46644c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a1f63818a5159f71dca8446fe68168fe417ce5/486046254_682389010925031_1927930849538126769_n.jpg",
+                  "blocked": false,
+                  "type": "contact"
+                },
+                "assignee": null,
+                "team": null,
+                "hmac_verified": false
+              },
+              "status": "open",
+              "custom_attributes": {},
+              "snoozed_until": null,
+              "unread_count": 1,
+              "first_reply_created_at": "2025-05-30T15:21:49.570Z",
+              "priority": null,
+              "waiting_since": 1748621401,
+              "agent_last_seen_at": 1748621385,
+              "contact_last_seen_at": 1748621377,
+              "last_activity_at": 1748621401,
+              "timestamp": 1748621401,
+              "created_at": 1748618493,
+              "updated_at": 1748621401.980883
+            },
+            "created_at": "2025-05-30T16:10:01.952Z",
+            "id": 1102,
+            "inbox": {
+              "id": 8,
+              "name": "notificacoes"
+            },
+            "message_type": "incoming",
+            "private": false,
+            "sender": {
+              "account": {
+                "id": 1,
+                "name": "Agência Synca"
+              },
+              "additional_attributes": {},
+              "avatar": "https://chat.agenciasynca.com.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBWdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--fb127d481a99ce8d2f792404bc1856750a46644c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a1f63818a5159f71dca8446fe68168fe417ce5/486046254_682389010925031_1927930849538126769_n.jpg",
+              "custom_attributes": {},
+              "email": "eu@edisonmartinsmkt.com.br",
+              "id": 51,
+              "identifier": "557999777712@s.whatsapp.net",
+              "name": "Edison",
+              "phone_number": "+557999777712",
+              "thumbnail": "https://chat.agenciasynca.com.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBWdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--fb127d481a99ce8d2f792404bc1856750a46644c/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a1f63818a5159f71dca8446fe68168fe417ce5/486046254_682389010925031_1927930849538126769_n.jpg",
+              "blocked": false
+            },
+            "source_id": "WAID:3EB0403D6A8899BE7DE26B",
+            "event": "message_created"
+          },
+          "webhookUrl": "https://webhooks.agenciasynca.com.br/webhook/1c39dce1-e4e6-4fd2-b573-a1c4fa23945f",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "8cc6a4bf-d61d-4c71-9b6d-51914fa8951d",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-06-06T13:22:01.559Z",
+      "updatedAt": "2025-06-06T13:22:01.559Z",
+      "role": "workflow:owner",
+      "workflowId": "WJRppatVqLbo79qv",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
