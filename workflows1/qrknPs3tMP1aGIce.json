@@ -1,0 +1,288 @@
+{
+  "createdAt": "2025-02-15T20:56:14.971Z",
+  "updatedAt": "2025-02-18T14:20:51.758Z",
+  "id": "qrknPs3tMP1aGIce",
+  "name": "TOKEN BIMER",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "babb27cb-fd4c-493f-8db7-c7c5ac0081cb",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tokens",
+          "mode": "list",
+          "cachedResultName": "tokens"
+        },
+        "options": {}
+      },
+      "id": "5ca1b183-18b1-467b-83d0-958f056bc3ee",
+      "name": "Pegar Refresh token",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        480,
+        80
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "oZmPlgV8AUw5wxLZ",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tokens",
+          "mode": "list",
+          "cachedResultName": "tokens"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": 0,
+            "token_bimer": "={{ $('Refresh Token Bimer').first().json.access_token }}",
+            "expires_bimer": "={{ new Date($('Refresh Token Bimer').first().json[\".expires\"]).toISOString().replace('T', ' ').slice(0, 19) }}",
+            "refresh_token_bimer": "={{ $('Refresh Token Bimer').first().json.refresh_token }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "token_tray",
+              "displayName": "token_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "expires_tray",
+              "displayName": "expires_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "refresh_token_tray",
+              "displayName": "refresh_token_tray",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_bimer",
+              "displayName": "token_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "expires_bimer",
+              "displayName": "expires_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "refresh_token_bimer",
+              "displayName": "refresh_token_bimer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_preco",
+              "displayName": "id_preco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "id_setor",
+              "displayName": "id_setor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e6b22e50-2850-43cb-839b-a609920d8a4f",
+      "name": "Atualiza dados",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        880,
+        80
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "oZmPlgV8AUw5wxLZ",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://177.204.252.25:8084/oauth/token?",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"0c79e6fcfbe6528780934f772dd450f7\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n,\n\n\"token\"\n: \n\"{{ $('Pegar Refresh token').first().json.token_bimer }}\"\n,\n\n\"refreshtoken\"\n: \n\"{{ $('Pegar Refresh token').first().json.refresh_token_bimer }}\"\n\n}",
+        "options": {}
+      },
+      "id": "0bbc111d-ab8e-4a0a-8727-ac37fc7f29b8",
+      "name": "Refresh Token Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        80
+      ]
+    }
+  ],
+  "connections": {
+    "Pegar Refresh token": {
+      "main": [
+        [
+          {
+            "node": "Refresh Token Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Pegar Refresh token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refresh Token Bimer": {
+      "main": [
+        [
+          {
+            "node": "Atualiza dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d84cd58c-dcd5-4b8e-bcec-f46bea2ef525",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-02-15T20:56:14.971Z",
+      "updatedAt": "2025-02-15T20:56:14.971Z",
+      "role": "workflow:owner",
+      "workflowId": "qrknPs3tMP1aGIce",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
