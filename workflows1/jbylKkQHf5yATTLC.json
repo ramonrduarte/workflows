@@ -1,0 +1,644 @@
+{
+  "createdAt": "2024-11-18T11:46:47.981Z",
+  "updatedAt": "2024-11-18T19:05:10.998Z",
+  "id": "jbylKkQHf5yATTLC",
+  "name": "Tabela Itens",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d7f4f07d-e9b8-46c8-b08a-e96b0dd5cf5d",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5e76341f-05b8-49ef-9eac-bc14bbfd42eb",
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35",
+              "type": "string"
+            },
+            {
+              "id": "6501dbc3-1351-4b75-86bb-2c17811ee298",
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89",
+              "type": "string"
+            },
+            {
+              "id": "f4848cc6-0ab2-4c1c-a962-c14dcaa06b5a",
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4",
+              "type": "string"
+            },
+            {
+              "id": "ba337d01-56ae-42ed-aeb6-e96280ae6126",
+              "name": "api_address",
+              "value": "www.adrofecha.com.br/web_api",
+              "type": "string"
+            },
+            {
+              "id": "0e075a2a-8f08-4c10-a7e7-cecdf3977086",
+              "name": "codigo_item",
+              "value": "000010",
+              "type": "string"
+            },
+            {
+              "id": "7e7cf667-1a15-499a-9da8-6c009f037bb5",
+              "name": "cep_destino",
+              "value": "95901356",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "09c36012-3f21-4e9c-a609-521185a1bbed",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $json.api_address }}/auth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "={{ $json.consumer_key }}"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "={{ $json.consumer_secret }}"
+            },
+            {
+              "name": "code",
+              "value": "={{ $json.code }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "5c09acfc-c04f-44fa-b03a-b983bbb3bd26",
+      "name": "Obtem Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        340,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products?access_token={{ $json.access_token }}&reference={{ $('Edit Fields').item.json.codigo_item }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "3362e40b-e51a-4b8d-9786-959d84a601bf",
+      "name": "Obtem ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $('Edit Fields').item.json.api_address }}/products/{{ $json.Products[0].Product.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Obtem Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "87219186-9951-4de7-be5e-7edcaae1531b",
+      "name": "Captura Dados",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendButtons/Bot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"555193732861@s.whatsapp.net\",\n  \"title\": \"Compre pelo site\",\n  \"description\": \"Clique abaixo\",\n  \"footer\": \"Valor do frete R${{ $json.Valor_frete }}\",\n  \"buttons\": [\n    {\n      \"type\": \"url\",\n      \"displayText\": \"{{ $('Agrupa Dados').item.json.nome }}\",\n      \"url\": \"{{ $('Agrupa Dados').item.json.url }}/{{ $('Agrupa Dados').item.json.slug }}\"\n    }\n  ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "bcee0b3b-ed8d-4c90-92ba-66f51d04656c",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9dd5dbde-1d42-4b76-a96f-dd0519677b43",
+      "name": "XML",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        200,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f7e0450b-9a3c-4b99-9b0c-3c8fd1a0b4b5",
+              "name": "Valor_frete",
+              "value": "={{ $json['S:Envelope']['S:Body']['ns0:calculaFreteResponse']['ns0:out'].vlTotalFrete }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c9095461-874a-405e-8de3-4e2dae2d8669",
+      "name": "Valor Frete",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ws.tntbrasil.com.br/tntws/CalculoFrete",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "wsdl",
+              "value": "null"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/xml",
+        "body": "=<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.calculoFrete.mercurio.com\" xmlns:mod=\"http://model.vendas.lms.mercurio.com\">\n<soapenv:Header/>\n<soapenv:Body>\n<ser:calculaFrete>\n<ser:in0>\n     <mod:login>contato@imperadordoslustres.com.br</mod:login>\n     <mod:senha></mod:senha>\n     <mod:nrIdentifClienteRem>35499105000111</mod:nrIdentifClienteRem>\n     <mod:nrIdentifClienteDest>33033033000</mod:nrIdentifClienteDest>\n     <mod:tpFrete>C</mod:tpFrete>\n     <mod:tpServico>RNC</mod:tpServico>\n     <mod:cepOrigem>95908710</mod:cepOrigem>\n     <mod:cepDestino>{{ $('Edit Fields').item.json.cep_destino }}</mod:cepDestino>\n     <mod:vlMercadoria>{{ $json.preco }}</mod:vlMercadoria>\n     <mod:psReal>{{ $json.peso }}</mod:psReal>\n     <mod:nrInscricaoEstadualRemetente>0720177278</mod:nrInscricaoEstadualRemetente>\n     <mod:nrInscricaoEstadualDestinatario></mod:nrInscricaoEstadualDestinatario>\n     <mod:tpSituacaoTributariaRemetente>CO</mod:tpSituacaoTributariaRemetente>\n     <mod:tpSituacaoTributariaDestinatario>NC</mod:tpSituacaoTributariaDestinatario>\n     <mod:cdDivisaoCliente>2</mod:cdDivisaoCliente>\n     <mod:tpPessoaRemetente>J</mod:tpPessoaRemetente>\n     <mod:tpPessoaDestinatario>F</mod:tpPessoaDestinatario>                                          \n</ser:in0>\n</ser:calculaFrete>\n</soapenv:Body>\n</soapenv:Envelope>",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "547fdfe8-587e-4c5e-856a-7523844f1726",
+      "name": "Consulta Frete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6148b1af-b5e5-49bc-8c40-30e887ce64d4",
+              "name": "id",
+              "value": "={{ $json.Product.id }}",
+              "type": "string"
+            },
+            {
+              "id": "695fdcba-304e-4866-9981-8c74fcfab1f3",
+              "name": "codigo",
+              "value": "={{ $json.Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "7c78ac23-751c-4340-a956-340254f428b8",
+              "name": "nome",
+              "value": "={{ $json.Product.name }}",
+              "type": "string"
+            },
+            {
+              "id": "0f6c009c-b0bc-44bc-b5d0-d876e66b862e",
+              "name": "preco",
+              "value": "={{ $json.Product.price }}",
+              "type": "string"
+            },
+            {
+              "id": "e04f1d15-8fd2-4f9f-a5a6-264ddae5f17f",
+              "name": "descricao",
+              "value": "={{ $json.Product.description.replace(/<\\/?[^>]+(>|$)/g, \"\").replace(/\\n/g, \" \") }}\n",
+              "type": "string"
+            },
+            {
+              "id": "6c0663f2-873d-49f7-9a2e-0ddff2bf81ee",
+              "name": "imagem",
+              "value": "={{ $json.Product.ProductImage[0].https }}",
+              "type": "string"
+            },
+            {
+              "id": "4ad395f2-db1f-4c95-b996-86fce092659a",
+              "name": "peso",
+              "value": "={{ $json.Product.weight }}",
+              "type": "string"
+            },
+            {
+              "id": "7f1e82a4-025b-4549-ab37-eb16df9f5c77",
+              "name": "comprimento",
+              "value": "={{ $json.Product.length }}",
+              "type": "string"
+            },
+            {
+              "id": "54375e00-f443-459d-b3a3-41bd92856f49",
+              "name": "largura",
+              "value": "={{ $json.Product.width }}",
+              "type": "string"
+            },
+            {
+              "id": "65634184-f314-44d9-84a7-f758f12c62b3",
+              "name": "altura",
+              "value": "={{ $json.Product.height }}",
+              "type": "string"
+            },
+            {
+              "id": "5d62bd79-2ebd-4d4f-81ea-469830fd7974",
+              "name": "slug",
+              "value": "={{ $json.Product.slug }}",
+              "type": "string"
+            },
+            {
+              "id": "ef763c9e-09cb-4d3a-aea2-ff239f997e78",
+              "name": "url",
+              "value": "https://www.adrofecha.com.br",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e98f94e9-17e9-4356-bb55-db4f25ccc143",
+      "name": "Agrupa Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        320
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Obtem Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtem Token": {
+      "main": [
+        [
+          {
+            "node": "Obtem ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtem ID": {
+      "main": [
+        [
+          {
+            "node": "Captura Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Captura Dados": {
+      "main": [
+        [
+          {
+            "node": "Agrupa Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XML": {
+      "main": [
+        [
+          {
+            "node": "Valor Frete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta Frete": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupa Dados": {
+      "main": [
+        [
+          {
+            "node": "Consulta Frete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valor Frete": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "XML": [
+      {
+        "json": {
+          "S:Envelope": {
+            "xmlns:S": "http://schemas.xmlsoap.org/soap/envelope/",
+            "S:Body": {
+              "ns0:calculaFreteResponse": {
+                "xmlns:ns0": "http://service.calculoFrete.mercurio.com",
+                "xmlns:ns1": "http://model.vendas.lms.mercurio.com",
+                "ns0:out": {
+                  "parcelas": {
+                    "ParcelasFreteWebService": [
+                      {
+                        "dsParcela": "Frete peso",
+                        "vlParcela": "208.00"
+                      },
+                      {
+                        "dsParcela": "Frete Valor",
+                        "vlParcela": "0.13"
+                      },
+                      {
+                        "dsParcela": "GRIS",
+                        "vlParcela": "0.13"
+                      }
+                    ]
+                  },
+                  "servicosAdicionais": {
+                    "ServicoAdicionalWebService": [
+                      {
+                        "dsComplemento": "12% sobre o valor do frete com mínimo de R$ 36,02.",
+                        "nmServico": "Agendamento de entrega",
+                        "sgMoeda": "R$",
+                        "vlServico": "12.00"
+                      },
+                      {
+                        "dsComplemento": "Custo + 30%.",
+                        "nmServico": "Capatazia",
+                        "sgMoeda": "R$",
+                        "vlServico": "30.00"
+                      },
+                      {
+                        "dsComplemento": "R$ 2.453,03 por período.",
+                        "nmServico": "Estadia de veiculo conjunto",
+                        "sgMoeda": "R$",
+                        "vlServico": "2453.03"
+                      },
+                      {
+                        "dsComplemento": "R$ 1.959,56 por período.",
+                        "nmServico": "Estadia de veículo 3/4",
+                        "sgMoeda": "R$",
+                        "vlServico": "1959.56"
+                      },
+                      {
+                        "dsComplemento": "R$ 3.009,90 por período.",
+                        "nmServico": "Estadia de veículo carreta",
+                        "sgMoeda": "R$",
+                        "vlServico": "3009.90"
+                      },
+                      {
+                        "dsComplemento": "R$ 2.159,82 por período.",
+                        "nmServico": "Estadia de veículo toco",
+                        "sgMoeda": "R$",
+                        "vlServico": "2159.82"
+                      },
+                      {
+                        "dsComplemento": "R$ 2.159,82 por período.",
+                        "nmServico": "Estadia de veículo truck",
+                        "sgMoeda": "R$",
+                        "vlServico": "2159.82"
+                      },
+                      {
+                        "nmServico": "Gestão de operações logísticas na sede da empresa",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.00"
+                      },
+                      {
+                        "nmServico": "Gestão de operações logísticas na sede do cliente/terceiros",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.00"
+                      },
+                      {
+                        "dsComplemento": "R$ 0,87 por pallet padrão PBR.",
+                        "nmServico": "Paletização",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.87"
+                      },
+                      {
+                        "dsComplemento": "0,46% sobre o valor da mercadoria por período.",
+                        "nmServico": "Seguro da carga em permanência",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.46"
+                      },
+                      {
+                        "dsComplemento": "R$ 0,43 por kg/dia com mínimo de R$ 44,34 com carência de 3 dias.",
+                        "nmServico": "Taxa de fiel depositário",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.43"
+                      },
+                      {
+                        "dsComplemento": "R$ 0,39 por kg/dia com mínimo de R$ 40,66 com carência de 7 dias e decurso de prazo de 15 dias.",
+                        "nmServico": "Taxa de permanência de carga",
+                        "sgMoeda": "R$",
+                        "vlServico": "0.39"
+                      },
+                      {
+                        "nmServico": "Valor por km veículo dedicado 3/4 ou van",
+                        "sgMoeda": "R$",
+                        "vlServico": "4.51"
+                      },
+                      {
+                        "nmServico": "Valor por km veículo dedicado carreta",
+                        "sgMoeda": "R$",
+                        "vlServico": "6.29"
+                      },
+                      {
+                        "nmServico": "Valor por km veículo dedicado toco ou truck",
+                        "sgMoeda": "R$",
+                        "vlServico": "5.52"
+                      },
+                      {
+                        "dsComplemento": "R$ 1.516,17 por entrega - R$ 4,51 por km excedente (100 km).",
+                        "nmServico": "Veículo dedicado 3/4 ou van",
+                        "sgMoeda": "R$",
+                        "vlServico": "1516.17"
+                      },
+                      {
+                        "dsComplemento": "R$ 2.574,61 por entrega - R$ 6,29 por km excedente (100 km).",
+                        "nmServico": "Veículo dedicado carreta",
+                        "sgMoeda": "R$",
+                        "vlServico": "2574.61"
+                      },
+                      {
+                        "dsComplemento": "R$ 1.630,58 por entrega - R$ 5,52 por km excedente (100 km).",
+                        "nmServico": "Veículo dedicado toco ou truck",
+                        "sgMoeda": "R$",
+                        "vlServico": "1630.58"
+                      }
+                    ]
+                  },
+                  "nmMunicipioDestino": "Lajeado",
+                  "nmMunicipioOrigem": "Lajeado",
+                  "nmRemetente": "IMPERADOR DOS LUSTRES COM DE ART DE ILUMINACAO LTD",
+                  "nrDDDFilialDestino": "51",
+                  "nrDDDFilialOrigem": "51",
+                  "nrTelefoneFilialDestino": "33565000",
+                  "nrTelefoneFilialOrigem": "33565000",
+                  "prazoEntrega": "1",
+                  "vlDesconto": "0.00",
+                  "vlICMSubstituicaoTributaria": "0",
+                  "vlImposto": "0",
+                  "vlTotalCtrc": "208.26",
+                  "vlTotalFrete": "208.26",
+                  "vlTotalServico": "0.00"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "325e1194-198a-442e-8d28-f3ba9ab7c214",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-11-18T11:46:47.981Z",
+      "updatedAt": "2024-11-18T11:46:47.981Z",
+      "role": "workflow:owner",
+      "workflowId": "jbylKkQHf5yATTLC",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
