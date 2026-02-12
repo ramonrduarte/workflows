@@ -1,0 +1,238 @@
+{
+  "createdAt": "2024-12-03T18:02:49.231Z",
+  "updatedAt": "2024-12-07T17:07:40.515Z",
+  "id": "DOQhklHrYwKpsvWh",
+  "name": "Chamada1",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.adrofecha.com.br/web_api/auth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89"
+            },
+            {
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "54cd4ee0-7f0d-4e5a-8e06-b5ae30b1f448",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "acess_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "115756e8-88ec-42b7-bad1-2af459c4f84e",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        340
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "03ce65d0-4dcc-44c3-ad16-265fa0b61a3a",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products/{{ $json.Products[0].Product.id }}?access_token={{ $('Edit Fields').item.json.acess_token }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Edit Fields').item.json.acess_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "3c19cbeb-2893-46c5-9436-eaf07c844dda",
+      "name": "Faz a consulta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/products?access_token={{ $json.acess_token }}&reference={{ $('Execute Workflow Trigger').item.json.query }}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "384545f7-9dd2-4c5d-ab23-0a5c0a8f8734",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Função para remover tags HTML\nfunction removeHtmlTags(str) {\n  if (!str) return ''; // Caso a string seja nula ou vazia\n  return str.replace(/<[^>]*>/g, '').replace(/&[^;]+;/g, ''); // Remove tags e entidades HTML\n}\n\n// Acesse os dados do nó anterior\nconst product = $node[\"Faz a consulta\"].json.Product; // Certifique-se de que \"Faz a consulta\" é o nome correto do nó anterior\n\n// Verifique se o objeto Product está presente\nif (!product) {\n  throw new Error(\"Os dados do produto estão ausentes ou mal formatados.\");\n}\n\n// Mapeie os dados para o formato esperado\nconst result = {\n  id: product.id || '',\n  nome: product.name || '',\n  descricao: removeHtmlTags(product.description), // Remove as tags HTML\n  preco: product.price || '',\n  imagem: product.ProductImage?.[0]?.https || '', // Usa a primeira imagem disponível\n  url: product.url?.https || '', // URL do produto\n};\n\n// Retorne os dados formatados\nreturn [{ json: { response: [result] } }];\n"
+      },
+      "id": "cb3e9eda-30b3-413e-9253-a86a57f71a9e",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Função para remover tags HTML\nfunction removeHtmlTags(str) {\n  if (!str) return ''; // Caso a string seja nula ou vazia\n  return str.replace(/<[^>]*>/g, '').replace(/&[^;]+;/g, '');\n}\n\nconst product = $node[\"Faz a consulta\"].json.Product;\n\nif (!product) {\n  throw new Error(\"Os dados do produto estão ausentes ou mal formatados.\");\n}\n\n// Mapeie os dados para os grupos esperados\nconst result = {\n  dadosBasicos: {\n    id: product.id || '',\n    codigo: product.reference || '',\n    nome: product.name || '',\n    descricao: removeHtmlTags(product.description || ''),\n    url: product.url?.https || ''\n  },\n  imagem: {\n    url: product.ProductImage?.[0]?.https || ''\n  },\n  dimensoes: {\n    largura: product.width || '',\n    altura: product.height || '',\n    comprimento: product.length || '',\n    peso: product.weight || ''\n  }\n};\n\n// Retorne os dados formatados\nreturn [{ json: { response: [result] } }];\n"
+      },
+      "id": "c1367afe-6cd1-4293-a797-a411ff01e40a",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        520
+      ]
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Faz a consulta": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Faz a consulta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e9f303ed-e7d0-4e80-9c49-6f9a77c1e92f",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-03T18:02:49.231Z",
+      "updatedAt": "2024-12-03T18:02:49.231Z",
+      "role": "workflow:owner",
+      "workflowId": "DOQhklHrYwKpsvWh",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
