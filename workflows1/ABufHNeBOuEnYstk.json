@@ -1,0 +1,540 @@
+{
+  "createdAt": "2025-01-06T12:48:34.016Z",
+  "updatedAt": "2025-01-06T12:48:50.967Z",
+  "id": "ABufHNeBOuEnYstk",
+  "name": "CustomerSupaBase_export",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.function }}",
+                    "rightValue": "get_or_create",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "61ad9fb3-58ca-48f7-9cf0-d52c39400446",
+                    "leftValue": "={{ $json.function }}",
+                    "rightValue": "update",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        900,
+        460
+      ],
+      "id": "f16a23f1-9309-4f62-99ec-945a5c523e34",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ],
+      "id": "5d712117-a6b3-4a3a-8ff8-6d17af335201",
+      "name": "Start"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8a011e5f-4fa4-4788-a027-4e8a5e3ec3ef",
+              "leftValue": "={{ $('Find_Customer-Supabase').last()?.json?.id}}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1580,
+        460
+      ],
+      "id": "01f408ab-41f6-4cab-8ee3-0fd9f4803878",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "customers",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Start').item.json.phone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        460
+      ],
+      "id": "3196da55-cf33-40df-97a1-a139068f0cc3",
+      "name": "Find_Customer-Supabase",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3b472184-de47-4205-bccd-3c3710f98bb8",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "3c5d0b81-d4c7-4069-b14f-77842890c2d2",
+              "name": "name",
+              "value": "={{ $('Start').item.json?.query?.name || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "8fb1b4bf-f239-4408-9987-cdd3c1e0eb31",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "ac6a0857-10b8-4412-ba4d-d8b84e401658",
+              "name": "location",
+              "value": "={{ $json.location }}",
+              "type": "string"
+            },
+            {
+              "id": "056bebdd-ceca-4204-b3da-a117bfabc25b",
+              "name": "lat",
+              "value": "={{ $json.lat }}",
+              "type": "string"
+            },
+            {
+              "id": "8cdb1beb-fe86-4a43-a5e2-a6d36436df40",
+              "name": "long",
+              "value": "={{ $json.long }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1400,
+        460
+      ],
+      "id": "da6cf83a-9cad-4a50-b401-98444c0e4b34",
+      "name": "Config"
+    },
+    {
+      "parameters": {
+        "jsCode": "return { \n'response': $input.last().json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2180,
+        780
+      ],
+      "id": "b2c8ab5b-2bea-4d37-abd6-0ffa9b0a7248",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "tableId": "customers",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Start').item.json.phone }}"
+            },
+            {
+              "fieldId": "cliente_name",
+              "fieldValue": "={{ $('Config').item.json.name }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('Config').item.json.email }}"
+            },
+            {
+              "fieldId": "location",
+              "fieldValue": "={{ $('Config').item.json.location }}"
+            },
+            {
+              "fieldId": "lat",
+              "fieldValue": "={{ $('Config').item.json.lat }}"
+            },
+            {
+              "fieldId": "long",
+              "fieldValue": "={{ $('Config').item.json.long }}"
+            },
+            {
+              "fieldId": "active",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        740
+      ],
+      "id": "4d9b0dab-0f10-42bb-9e6a-63e6d259fb97",
+      "name": "Create_Customer-Supabase"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1920,
+        780
+      ],
+      "id": "37728ca7-a51a-45d6-8e29-9de472cbd083",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "customers",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.phone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "cliente_name",
+              "fieldValue": "={{ $('CacheData').item.json.name }}"
+            },
+            {
+              "fieldId": "location",
+              "fieldValue": "={{ $('CacheData').item.json.location }}"
+            },
+            {
+              "fieldId": "lat",
+              "fieldValue": "={{ $('CacheData').item.json.lat }}"
+            },
+            {
+              "fieldId": "long",
+              "fieldValue": "={{ $('CacheData').item.json.long }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('CacheData').item.json.email }}"
+            },
+            {
+              "fieldId": "distance",
+              "fieldValue": "={{ $('CacheData').item.json.distance }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        900
+      ],
+      "id": "2c92f6c6-ad03-44fc-a6e4-39c125c50ede",
+      "name": "Update_Customer-Supabase"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e31c66f-31b8-4800-9154-e5365bcbfdec",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "a7de30b6-1398-4812-a589-68eb0aa9d604",
+              "name": "name",
+              "value": "={{ $json.name || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "d3d12f62-5750-4e11-8496-194ba3e29e13",
+              "name": "location",
+              "value": "={{ $json.location || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "332b1821-9580-4cfd-a520-1f8189e9d764",
+              "name": "function",
+              "value": "={{ $json.function }}",
+              "type": "string"
+            },
+            {
+              "id": "495064cf-b146-48e3-9bc0-0d31601aa392",
+              "name": "lat",
+              "value": "={{ $json.lat || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "aa962888-9af0-4e93-a2bf-1e496200d62f",
+              "name": "long",
+              "value": "={{ $json.long || \"\"}}",
+              "type": "string"
+            },
+            {
+              "id": "bed1554c-d83b-4a11-b9aa-e59e2a63cbb9",
+              "name": "email",
+              "value": "={{ $json.email || \"\"}}",
+              "type": "string"
+            },
+            {
+              "id": "56f3c2e2-b3b2-439c-b421-a0b668e5ae2e",
+              "name": "distance",
+              "value": "={{ $json.distance || \"\"}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        460
+      ],
+      "id": "9c995b43-dd2e-43d0-be71-b2ad741ae150",
+      "name": "CacheData",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "CacheData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Find_Customer-Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update_Customer-Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find_Customer-Supabase": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create_Customer-Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create_Customer-Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_Customer-Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "CacheData": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "phone": "558681612061",
+          "function": "get_or_create"
+        }
+      }
+    ]
+  },
+  "versionId": "bf99454c-10d6-4fd2-8020-01668a684751",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-01-06T12:47:28.226Z",
+      "updatedAt": "2025-01-06T12:47:28.226Z",
+      "id": "lWDlEo4vLqFeOPYm",
+      "name": "delivery"
+    }
+  ],
+  "shared": [
+    {
+      "createdAt": "2025-01-06T12:48:34.016Z",
+      "updatedAt": "2025-01-06T12:48:34.016Z",
+      "role": "workflow:owner",
+      "workflowId": "ABufHNeBOuEnYstk",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
