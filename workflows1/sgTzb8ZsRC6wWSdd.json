@@ -1,0 +1,154 @@
+{
+  "createdAt": "2024-11-29T10:42:50.077Z",
+  "updatedAt": "2024-12-03T12:58:23.516Z",
+  "id": "sgTzb8ZsRC6wWSdd",
+  "name": "Chamada Própria",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "12638865-21d4-4981-a167-a7951b181b1f",
+              "leftValue": "={{ $json.body.data.key.remoteJid }}",
+              "rightValue": "555193732861@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "a7e208db-7951-4cdc-b591-06e5cbb3ded2",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6f716407-dca3-4668-b719-ab5cf74a3e31",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendList/Ramon",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"number\": \"555193732861@s.whatsapp.net\",\n  \"title\": \"Olá, Como posso te ajudar?\",\n  \"description\": \"Digite o que voce precisa, ou então *clique no menu* e escolha o assunto\",\n  \"buttonText\": \"Escolher assunto\",\n  \"footerText\": \"\",\n  \"sections\": [\n    {\n      \"title\": \"\",\n      \"rows\": [\n        {\n          \"title\": \"🚚 Status do pedido\",\n          \"description\": \"Acompanhar pedidos\",\n          \"rowId\": \"rowId 001\"\n        },\n        {\n          \"title\": \"🤔 Devolução e cancelamento\",\n          \"description\": \"Como devolver ou cancelar pedidos\",\n          \"rowId\": \"rowId 002\"\n        },\n        {\n          \"title\": \"📲 Falar com atendente\",\n          \"description\": \"Falar com vendedor\",\n          \"rowId\": \"rowId 003\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "42fe09bc-fa31-4494-a0c6-df76fa0e0576",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "a73ac567-30c5-4590-985e-0424861c2b1e",
+        "options": {}
+      },
+      "id": "1bd05332-c35d-4616-99bb-4bca616280b7",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        320,
+        240
+      ],
+      "webhookId": "a73ac567-30c5-4590-985e-0424861c2b1e"
+    }
+  ],
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a563f510-0bca-4286-be9e-0e5b438edb31",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-11-29T10:42:50.077Z",
+      "updatedAt": "2024-11-29T10:42:50.077Z",
+      "role": "workflow:owner",
+      "workflowId": "sgTzb8ZsRC6wWSdd",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
