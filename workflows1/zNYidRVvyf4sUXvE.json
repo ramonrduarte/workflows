@@ -1,0 +1,471 @@
+{
+  "createdAt": "2024-10-23T13:59:15.558Z",
+  "updatedAt": "2024-11-18T17:46:01.678Z",
+  "id": "zNYidRVvyf4sUXvE",
+  "name": "Consulta código (BIMER)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"c6f8e33ee8560aa56f04a8f8cc8d75ee\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n\n}",
+        "options": {}
+      },
+      "id": "add73404-c07b-4678-9136-8bed32f1ee13",
+      "name": "Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['URL ADROFECHA'] }}/api/produtos?codigo={{ $('Salvar Token, Codigo e URL').item.json[\"codigo produto\"] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"access_token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d3b2042b-bb50-416e-a571-781fedbe0006",
+      "name": "Consulta Codigo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Salvar Token, Codigo e URL').item.json[\"URL ADROFECHA\"] }}/api/01/produtos/{{ $('Salvar Descrição, Identificador').item.json[\"Identificador\"] }}/estoque",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"access_token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc69ca18-8ea3-4c07-bb2f-f0a269795d51",
+      "name": "Consulta estoque",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Salvar Token, Codigo e URL').item.json[\"URL ADROFECHA\"] }}/api/empresas/1/produtos/{{ $('Salvar Descrição, Identificador').item.json[\"Identificador\"] }}/precos/00A0000003",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"acess token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6c43a1da-6bda-466c-8da2-913fd5cd1a9e",
+      "name": "Consulta preço",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1600,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Salvar Token, Codigo e URL').item.json[\"URL ADROFECHA\"] }}/api/produtos/{{ $('Salvar Descrição, Identificador').item.json[\"Identificador\"] }}/imagem",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salvar Token, Codigo e URL').item.json[\"acess token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "52b1ff94-bb24-4298-928c-4a71cff95495",
+      "name": "Consulta imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "891e0d0e-edae-4c74-9fa2-925bdb8e423d",
+              "name": "acess token",
+              "value": "={{ $('Token').item.json[\"access_token\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6cd8dc5b-b84d-4ae4-9f98-60e6928a5bf5",
+              "name": "codigo produto",
+              "value": "={{ $('Webhook').item.json[\"body\"][\"codigo do informado\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6405008f-9ba5-4e7f-8c56-6f85b9e41790",
+              "name": "URL ADROFECHA",
+              "value": "=http://177.204.252.25:8084",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "2d4ceba4-a1e7-47bd-930a-19ebf712488d",
+      "name": "Salvar Token, Codigo e URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "329a26e6-31ae-4269-9b98-f54a25009bb4",
+              "name": "Descrição",
+              "value": "={{ $('Consulta Codigo').item.json[\"ListaObjetos\"][0][\"Nome\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1cb59780-d90f-4b10-8fc0-0020cc0c43be",
+              "name": "Identificador",
+              "value": "={{ $('Consulta Codigo').item.json[\"ListaObjetos\"][0][\"Identificador\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d144eace-6f46-4813-86a2-c719f9605d29",
+      "name": "Salvar Descrição, Identificador",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aa5feb77-f60c-42a1-8e0f-1f6432c91e37",
+              "name": "Estoque",
+              "value": "={{ $('Consulta estoque').item.json[\"ListaObjetos\"][0][\"QuantidadeDisponivel\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e32f6e32-d8ff-419e-b84f-06fcc46a9fe7",
+      "name": "Salvar estoque",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ce3ca39-e71a-40c8-a81d-ec0c39d85540",
+              "name": "Preço",
+              "value": "=R$ {{ $('Consulta preço').item.json[\"ListaObjetos\"][0][\"Valor\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67e7b59b-8cb2-4c09-8697-a4807e704f6e",
+      "name": "Salvar Preço",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1720,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"Codigo\": \"{{ $('Salvar Token, Codigo e URL').item.json[\"codigo produto\"] }}\",\n  \"Descricao\": \"{{ $('Salvar Descrição, Identificador').item.json[\"Descrição\"] }}\",\n  \"Estoque\": \"{{$('Salvar estoque').item.json[\"Estoque\"]}}\",\n  \"Valor\": \"{{ $('Salvar Preço').item.json[\"Preço\"] }}\",\n  \"Imagem\": \"{{ $('Salvar Imagem').item.json[\"Imagem\"] }}\"\n}\n",
+        "options": {}
+      },
+      "id": "3224bb58-efce-4f81-82b4-92f26370dca6",
+      "name": "Juntar dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2120,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9d5032a3-2003-4935-a01a-fde8652e9c91",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2260,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ce3ca39-e71a-40c8-a81d-ec0c39d85540",
+              "name": "Imagem",
+              "value": "={{ $('Consulta imagem').item.json[\"ListaObjetos\"][0][\"Imagem\"][\"Conteudo\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "92660ddd-efc6-4ae3-964a-264d70e598b3",
+      "name": "Salvar Imagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1980,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "typebot",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "cecf7cba-7c59-47a3-926a-09801fcc7950",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        600,
+        340
+      ],
+      "webhookId": "b2293cb2-007e-41be-ac17-0f1ec8206538"
+    }
+  ],
+  "connections": {
+    "Token": {
+      "main": [
+        [
+          {
+            "node": "Salvar Token, Codigo e URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta Codigo": {
+      "main": [
+        [
+          {
+            "node": "Salvar Descrição, Identificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta estoque": {
+      "main": [
+        [
+          {
+            "node": "Salvar estoque",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta preço": {
+      "main": [
+        [
+          {
+            "node": "Salvar Preço",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta imagem": {
+      "main": [
+        [
+          {
+            "node": "Salvar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Token, Codigo e URL": {
+      "main": [
+        [
+          {
+            "node": "Consulta Codigo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Descrição, Identificador": {
+      "main": [
+        [
+          {
+            "node": "Consulta estoque",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar estoque": {
+      "main": [
+        [
+          {
+            "node": "Consulta preço",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Preço": {
+      "main": [
+        [
+          {
+            "node": "Consulta imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Juntar dados": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Juntar dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d008a3ca-1ac1-41be-b580-9fbe7701df54",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-10-23T13:59:15.558Z",
+      "updatedAt": "2024-10-23T13:59:15.558Z",
+      "role": "workflow:owner",
+      "workflowId": "zNYidRVvyf4sUXvE",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
