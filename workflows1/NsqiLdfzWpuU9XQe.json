@@ -1,0 +1,200 @@
+{
+  "createdAt": "2024-12-06T17:15:48.329Z",
+  "updatedAt": "2024-12-07T11:49:28.557Z",
+  "id": "NsqiLdfzWpuU9XQe",
+  "name": "Chamada2",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "bd3819bb-6003-49f4-9ccf-0c11b325835a",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Função para remover tags HTML\nfunction removeHtmlTags(str) {\n  if (!str) return ''; // Caso a string seja nula ou vazia\n  return str.replace(/<[^>]*>/g, '').replace(/&[^;]+;/g, ''); // Remove tags e entidades HTML\n}\n\n// Acesse os dados do nó anterior\nconst products = $node[\"Faz a consulta\"].json.Products; // Certifique-se de que \"Faz a consulta\" é o nome correto do nó anterior\n\n// Verifique se há produtos\nif (!products || products.length === 0) {\n  throw new Error(\"Nenhum produto encontrado.\");\n}\n\n// Se houver apenas um produto, retorne os dados formatados como objeto dentro da chave 'response'\nif (products.length === 1) {\n  const product = products[0].Product;\n  const result = {\n    id: product.id || '',\n    codigo: product.reference || '',\n    nome: product.name || '',\n    descricao: removeHtmlTags(product.description) || '',\n    preco: product.price || '',\n    imagem: product.ProductImage?.[0]?.https || '',\n    url: product.url?.https || '',\n  };\n  return [{ json: { response: [result] } }];\n}\n\n// Caso contrário, retorne uma lista formatada como Markdown dentro da chave 'response'\nconst markdownList = products.map(({ Product }) => {\n  return `*Código*: ${Product.reference}\\n*Nome*: ${Product.name}\\n*Valor*: R$ ${Product.price}`;\n}).join('\\n---\\n');\n\nreturn [{ json: { response: [{ markdown: markdownList }] } }];\n"
+      },
+      "id": "5c69bbfd-24f1-4d75-81e4-53fdd6fa7d94",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.adrofecha.com.br/web_api/auth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89"
+            },
+            {
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "9f4d2770-d9dc-48f5-8be2-ab6fd51491b8",
+      "name": "Pega Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "acess_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0a4e9d18-c042-4ba2-9fa3-ba69f91d0efd",
+      "name": "Armazena Token",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.adrofecha.com.br/web_api/web_api/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $('Execute Workflow Trigger').item.json.query }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('Pega Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "0b39db79-135e-49dc-92e9-1b98cb7a5894",
+      "name": "Faz a consulta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        340
+      ]
+    }
+  ],
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Pega Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Token": {
+      "main": [
+        [
+          {
+            "node": "Armazena Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armazena Token": {
+      "main": [
+        [
+          {
+            "node": "Faz a consulta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Faz a consulta": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6027de58-fc40-4056-a9de-cc32df0cb23b",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-06T17:15:48.329Z",
+      "updatedAt": "2024-12-06T17:15:48.329Z",
+      "role": "workflow:owner",
+      "workflowId": "NsqiLdfzWpuU9XQe",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
