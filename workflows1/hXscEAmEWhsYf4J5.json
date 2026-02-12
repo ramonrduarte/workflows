@@ -1,0 +1,85 @@
+{
+  "createdAt": "2025-08-04T18:10:40.521Z",
+  "updatedAt": "2025-08-04T18:13:15.814Z",
+  "id": "hXscEAmEWhsYf4J5",
+  "name": "My workflow 2",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8d262872-1345-49f8-9b4f-c032c8cea328",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "goal",
+        "operation": "getAll",
+        "team": "9014751659"
+      },
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2852c60d-b9eb-4fbc-9e98-216314cd6d89",
+      "name": "Get many goals",
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "Yl7IHUJm6D6OzaaD",
+          "name": "ClickUp account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many goals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0fecb14c-3454-454f-9814-bdeb8436e18d",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-08-04T18:10:40.521Z",
+      "updatedAt": "2025-08-04T18:10:40.521Z",
+      "role": "workflow:owner",
+      "workflowId": "hXscEAmEWhsYf4J5",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
