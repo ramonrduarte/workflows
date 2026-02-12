@@ -1,0 +1,2048 @@
+{
+  "createdAt": "2025-02-13T12:40:04.121Z",
+  "updatedAt": "2025-02-15T21:35:19.963Z",
+  "id": "MpWWT6AhfNVMRPZ8",
+  "name": "Ajuste Estoque/Preco Bimer-Trayasa",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f31c1552-268e-4373-b42c-ee3529784ceb",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -980,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('URLs').item.json.url_tray }}/web_api/auth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "utf-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "9d14d764ffe5f70d23fa444f73693a06f2eb4799357189296586cbbb8e19cc35"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "93bcc383eb812785f86486cf885c0a956cf4bc25a192d59192849d8ff83ebb89"
+            },
+            {
+              "name": "code",
+              "value": "68d5548ae10aaf7f79cdc04bd02628331a201b9bb02d595e71abbd8bcd3661b4"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "91a004f4-80d3-4c04-a0d4-d01884c7aaa9",
+      "name": "Token Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -660,
+        40
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1addcc49-5400-425c-bb40-a5a770b3e14d",
+      "name": "Replace Me1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2920,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenha os dados retornados pelo node anterior\nconst allItems = $input.all(); // Obtém os dados de todas as páginas\n\n// Mapeie e extraia os campos necessários\nconst results = allItems.flatMap(item => {\n  const products = item.json.Products || []; // Certifique-se de que \"Products\" é o nome correto\n\n  return products.map(productData => {\n    const product = productData.Product || {}; // Navegue para dentro de \"Product\"\n\n    return {\n      id: product.id || \"N/A\",\n      has_variation: product.has_variation,\n    };\n  });\n});\n\n// Retorne os dados filtrados como saída\nreturn results.map(result => ({ json: result }));\n"
+      },
+      "id": "d3334e38-2d2b-4b08-b435-c2a656482e50",
+      "name": "IDs de produtos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f90a64de-a66f-4e02-92a5-667bc1048c48",
+      "name": "Consulta IDs não cadastrados",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        800,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/{{ $json.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Salva Tokens').first().json.tray.token_tray }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "2df2917d-46af-4504-a348-327d89b05104",
+      "name": "Consulta por ID Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ef04945-8eba-41ec-9825-e6569bb4215d",
+              "leftValue": "={{ $json.has_variation }}",
+              "rightValue": "=0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "bf24b0d9-e246-4815-9511-c3e27c5e1656",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "554c523f-7fe6-4941-a510-79c973e84841",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cadbdc4d-97ef-4631-bc22-a55b98debcd9",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/01/produtos/{{ $('Identificador Bimer1').item.json.ListaObjetos[0].Identificador }}/estoque?identificadorSetor=00A0000005&dataReferencia={{ $now.toFormat('yyyy-MM-dd') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Tokens').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3f2e867f-4841-4ede-b05f-f3c69ef77116",
+      "name": "Estoque Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/empresas/1/produtos/{{ $('Identificador Bimer1').first().json.ListaObjetos[0].Identificador }}/precos/00A0000003",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Tokens').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "47739ecf-2efa-4191-9736-388f06ba04c7",
+      "name": "Preco Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1980,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08a8d739-f2b2-45db-8280-2e4d94aa6606",
+              "name": "id_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f3cf847d-7026-4878-b05d-ba1568026e7d",
+              "name": "referencia",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "99bad68f-8116-41c0-8b38-4864e060a1d1",
+              "name": "estoque_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.stock }}",
+              "type": "number"
+            },
+            {
+              "id": "420e19e4-7e8f-4328-a1c3-edcf171e8e57",
+              "name": "preco_tray",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.price }}",
+              "type": "number"
+            },
+            {
+              "id": "0c3bb03f-2a7e-4aec-913c-5d94cbdc8fb8",
+              "name": "has_variation",
+              "value": "={{ $('Consulta por ID Tray').first().json.Product.has_variation }}",
+              "type": "string"
+            },
+            {
+              "id": "3e9e7341-d873-4dfc-81db-84c394859f05",
+              "name": "estoque_bimer",
+              "value": "={{ Math.floor($('Estoque Bimer1').first().json.ListaObjetos[0].QuantidadeDisponivel * 100) / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "734775ec-cb3b-441d-9ad7-f7bc1c713e5a",
+              "name": "preco_bimer",
+              "value": "={{ $('Preco Bimer1').first().json.ListaObjetos[0].Valor }}",
+              "type": "number"
+            },
+            {
+              "id": "92a1b533-fded-4eb8-89a8-2952bd41eb6b",
+              "name": "id_bimer",
+              "value": "={{ $('Identificador Bimer1').first().json.ListaObjetos[0].Identificador }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a3e22880-bc2e-4218-b6ac-3fa4d5a3bca4",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2140,
+        100
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f8f0dd1f-541b-46e7-9d8a-3128e1d0cbbc",
+      "name": "Limit3",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        580,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/variants",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Tokens').first().json.token_tray }}"
+            },
+            {
+              "name": "id",
+              "value": "={{ $json.variation_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "utf-8"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "a4383938-a435-4c1c-9318-0ecbe8a977af",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "17c9c72c-3277-43c4-bebf-c9f48fddde51",
+      "name": "Consulta IDs não cadastrados1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "cf67ada7-b05f-4b09-ae32-822343d3035b",
+      "name": "Limit1",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/{{$json.id}}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Tokens').all().first().json.token_tray }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Charset",
+              "value": "UTF-8"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "7834438a-1b02-4aa5-b961-35bc9610291d",
+      "name": "Consulta por ID Tray1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -380,
+        580
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ec683326-bfef-4f49-a9e5-8169e392ac98",
+      "name": "Replace Me2",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const product = $json.Product; // Dados do produto principal\nconst variations = product.Variant; // Variações do produto\n\n// Função para limpar tags HTML de um texto\nfunction stripHtml(html) {\n  if (!html) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  return html.replace(/<[^>]*>/g, '').replace(/\\n/g, '').trim();\n}\n\n// Função para decodificar entidades HTML\nfunction decodeHtmlEntities(text) {\n  if (!text) return \"N/A\"; // Retorna um valor padrão se o campo estiver vazio\n  const entities = {\n    amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\",\n    nbsp: ' ', ccedil: 'ç', atilde: 'ã', otilde: 'õ', aacute: 'á',\n    eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ',\n    acirc: 'â', ecirc: 'ê', icirc: 'î', ocirc: 'ô', ucirc: 'û',\n    Agrave: 'À', Aacute: 'Á', Acirc: 'Â', Atilde: 'Ã', Auml: 'Ä', Aring: 'Å',\n    Egrave: 'È', Eacute: 'É', Ecirc: 'Ê', Euml: 'Ë',\n    Igrave: 'Ì', Iacute: 'Í', Icirc: 'Î', Iuml: 'Ï',\n    Ograve: 'Ò', Oacute: 'Ó', Ocirc: 'Ô', Otilde: 'Õ', Ouml: 'Ö',\n    Ugrave: 'Ù', Uacute: 'Ú', Ucirc: 'Û', Uuml: 'Ü',\n    yacute: 'ý', thorn: 'þ', szlig: 'ß', eth: 'ð', yuml: 'ÿ'\n  };\n\n  return text\n    .replace(/&#(\\d+);/g, (match, dec) => String.fromCharCode(dec)) // Entidades numéricas\n    .replace(/&([^;]+);/g, (match, entity) => entities[entity] || match); // Entidades nomeadas\n}\n\n// Cria um array com os dados desejados\nconst result = variations.map(variation => ({\n  id: product.id,\n  name: product.name,\n  description: decodeHtmlEntities(stripHtml(product.description)),\n  variation_id: variation.id,\n}));\n\n// Retorna o resultado diretamente (não encapsular em `json` ainda)\nreturn result;\n"
+      },
+      "id": "78c5148f-5e45-47d3-99d8-50628355a097",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c573b23a-a7cb-44ee-ba4a-6ed49a347e6a",
+      "name": "Loop Over Items1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        360,
+        640
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "25ab6b30-920e-4b2f-8cbf-1685967b753b",
+      "name": "Replace Me3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6bda4fe9-d4fe-48cd-a24c-039aa5cda0d6",
+              "name": "id_tray",
+              "value": "={{ $('HTTP Request').first().json.Variants[0].Variant.product_id }}",
+              "type": "string"
+            },
+            {
+              "id": "fef12ab2-1157-4548-80c5-518a4928f88f",
+              "name": "referencia",
+              "value": "={{ $('HTTP Request').first().json.Variants[0].Variant.reference }}",
+              "type": "string"
+            },
+            {
+              "id": "ca662585-5ab5-4554-bc50-5efcebc982be",
+              "name": "estoque_tray",
+              "value": "={{ $('HTTP Request').first().json.Variants[0].Variant.stock }}",
+              "type": "number"
+            },
+            {
+              "id": "c35ec081-bf8f-42cf-b4ff-3552528e1e9e",
+              "name": "preco_tray",
+              "value": "={{ $('HTTP Request').first().json.Variants[0].Variant.price }}",
+              "type": "number"
+            },
+            {
+              "id": "ce9de9d4-1449-4c21-b855-2c9ad2aa6d9f",
+              "name": "variant_id",
+              "value": "={{ $('HTTP Request').first().json.Variants[0].Variant.id }}",
+              "type": "string"
+            },
+            {
+              "id": "ad4311c7-ff27-4dd5-819d-3b46517fee79",
+              "name": "has_variation",
+              "value": 1,
+              "type": "string"
+            },
+            {
+              "id": "feeaa085-c8f7-4c20-83e8-26a28b0d2d92",
+              "name": "estoque_bimer",
+              "value": "={{ Math.floor($('Estoque Bimer').first().json.ListaObjetos[0].QuantidadeDisponivel * 100) / 100 }}",
+              "type": "number"
+            },
+            {
+              "id": "6ee60546-0f9c-4c8e-8fe1-e2f8fbc9adec",
+              "name": "preco_bimer",
+              "value": "={{ $('Identificador Bimer').first().json.ListaObjetos[0].valor }}",
+              "type": "number"
+            },
+            {
+              "id": "ebc47f28-c9b2-4492-a379-3ce20806a0ec",
+              "name": "id_bimer",
+              "value": "={{ $('Identificador Bimer').first().json.ListaObjetos[0].Identificador }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "357eb587-3064-46ac-884a-73c8bf883970",
+      "name": "Ajuste Variantes",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1220,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('URLs').first().json.url_bimer }}/oauth/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \n\"client_id\"\n: \n\"IntegracaoBimer.js\"\n,\n    \n\"grant_type\"\n: \n\"password\"\n,\n    \n\"username\"\n: \n\"bimerapi\"\n,\n    \n\"nonce\"\n: \n\"123\"\n,\n    \n\"password\"\n: \n\"0c79e6fcfbe6528780934f772dd450f7\"\n,\n    \n\"client_secret\"\n: \n\"5738da543c4a78db569b43944caae630\"\n\n}",
+        "options": {}
+      },
+      "id": "282444e7-ad65-4f90-9390-4f4f1740b66b",
+      "name": "Token Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13d83c86-6ce6-4d51-b3f5-d033922367a4",
+              "leftValue": "={{ $json.preco_tray }}",
+              "rightValue": "={{ $json.preco_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "8b1a8d0b-46d0-4d09-a683-5618ec9b8929",
+              "leftValue": "={{ $json.estoque_tray }}",
+              "rightValue": "={{ $json.estoque_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "769c6bf5-4c15-4042-ac6a-91224b46cff3",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2300,
+        100
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f2537eea-04e5-4d29-a336-4aadf8a8dfcc",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2740,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f877395-78a3-4b04-b162-affc17fc6680",
+              "name": "atualizar",
+              "value": "sim",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "6a045239-b6a0-4e3a-9f81-1d2e78ff6ef6",
+      "name": "Atualiza (Sim)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2540,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "849a67a5-acf6-49c8-a594-31295456a7bb",
+              "name": "atualizar",
+              "value": "nao",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "0f4a81d6-5059-49c5-a799-6976c9ced45d",
+      "name": "Atualizar (Nao)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2540,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13fbebad-6fb6-4057-ad5c-0d5a3cde5c7d",
+              "leftValue": "={{ $json.atualizar }}",
+              "rightValue": "sim",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6cd476c5-ce9d-484e-bcd2-027103b98192",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1060,
+        -520
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/01/produtos/{{ $('Identificador Bimer').item.json.ListaObjetos[0].Identificador }}/estoque?identificadorSetor=00A0000005&dataReferencia={{ $now.toFormat('yyyy-MM-dd') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Tokens').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "99395438-d3d8-4fe8-af33-011a17e245cf",
+      "name": "Estoque Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/empresas/1/produtos/{{ $('Identificador Bimer').item.json.ListaObjetos[0].Identificador }}/precos/00A0000003",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Tokens').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a17a08df-9eec-4f5b-b499-38de80676137",
+      "name": "Preco Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f2d73325-6789-436b-bc4f-0e253ebac37d",
+              "leftValue": "={{ $json.estoque_tray }}",
+              "rightValue": "={{ $json.estoque_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "c55a6068-bc19-4dc4-8da5-3e75d366524b",
+              "leftValue": "={{ $json.preco_tray }}",
+              "rightValue": "={{ $json.preco_bimer }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "c630c7cd-948d-4258-9c78-e9240cb0c74b",
+      "name": "If2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f877395-78a3-4b04-b162-affc17fc6680",
+              "name": "atualizar",
+              "value": "sim",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "7cb60093-08e9-4606-a07d-969180c293f7",
+      "name": "Atualiza (Sim)1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1640,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "849a67a5-acf6-49c8-a594-31295456a7bb",
+              "name": "atualizar",
+              "value": "nao",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "06dccd1a-10a9-4308-bb5c-946a8b77f033",
+      "name": "Atualizar (Nao)1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1640,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3623d0d-0adc-4e53-b053-815c6480679d",
+              "leftValue": "={{ $json.atualizar }}",
+              "rightValue": "sim",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c83d658b-1ab9-478d-a606-c43ecf22d34c",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        540,
+        540
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9e66d664-8bb3-49c3-8c72-3ec8e137ae80",
+      "name": "Merge2",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1880,
+        800
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a05557c4-724f-4a27-9cb0-75782e16f241",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -500
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1b56378b-50fb-4f80-9c86-662ee2ccb014",
+      "name": "Edita Itens na Tray",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1440,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "0ae461b0-5bc6-45f0-9580-93d09c805b86",
+      "name": "Replace Me4",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ee16734a-d444-42a6-8d63-0e9c556b2f18",
+      "name": "Edita Itens Variacao Tray",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        760,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/{{ $json.id_tray }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Tokens').first().json.token_tray }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "stock",
+              "value": "={{ $json.estoque_bimer }}"
+            },
+            {
+              "name": "price",
+              "value": "={{ $json.preco_bimer }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "2c23b6ab-4e9a-4521-b451-dce35b678f97",
+      "name": "Atualiza dados por ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        -500
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "01e11f19-b954-4ba1-bc15-bfb7cb8796ad",
+      "name": "Limit",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -660
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products/variants/{{ $('Edita Itens Variacao Tray').first().json.variant_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Tokens').first().json.token_tray }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Variant[stock]",
+              "value": "={{ $('Edita Itens Variacao Tray').first().json.estoque_bimer }}"
+            },
+            {
+              "name": "Variant[price]",
+              "value": "={{ $('Edita Itens Variacao Tray').first().json.preco_bimer }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "59f55814-cf4d-4942-994a-5bddccf97357",
+      "name": "Atualiza Dados Variacao",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/produtos?codigo={{ $('HTTP Request').item.json.Variants[0].Variant.reference }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Tokens').first().json.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "34cbcb17-2784-4d6d-8585-1b13bafb4706",
+      "name": "Identificador Bimer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_bimer }}/api/produtos?codigo={{ $('Consulta por ID Tray').item.json.Product.reference }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Salva Tokens').first().json.bimer.token_bimer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f0462b29-89f4-496b-af83-e2ab9b218710",
+      "name": "Identificador Bimer1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a2525241-f004-40c0-87fd-caada4853285",
+              "name": "url_bimer",
+              "value": "http://177.204.252.25:8084",
+              "type": "string"
+            },
+            {
+              "id": "19db4c97-be32-4a90-b64f-c390775a20dd",
+              "name": "url_tray",
+              "value": "https://www.adrofecha.com.br",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8edff18d-1ade-487a-ba8d-517b29170a88",
+      "name": "URLs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('URLs').first().json.url_tray }}/web_api/products",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  },
+                  {
+                    "name": "limit",
+                    "value": "50"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": "={{ Math.ceil($response.body.paging.total / $response.body.paging.limit) }}",
+              "requestInterval": null
+            }
+          }
+        }
+      },
+      "id": "91698eb3-9cff-4a6c-8001-849b0ece2cf8",
+      "name": "Consulta Produtos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c981b7ab-55e9-4458-abde-216c65789524",
+              "name": "tray[token_tray]",
+              "value": "={{ $('Token Tray').first().json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "42edff7b-dc03-4404-a8b6-909822bd56fd",
+              "name": "tray[expires_tray]",
+              "value": "={{ new Date($('Token Tray').first().json.date_expiration_access_token).toISOString().replace('T', ' ').slice(0, 19) }}",
+              "type": "string"
+            },
+            {
+              "id": "c59e99cb-3785-4635-a52f-e577ff2d7372",
+              "name": "tray[refresh_token_tray]",
+              "value": "={{ $('Token Tray').first().json.refresh_token }}",
+              "type": "string"
+            },
+            {
+              "id": "e47a47d8-2085-40b4-ab8c-6eebee0e43eb",
+              "name": "bimer[token_bimer]",
+              "value": "={{ $('Token Bimer').first().json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "20b22495-be00-4feb-9fd2-653edbdab9fd",
+              "name": "bimer[expires_bimer]",
+              "value": "={{ new Date($('Token Bimer').first().json[\".expires\"]).toISOString().replace('T', ' ').slice(0, 19) }}",
+              "type": "string"
+            },
+            {
+              "id": "cb890228-2f0a-4988-8ff2-e80999d1d033",
+              "name": "bimer[refresh_token_bimer]",
+              "value": "={{ $('Token Bimer').first().json.refresh_token }}",
+              "type": "string"
+            },
+            {
+              "id": "55f80570-f56c-48bf-a678-238ef11b9897",
+              "name": "id_preco",
+              "value": "00A0000003",
+              "type": "string"
+            },
+            {
+              "id": "f7575720-2e1a-4a24-a590-549193b98982",
+              "name": "id_setor",
+              "value": "00A0000005",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e646bfa9-0c3d-4b27-9423-4094f073b960",
+      "name": "Tokens",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -380,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "Atualização de produtos Pronta"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "64e00068-2eca-4784-88e7-08ccf2a1d1d1",
+      "name": "Mensagem Termino de Tarefa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1660,
+        -680
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "Atualização de Variações Pronta"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "b01bafbc-5d3a-43cc-ab1e-ae9117849ffb",
+      "name": "Mensagem Termino Varaicoes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 14,
+              "triggerAtMinute": 42
+            }
+          ]
+        }
+      },
+      "id": "b5a060d9-aef7-4bfa-b6ca-b5fd34d404e8",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date().getTime(); // Tempo atual em ms\n\n// Dados do token do Bimer\nconst bimerToken = $('Tokens').first().json;\nconst bimerExpires = new Date(bimerToken[\".expires\"]).getTime(); // Converter GMT para timestamp\n\n// Verifica se o token expira em menos de 1 minuto\nlet renewBimer = now >= bimerExpires - 60000;\n\nreturn [\n  {\n    renewBimer: renewBimer,\n    refresh_token_bimer: bimerToken.refresh_token\n  }\n];\n"
+      },
+      "id": "07bb87ec-a2e3-4fd8-8406-a5a820f34f35",
+      "name": "Verifica Token Bimer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4e0df567-962d-4193-b425-d0d05432b982",
+              "leftValue": "={{ new Date(Date.now()).toISOString().slice(0, 19).replace(\"T\", \" \") }}",
+              "rightValue": "={{ $('Salva Tokens').first().json.bimer.expires_bimer}}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "bc43ae98-eaa1-42c2-b8dd-774559dc4472",
+      "name": "Validade Token Bimer",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1420,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "tokens",
+        "value": "="
+      },
+      "id": "97755b15-8e4a-454b-8d69-79521f8bff9c",
+      "name": "Salva Tokens",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        40
+      ],
+      "credentials": {
+        "redis": {
+          "id": "ctY9vvPFn5U3mOdJ",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "744bfca2-a160-40ff-87c4-e37cd400cf56",
+              "leftValue": "={{ new Date(Date.now()).toISOString().slice(0, 19).replace(\"T\", \" \") }}",
+              "rightValue": "={{ $('Salva Tokens').first().json.tray.expires_tray }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f90e0f0c-9adc-4ee7-ba45-b83d7be2710e",
+      "name": "If3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1000,
+        40
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "08fd90b4-14ff-4f46-89d9-06cc8f0e9659",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        -60
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e8086abd-6498-4186-bcf4-50fef35e305f",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        -60
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Token Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me1": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IDs de produtos": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs não cadastrados": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta por ID Tray": {
+      "main": [
+        [
+          {
+            "node": "Validade Token Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Limit3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estoque Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Preco Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preco Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Identificador Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta IDs não cadastrados1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta por ID Tray1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta por ID Tray1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me2": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Replace Me2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajuste Variantes": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Bimer": {
+      "main": [
+        [
+          {
+            "node": "Tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Atualiza (Sim)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar (Nao)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Replace Me1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza (Sim)": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar (Nao)": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens na Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estoque Bimer": {
+      "main": [
+        [
+          {
+            "node": "Preco Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preco Bimer": {
+      "main": [
+        [
+          {
+            "node": "Ajuste Variantes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Atualiza (Sim)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar (Nao)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza (Sim)1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar (Nao)1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens Variacao Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Replace Me3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens na Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita Itens na Tray": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Termino de Tarefa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza dados por ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me4": {
+      "main": [
+        [
+          {
+            "node": "Edita Itens Variacao Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edita Itens Variacao Tray": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Termino Varaicoes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza Dados Variacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza dados por ID": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Dados Variacao": {
+      "main": [
+        [
+          {
+            "node": "Replace Me4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URLs": {
+      "main": [
+        [
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificador Bimer1": {
+      "main": [
+        [
+          {
+            "node": "Estoque Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificador Bimer": {
+      "main": [
+        [
+          {
+            "node": "Estoque Bimer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta Produtos": {
+      "main": [
+        [
+          {
+            "node": "IDs de produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tokens": {
+      "main": [
+        [
+          {
+            "node": "Salva Tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit3": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Consulta IDs não cadastrados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validade Token Bimer": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Identificador Bimer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Consulta por ID Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva Tokens": {
+      "main": [
+        [
+          {
+            "node": "Consulta Produtos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1b70acf3-6918-49ff-b6d6-f2eaae6c89be",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-02-13T12:40:04.121Z",
+      "updatedAt": "2025-02-13T12:40:04.121Z",
+      "role": "workflow:owner",
+      "workflowId": "MpWWT6AhfNVMRPZ8",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
