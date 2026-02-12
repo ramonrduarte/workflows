@@ -1,0 +1,4328 @@
+{
+  "createdAt": "2024-12-13T17:06:31.851Z",
+  "updatedAt": "2024-12-16T17:41:52.268Z",
+  "id": "C5kFp36EZBQyRWAt",
+  "name": "Teste nota",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "batchSize": 400,
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "0af60517-0b87-49d3-8cdc-bd484cd59cbc",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        760,
+        300
+      ],
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "id": "0d96ba77-5950-4770-a6ae-d8345917ee5e",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2140,
+        420
+      ],
+      "webhookId": "951d8001-9002-4f22-aa9c-4a00b7255eef"
+    },
+    {
+      "parameters": {},
+      "id": "5d4f3de0-64bd-4a4a-bded-7ea2ad533d0a",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        520,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAllPeople"
+      },
+      "id": "02ead602-062a-4bae-a525-e6174a90a016",
+      "name": "Customer Datastore (n8n training)",
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        320,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "dc1478bd-e393-47b9-9915-f2b3e15ed446",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "Itens",
+        "include": "={{ $('Loop Over Items').item }}",
+        "options": {}
+      },
+      "id": "66223b94-8b9c-474d-90b7-a577ef462b1e",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        940,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://177.204.252.25:8084/api/documentos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"StatusNotaFiscalEletronica\": \"A\",\n  \"TipoDocumento\": \"F\",\n  \"TipoPagamento\": \"0\",\n  \"CodigoEmpresa\": \"01\",\n  \"DataEmissao\": \"2024-12-16T13:15:45.126Z\",\n  \"DataReferencia\": \"2024-12-16T13:15:45.126Z\",\n  \"IdentificadorOperacao\": \"00A0000092\",\n  \"IdentificadorPessoa\": \"00A0000008\",\n  \"Itens\": [\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YN5\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 30.92\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YNK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 236.33\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YNM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 174.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YNT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 40.77\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YNW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 110.07\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YO7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 20\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YOA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 14.88,\n      \"ValorUnitario\": 12.13\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YOC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 106.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YOY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.06\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YP4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 34.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 69.31\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8,\n      \"ValorUnitario\": 199.47\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 179.57\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 565.53\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 20,\n      \"ValorUnitario\": 5.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YPU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 11.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQ3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 21,\n      \"ValorUnitario\": 8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 508.67\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 2.35\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQQ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 2.24\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 13.78\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 50.09\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YQT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 65.19\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YR6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 20.85\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YR9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 20,\n      \"ValorUnitario\": 4.4\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.74\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 8.07\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 18,\n      \"ValorUnitario\": 8.34\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 17.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRL\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 10.13\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YRU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 4.54\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YS6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 22.67\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YSF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 20,\n      \"ValorUnitario\": 14.22\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YSG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 39,\n      \"ValorUnitario\": 16.48\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YSZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 13.96\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YT0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 18.62\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YTB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 16,\n      \"ValorUnitario\": 29.22\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YTT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 50,\n      \"ValorUnitario\": 1.35\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YTX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 9.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.84\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8,\n      \"ValorUnitario\": 5.64\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 6.71\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 6.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 6.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 1.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YUY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 4.94\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YV0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 8.7\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YV1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 4.78\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YV2\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 1\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 0.29\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 51.28\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 34,\n      \"ValorUnitario\": 30.44\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19.05,\n      \"ValorUnitario\": 11.07\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2.23,\n      \"ValorUnitario\": 4.03\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVL\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 12.89\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 5.32\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 29.56\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YVX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 3.63\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YW1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 5.83\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YW3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 0.5,\n      \"ValorUnitario\": 106.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YW6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 4.92\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YW7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 6.57\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 172.97\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWL\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 30.02\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 15.09\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6.02,\n      \"ValorUnitario\": 22.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YWV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6.02,\n      \"ValorUnitario\": 11.33\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 17,\n      \"ValorUnitario\": 13.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 167.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 12.39\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 5.64\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8,\n      \"ValorUnitario\": 6.41\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 69.76\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXN\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 61.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 56.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 85.95\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 11.88\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 40,\n      \"ValorUnitario\": 2.21\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 2.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 34,\n      \"ValorUnitario\": 3.92\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YXZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 2.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YY0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 3.44\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YY1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 41,\n      \"ValorUnitario\": 3.58\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YY9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 68.02\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.28\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 81.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 81.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 35.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 11,\n      \"ValorUnitario\": 35.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 143.86\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YYS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 82.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 55.56\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 171,\n      \"ValorUnitario\": 9.79\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 203,\n      \"ValorUnitario\": 18.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 1.45\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZL\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8,\n      \"ValorUnitario\": 15.15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 9.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 2.89\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 168.45\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 163.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 107.64\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 4.53\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000YZZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 108.42\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z05\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 229,\n      \"ValorUnitario\": 2.29\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z06\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 88,\n      \"ValorUnitario\": 4.05\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z07\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 50,\n      \"ValorUnitario\": 3.32\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z08\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 1.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z0C\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 1.44\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z0G\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 87.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z0H\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 115.02\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z0M\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 4.03\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z0O\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 75.65\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z6S\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 36,\n      \"ValorUnitario\": 0.1\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z6T\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 0.68\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000Z6V\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 30,\n      \"ValorUnitario\": 7.76\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZF9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 0.24\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZFA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 3.16\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZFB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 3.16\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZFC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 5.99\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZOK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 25,\n      \"ValorUnitario\": 19.82\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZW2\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 11,\n      \"ValorUnitario\": 18.28\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000ZW3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 20.64\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00010CK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 30.42\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011IR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 0.43\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011IU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 0.13\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011ST\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 84.4\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011SU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 57.89\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011TO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 74.1\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011TP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 54.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011TQ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 18.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011TR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 20.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011UK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 34.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011YS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 14.39\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00011YU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 75.6\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000124X\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 43,\n      \"ValorUnitario\": 7.33\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000124Y\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 99,\n      \"ValorUnitario\": 7.36\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000124Z\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 40,\n      \"ValorUnitario\": 10.97\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001250\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8,\n      \"ValorUnitario\": 9.52\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000129D\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 32.5,\n      \"ValorUnitario\": 1.62\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012NI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 43.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012NJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 43.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012O0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 29,\n      \"ValorUnitario\": 15.08\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012O1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 19.15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012RR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 78.65\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00012WI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 64.95\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00013Z3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 6.34\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00013Z4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 8.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00013Z5\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 7.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00013Z7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 7.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000141J\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 9.62\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000141K\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 10.25\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000141O\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 680\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000141P\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 16,\n      \"ValorUnitario\": 0.7\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014AJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 54,\n      \"ValorUnitario\": 5.8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014PW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 19.95\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014QC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 480\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014UI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 8.78\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014ZW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 6.12\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014ZY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 5.41\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00014ZZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 23.98,\n      \"ValorUnitario\": 125\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001500\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 8.68,\n      \"ValorUnitario\": 142.71\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001570\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2711,\n      \"ValorUnitario\": 1.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001571\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2909,\n      \"ValorUnitario\": 1.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001572\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1049,\n      \"ValorUnitario\": 1.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001573\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 9.07\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000157J\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 4.03\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000157K\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 4.57\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015IQ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 123,\n      \"ValorUnitario\": 12.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015VT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2.18,\n      \"ValorUnitario\": 9.94\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015WC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 5.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015WD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 5.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015WN\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 5.55\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00015WP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 4.59\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00016R3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 100,\n      \"ValorUnitario\": 14.68\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00016R4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 44.6\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00016RT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 209\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00016ZS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 183,\n      \"ValorUnitario\": 14.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001747\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 33.47\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017G7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 22,\n      \"ValorUnitario\": 0.14\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017M7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 280.84,\n      \"ValorUnitario\": 0.94\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017M8\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 20,\n      \"ValorUnitario\": 2.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017M9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 65,\n      \"ValorUnitario\": 2.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017ME\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 3.7\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017MK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 4.6\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A00017P7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 11.66\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001872\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 11,\n      \"ValorUnitario\": 10.72\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001874\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 14.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000187W\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 131.64\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000188Q\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 15.14\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000192H\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 25.4\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000193B\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 137.25\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000194Z\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 49,\n      \"ValorUnitario\": 13.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000195W\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 13,\n      \"ValorUnitario\": 27.61\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A000195Z\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 39,\n      \"ValorUnitario\": 27.61\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001960\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 13.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001A5X\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 35,\n      \"ValorUnitario\": 4.15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001A9Z\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 182.33\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001AM6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 3.45\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001AVR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 17.88\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001AVS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 16,\n      \"ValorUnitario\": 19.48\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001B5G\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 41,\n      \"ValorUnitario\": 40.46\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001B5I\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 33,\n      \"ValorUnitario\": 40.46\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BSD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 30,\n      \"ValorUnitario\": 1.76\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BSE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9.7,\n      \"ValorUnitario\": 1.88\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BSG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 31.97,\n      \"ValorUnitario\": 1.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BSH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9.6,\n      \"ValorUnitario\": 2.28\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BUU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 16.01\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BUV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 102.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001BUY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 54.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001C2F\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 13,\n      \"ValorUnitario\": 8.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001C51\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 78,\n      \"ValorUnitario\": 5.21\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001C9D\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 200.09\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CER\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 64,\n      \"ValorUnitario\": 2.81\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CQL\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 9.6\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CSR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 2.22\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CSS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 70\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CSV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 42.17\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CSY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 142.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001CSZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 17.16\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001DXR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 6.67\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001DXS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 17,\n      \"ValorUnitario\": 6.67\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001E3E\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 1.89\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001EIH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 3.38\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001EM3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 12.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001ETZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 86.16\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001FPG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 29,\n      \"ValorUnitario\": 9.52\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001FPJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 21,\n      \"ValorUnitario\": 10.36\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001FPM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 94,\n      \"ValorUnitario\": 14.09\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001FPN\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 52,\n      \"ValorUnitario\": 16.53\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001FPO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 159,\n      \"ValorUnitario\": 16.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001G1L\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 494,\n      \"ValorUnitario\": 2.72\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001G1M\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 402,\n      \"ValorUnitario\": 2.72\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001G1N\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 250,\n      \"ValorUnitario\": 2.72\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001GOX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 542,\n      \"ValorUnitario\": 1.99\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001GRO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 12.91\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001GRP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 100,\n      \"ValorUnitario\": 0.16\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001H8F\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 19.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001H8P\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 3.99\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HF4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 37,\n      \"ValorUnitario\": 14\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HF6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 21,\n      \"ValorUnitario\": 24.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HF7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 34,\n      \"ValorUnitario\": 9.93\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HFA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 54,\n      \"ValorUnitario\": 9.27\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HFB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 24\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HPK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 33.97\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HX9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 11,\n      \"ValorUnitario\": 2.44\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HXA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 2.68\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HXB\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 2.94\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HXC\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 26,\n      \"ValorUnitario\": 3.7\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001HXD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 10.42\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IF4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 35\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IF6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 11,\n      \"ValorUnitario\": 21.53\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IF8\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 21.54\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IFE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 218.93\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IFG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 218.93\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IFH\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 11.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IFI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 11.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IFJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 8.36\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IJM\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 22,\n      \"ValorUnitario\": 18.02\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IJN\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 41,\n      \"ValorUnitario\": 2.44\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001IK8\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 124,\n      \"ValorUnitario\": 0.85\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001INT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 3.56\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001JU6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 18.65\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001JZK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 48.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001KF2\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001KNY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 27.59\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001ON0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 67,\n      \"ValorUnitario\": 26.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001ON2\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 5.12\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001P75\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 10.19\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001P77\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 45,\n      \"ValorUnitario\": 21.33\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001P78\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 57,\n      \"ValorUnitario\": 4.53\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001P79\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 64,\n      \"ValorUnitario\": 5.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001PMO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 32,\n      \"ValorUnitario\": 3.87\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001PMP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 40,\n      \"ValorUnitario\": 2.92\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001PMQ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 17,\n      \"ValorUnitario\": 62.04\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q7K\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 31,\n      \"ValorUnitario\": 3.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q7L\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 7.09\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q7Y\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 8.01\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q84\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 9.15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q86\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 10.13\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q87\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 9.45\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q88\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 9.91\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q89\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 10.38\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q8A\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 18,\n      \"ValorUnitario\": 10.86\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q8B\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 11.34\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Q8E\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 12.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QGK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 10.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QGR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 5.51\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QGT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 10.19\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QIA\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 19,\n      \"ValorUnitario\": 0.73\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QUD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 76.12\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001QW9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 9.01\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001R0N\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 10.72\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001R20\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 86.8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001R8I\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 646,\n      \"ValorUnitario\": 14.67\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001R9I\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1.36,\n      \"ValorUnitario\": 172.8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RGR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 260.03\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RGS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 24,\n      \"ValorUnitario\": 7.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RQ0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 14,\n      \"ValorUnitario\": 3.93\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RQ1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 23,\n      \"ValorUnitario\": 8.94\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RQ2\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 24,\n      \"ValorUnitario\": 10.46\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RQ3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 24,\n      \"ValorUnitario\": 11.88\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001RQ4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 15.26\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SFK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 2.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SGI\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 1.26\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SGJ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 4.21\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SGK\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 51.99\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SL4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 65.24\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SL6\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 30.42\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SR0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 147.25\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SR4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 204.69\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001SUW\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 16.01\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001T4J\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 14.89\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001TOS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 30,\n      \"ValorUnitario\": 2.8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001TQ9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 17,\n      \"ValorUnitario\": 40.95\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001U0C\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 104.96\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001U4B\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 7,\n      \"ValorUnitario\": 11.4\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 16,\n      \"ValorUnitario\": 10.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 29.68\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXT\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 10,\n      \"ValorUnitario\": 3.58\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXU\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 34.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 5.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001UXS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 26.04\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0Q\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 69.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0R\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 82.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0U\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 134.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0W\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 169.9\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0X\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 42,\n      \"ValorUnitario\": 15\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V0Y\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 42,\n      \"ValorUnitario\": 6.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V12\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 220.31\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V8L\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 3,\n      \"ValorUnitario\": 135.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V8N\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 163.3\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V8O\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 25,\n      \"ValorUnitario\": 6.11\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001V8P\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 24,\n      \"ValorUnitario\": 6.11\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VKY\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 9,\n      \"ValorUnitario\": 2.55\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VKZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 47.18\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VL0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 5,\n      \"ValorUnitario\": 37.4\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VL1\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 4,\n      \"ValorUnitario\": 25.5\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VOO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 12,\n      \"ValorUnitario\": 8.12\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VOP\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 60,\n      \"ValorUnitario\": 3.58\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VOR\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 20,\n      \"ValorUnitario\": 1.13\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VUD\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 14.93\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VUE\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 13,\n      \"ValorUnitario\": 11.8\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VUF\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 25,\n      \"ValorUnitario\": 3.86\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VVG\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 24,\n      \"ValorUnitario\": 5.82\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VVV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 2.37\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001VYO\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 34.87\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001W12\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 36\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001W13\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 42\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001W8M\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 16,\n      \"ValorUnitario\": 12.12\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001W9F\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 9.2\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WDV\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 64,\n      \"ValorUnitario\": 44.65\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WDZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 30,\n      \"ValorUnitario\": 25.23\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE3\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 30,\n      \"ValorUnitario\": 28.03\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 15,\n      \"ValorUnitario\": 29.24\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE5\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 2,\n      \"ValorUnitario\": 10.97\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE7\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 100,\n      \"ValorUnitario\": 6.61\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE8\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 6,\n      \"ValorUnitario\": 6.61\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001WE9\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 66,\n      \"ValorUnitario\": 6.61\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001XTS\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 41\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0001Y5I\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 34,\n      \"ValorUnitario\": 2.85\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000GCX\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 98.85\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000GCZ\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 69.75\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000GD0\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 116.47\n    },\n    {\n      \"CFOP\": \"5.927\",\n      \"IdentificadorProduto\": \"00A0000GD4\",\n      \"IdentificadorSetorSaida\": \"00A0000005\",\n      \"Quantidade\": 1,\n      \"ValorUnitario\": 65.95\n    }\n  ],\n  \"Numero\": \"105133\",\n  \"Observacao\": \"Livro I, Artigo 35 Inciso LIII do ICMS\"\n}\n",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "42efcdd4-6a7f-44ba-b717-b87b02e924b6",
+      "name": "Criar Documento",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"StatusNotaFiscalEletronica\": \"A\",\n  \"TipoDocumento\": \"F\",\n  \"TipoPagamento\": \"0\",\n  \"CodigoEmpresa\": \"01\",\n  \"DataEmissao\": \"{{ $today.format('yyyy-MM-dd') }}T12:10:45.126Z\",\n  \"DataReferencia\": \"{{ $today.format('yyyy-MM-dd') }}T00:00:00\",\n  \"IdentificadorOperacao\": \"00A0000092\",\n  \"IdentificadorPessoa\": \"00A0000008\",\n  \"Itens\": \n    {{ $('Aggregate').item.json.Itens }}\n  ,\n  \"Numero\": {{ $items(\"Merge\")[1].json.maiorValor }},\n\n  \"Observacao\": \"Livro I, Artigo 35 Inciso LIII do ICMS\"\n}",
+        "options": {}
+      },
+      "id": "ae6e95ad-ec58-4db0-b6ff-55d9b80d1dbe",
+      "name": "Normaliza JSON",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1700,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a748ae3c-8a55-458c-9040-5f14867e10c0",
+              "name": "json",
+              "value": "={{ $json.Itens }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9b36bf85-79a5-49f5-83c8-c190de874305",
+      "name": "Numero Nota",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1720,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "20f6b8b8-3d81-4317-aaa1-7db598bf0a9e",
+              "name": "CFOP",
+              "value": "5.927",
+              "type": "string"
+            },
+            {
+              "id": "848fab04-35d5-416f-90a2-58ded02f72c9",
+              "name": "IdentificadorProduto",
+              "value": "={{ $('Customer Datastore (n8n training)').item.json.Identificador }}",
+              "type": "string"
+            },
+            {
+              "id": "bd87e169-4ed9-462b-9c19-8bf360ea4014",
+              "name": "IdentificadorSetorSaida",
+              "value": "00A0000005",
+              "type": "string"
+            },
+            {
+              "id": "b5d52c3c-f04a-4b75-b936-cdcadb8873b6",
+              "name": "Quantidade",
+              "value": "={{ $('Customer Datastore (n8n training)').item.json['Diferença'].replace(',','.').toFloat() }}",
+              "type": "number"
+            },
+            {
+              "id": "3b30e127-fb1f-4be6-b1da-8db97acee14e",
+              "name": "ValorUnitario",
+              "value": "={{ $('Customer Datastore (n8n training)').item.json[' Valor Entrada '].replace(',','.').toFloat() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5e56c793-2f27-4034-bd9b-1c171ec55e58",
+      "name": "Organiza Itens",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "X7vLjYyBiK1qs26o",
+          "mode": "list",
+          "cachedResultName": "Consulta Ultima nota"
+        },
+        "options": {}
+      },
+      "id": "c719b48e-9264-4404-99eb-125a3a4bd041",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.1,
+      "position": [
+        1220,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://177.204.252.25:8084/oauth/token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "client_id",
+              "value": "IntegracaoBimer.js"
+            },
+            {
+              "name": "grant_type",
+              "value": "password"
+            },
+            {
+              "name": "username",
+              "value": "bimerapi"
+            },
+            {
+              "name": "nonce",
+              "value": "123"
+            },
+            {
+              "name": "password",
+              "value": "c6f8e33ee8560aa56f04a8f8cc8d75ee"
+            },
+            {
+              "name": "client_secret",
+              "value": "5738da543c4a78db569b43944caae630"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "ea409943-c232-4a42-8815-339ee5861470",
+      "name": "Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        820,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9b9ddfc8-81ff-472c-8a9f-406c406f7e99",
+              "name": "Itens",
+              "value": "={{ $json.Itens }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "07d667d5-886b-44fe-84ea-2d7e70430041",
+      "name": "Normaliza JSON1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1980,
+        -20
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "99583d5f-a438-4331-b4f9-2b8a91ed2082",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "815f3036-1fa5-4393-b17c-81b8503f19ba",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1060,
+        720
+      ],
+      "webhookId": "88de6e24-bbc0-4172-b1a4-0be314414fa2"
+    },
+    {
+      "parameters": {
+        "operation": "getAllPeople"
+      },
+      "id": "fb2c6db1-8421-4e58-a145-cacea513ba24",
+      "name": "Customer Datastore (n8n training)1",
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        900,
+        960
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f2b54a88-8f3e-4a67-8690-4689af4f1df2",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1480,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Datastore (n8n training)": {
+      "main": [
+        [
+          {
+            "node": "Organiza Itens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organiza Itens": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Token": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Documento": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Normaliza JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Criar Documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Customer Datastore (n8n training)": [
+      {
+        "json": {
+          "ID": "3100",
+          "Identificador": "00A0000YN5",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 30,92 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3101",
+          "Identificador": "00A0000YNK",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 236,33 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3102",
+          "Identificador": "00A0000YNM",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 174,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3103",
+          "Identificador": "00A0000YNT",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 40,77 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3104",
+          "Identificador": "00A0000YNW",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 110,07 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3105",
+          "Identificador": "00A0000YO7",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 20,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3106",
+          "Identificador": "00A0000YOA",
+          "Diferença": "14,88",
+          " Valor Entrada ": " R$ 12,13 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3107",
+          "Identificador": "00A0000YOC",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 106,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3108",
+          "Identificador": "00A0000YOY",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,06 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3109",
+          "Identificador": "00A0000YP4",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 34,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3110",
+          "Identificador": "00A0000YPC",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 69,31 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3111",
+          "Identificador": "00A0000YPD",
+          "Diferença": "8,00",
+          " Valor Entrada ": " R$ 199,47 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3112",
+          "Identificador": "00A0000YPE",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 179,57 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3113",
+          "Identificador": "00A0000YPG",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 565,53 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3114",
+          "Identificador": "00A0000YPI",
+          "Diferença": "20,00",
+          " Valor Entrada ": " R$ 5,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3115",
+          "Identificador": "00A0000YPU",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 11,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3116",
+          "Identificador": "00A0000YQ3",
+          "Diferença": "21,00",
+          " Valor Entrada ": " R$ 8,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3117",
+          "Identificador": "00A0000YQK",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 508,67 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3118",
+          "Identificador": "00A0000YQP",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 2,35 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3119",
+          "Identificador": "00A0000YQQ",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 2,24 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3120",
+          "Identificador": "00A0000YQR",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 13,78 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3121",
+          "Identificador": "00A0000YQS",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 50,09 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3122",
+          "Identificador": "00A0000YQT",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 65,19 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3123",
+          "Identificador": "00A0000YR6",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 20,85 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3124",
+          "Identificador": "00A0000YR9",
+          "Diferença": "20,00",
+          " Valor Entrada ": " R$ 4,40 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3125",
+          "Identificador": "00A0000YRB",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,74 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3126",
+          "Identificador": "00A0000YRG",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 8,07 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3127",
+          "Identificador": "00A0000YRH",
+          "Diferença": "18,00",
+          " Valor Entrada ": " R$ 8,34 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3128",
+          "Identificador": "00A0000YRK",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 17,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3129",
+          "Identificador": "00A0000YRL",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 10,13 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3130",
+          "Identificador": "00A0000YRU",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 4,54 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3131",
+          "Identificador": "00A0000YS6",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 22,67 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3132",
+          "Identificador": "00A0000YSF",
+          "Diferença": "20,00",
+          " Valor Entrada ": " R$ 14,22 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3133",
+          "Identificador": "00A0000YSG",
+          "Diferença": "39,00",
+          " Valor Entrada ": " R$ 16,48 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3134",
+          "Identificador": "00A0000YSZ",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 13,96 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3135",
+          "Identificador": "00A0000YT0",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 18,62 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3136",
+          "Identificador": "00A0000YTB",
+          "Diferença": "16,00",
+          " Valor Entrada ": " R$ 29,22 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3137",
+          "Identificador": "00A0000YTT",
+          "Diferença": "50,00",
+          " Valor Entrada ": " R$ 1,35 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3138",
+          "Identificador": "00A0000YTX",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 9,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3139",
+          "Identificador": "00A0000YUC",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,84 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3140",
+          "Identificador": "00A0000YUG",
+          "Diferença": "8,00",
+          " Valor Entrada ": " R$ 5,64 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3141",
+          "Identificador": "00A0000YUH",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 6,71 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3142",
+          "Identificador": "00A0000YUI",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 6,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3143",
+          "Identificador": "00A0000YUJ",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 6,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3144",
+          "Identificador": "00A0000YUX",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 1,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3145",
+          "Identificador": "00A0000YUY",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 4,94 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3146",
+          "Identificador": "00A0000YV0",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 8,70 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3147",
+          "Identificador": "00A0000YV1",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 4,78 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3148",
+          "Identificador": "00A0000YV2",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 1,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3149",
+          "Identificador": "00A0000YVE",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 0,29 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3150",
+          "Identificador": "00A0000YVF",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 51,28 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3151",
+          "Identificador": "00A0000YVG",
+          "Diferença": "34,00",
+          " Valor Entrada ": " R$ 30,44 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3152",
+          "Identificador": "00A0000YVJ",
+          "Diferença": "19,05",
+          " Valor Entrada ": " R$ 11,07 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3153",
+          "Identificador": "00A0000YVK",
+          "Diferença": "2,23",
+          " Valor Entrada ": " R$ 4,03 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3154",
+          "Identificador": "00A0000YVL",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 12,89 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3155",
+          "Identificador": "00A0000YVU",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 5,32 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3156",
+          "Identificador": "00A0000YVW",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 29,56 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3157",
+          "Identificador": "00A0000YVX",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 3,63 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3158",
+          "Identificador": "00A0000YW1",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 5,83 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3159",
+          "Identificador": "00A0000YW3",
+          "Diferença": "0,50",
+          " Valor Entrada ": " R$ 106,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3160",
+          "Identificador": "00A0000YW6",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 4,92 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3161",
+          "Identificador": "00A0000YW7",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 6,57 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3162",
+          "Identificador": "00A0000YWF",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3163",
+          "Identificador": "00A0000YWK",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 172,97 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3164",
+          "Identificador": "00A0000YWL",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 30,02 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3165",
+          "Identificador": "00A0000YWM",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 15,09 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3166",
+          "Identificador": "00A0000YWU",
+          "Diferença": "6,02",
+          " Valor Entrada ": " R$ 22,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3167",
+          "Identificador": "00A0000YWV",
+          "Diferença": "6,02",
+          " Valor Entrada ": " R$ 11,33 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3168",
+          "Identificador": "00A0000YXA",
+          "Diferença": "17,00",
+          " Valor Entrada ": " R$ 13,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3169",
+          "Identificador": "00A0000YXB",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 167,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3170",
+          "Identificador": "00A0000YXD",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 12,39 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3171",
+          "Identificador": "00A0000YXF",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 5,64 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3172",
+          "Identificador": "00A0000YXJ",
+          "Diferença": "8,00",
+          " Valor Entrada ": " R$ 6,41 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3173",
+          "Identificador": "00A0000YXM",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 69,76 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3174",
+          "Identificador": "00A0000YXN",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 61,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3175",
+          "Identificador": "00A0000YXO",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 56,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3176",
+          "Identificador": "00A0000YXT",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 85,95 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3177",
+          "Identificador": "00A0000YXU",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 11,88 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3178",
+          "Identificador": "00A0000YXW",
+          "Diferença": "40,00",
+          " Valor Entrada ": " R$ 2,21 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3179",
+          "Identificador": "00A0000YXX",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 2,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3180",
+          "Identificador": "00A0000YXY",
+          "Diferença": "34,00",
+          " Valor Entrada ": " R$ 3,92 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3181",
+          "Identificador": "00A0000YXZ",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 2,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3182",
+          "Identificador": "00A0000YY0",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 3,44 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3183",
+          "Identificador": "00A0000YY1",
+          "Diferença": "41,00",
+          " Valor Entrada ": " R$ 3,58 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3184",
+          "Identificador": "00A0000YY9",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 68,02 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3185",
+          "Identificador": "00A0000YYB",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,28 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3186",
+          "Identificador": "00A0000YYF",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 81,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3187",
+          "Identificador": "00A0000YYG",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 81,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3188",
+          "Identificador": "00A0000YYH",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 35,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3189",
+          "Identificador": "00A0000YYI",
+          "Diferença": "11,00",
+          " Valor Entrada ": " R$ 35,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3190",
+          "Identificador": "00A0000YYR",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 143,86 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3191",
+          "Identificador": "00A0000YYS",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 82,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3192",
+          "Identificador": "00A0000YZE",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 55,56 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3193",
+          "Identificador": "00A0000YZF",
+          "Diferença": "171,00",
+          " Valor Entrada ": " R$ 9,79 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3194",
+          "Identificador": "00A0000YZG",
+          "Diferença": "203,00",
+          " Valor Entrada ": " R$ 18,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3195",
+          "Identificador": "00A0000YZI",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 1,45 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3196",
+          "Identificador": "00A0000YZL",
+          "Diferença": "8,00",
+          " Valor Entrada ": " R$ 15,15 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3197",
+          "Identificador": "00A0000YZM",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 9,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3198",
+          "Identificador": "00A0000YZO",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 2,89 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3199",
+          "Identificador": "00A0000YZP",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 168,45 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3200",
+          "Identificador": "00A0000YZT",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 163,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3201",
+          "Identificador": "00A0000YZV",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 107,64 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3202",
+          "Identificador": "00A0000YZW",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 4,53 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3203",
+          "Identificador": "00A0000YZZ",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 108,42 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3204",
+          "Identificador": "00A0000Z05",
+          "Diferença": "229,00",
+          " Valor Entrada ": " R$ 2,29 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3205",
+          "Identificador": "00A0000Z06",
+          "Diferença": "88,00",
+          " Valor Entrada ": " R$ 4,05 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3206",
+          "Identificador": "00A0000Z07",
+          "Diferença": "50,00",
+          " Valor Entrada ": " R$ 3,32 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3207",
+          "Identificador": "00A0000Z08",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 1,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3208",
+          "Identificador": "00A0000Z0C",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 1,44 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3209",
+          "Identificador": "00A0000Z0G",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 87,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3210",
+          "Identificador": "00A0000Z0H",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 115,02 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3211",
+          "Identificador": "00A0000Z0M",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 4,03 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3212",
+          "Identificador": "00A0000Z0O",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 75,65 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3213",
+          "Identificador": "00A0000Z6S",
+          "Diferença": "36,00",
+          " Valor Entrada ": " R$ 0,10 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3214",
+          "Identificador": "00A0000Z6T",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 0,68 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3215",
+          "Identificador": "00A0000Z6V",
+          "Diferença": "30,00",
+          " Valor Entrada ": " R$ 7,76 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3216",
+          "Identificador": "00A0000ZF9",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 0,24 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3217",
+          "Identificador": "00A0000ZFA",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 3,16 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3218",
+          "Identificador": "00A0000ZFB",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 3,16 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3219",
+          "Identificador": "00A0000ZFC",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 5,99 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3220",
+          "Identificador": "00A0000ZOK",
+          "Diferença": "25,00",
+          " Valor Entrada ": " R$ 19,82 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3221",
+          "Identificador": "00A0000ZW2",
+          "Diferença": "11,00",
+          " Valor Entrada ": " R$ 18,28 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3222",
+          "Identificador": "00A0000ZW3",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 20,64 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3223",
+          "Identificador": "00A00010CK",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 30,42 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3224",
+          "Identificador": "00A00011IR",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 0,43 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3225",
+          "Identificador": "00A00011IU",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 0,13 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3226",
+          "Identificador": "00A00011ST",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 84,40 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3227",
+          "Identificador": "00A00011SU",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 57,89 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3228",
+          "Identificador": "00A00011TO",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 74,10 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3229",
+          "Identificador": "00A00011TP",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 54,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3230",
+          "Identificador": "00A00011TQ",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 18,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3231",
+          "Identificador": "00A00011TR",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 20,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3232",
+          "Identificador": "00A00011UK",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 34,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3233",
+          "Identificador": "00A00011YS",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 14,39 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3234",
+          "Identificador": "00A00011YU",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 75,60 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3235",
+          "Identificador": "00A000124X",
+          "Diferença": "43,00",
+          " Valor Entrada ": " R$ 7,33 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3236",
+          "Identificador": "00A000124Y",
+          "Diferença": "99,00",
+          " Valor Entrada ": " R$ 7,36 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3237",
+          "Identificador": "00A000124Z",
+          "Diferença": "40,00",
+          " Valor Entrada ": " R$ 10,97 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3238",
+          "Identificador": "00A0001250",
+          "Diferença": "8,00",
+          " Valor Entrada ": " R$ 9,52 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3239",
+          "Identificador": "00A000129D",
+          "Diferença": "32,50",
+          " Valor Entrada ": " R$ 1,62 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3240",
+          "Identificador": "00A00012NI",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 43,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3241",
+          "Identificador": "00A00012NJ",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 43,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3242",
+          "Identificador": "00A00012O0",
+          "Diferença": "29,00",
+          " Valor Entrada ": " R$ 15,08 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3243",
+          "Identificador": "00A00012O1",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 19,15 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3244",
+          "Identificador": "00A00012RR",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 78,65 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3245",
+          "Identificador": "00A00012WI",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 64,95 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3246",
+          "Identificador": "00A00013Z3",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 6,34 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3247",
+          "Identificador": "00A00013Z4",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 8,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3248",
+          "Identificador": "00A00013Z5",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 7,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3249",
+          "Identificador": "00A00013Z7",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 7,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3250",
+          "Identificador": "00A000141J",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 9,62 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3251",
+          "Identificador": "00A000141K",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 10,25 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3252",
+          "Identificador": "00A000141O",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 680,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3253",
+          "Identificador": "00A000141P",
+          "Diferença": "16,00",
+          " Valor Entrada ": " R$ 0,70 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3254",
+          "Identificador": "00A00014AJ",
+          "Diferença": "54,00",
+          " Valor Entrada ": " R$ 5,80 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3255",
+          "Identificador": "00A00014PW",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 19,95 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3256",
+          "Identificador": "00A00014QC",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 480,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3257",
+          "Identificador": "00A00014UI",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 8,78 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3258",
+          "Identificador": "00A00014ZW",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 6,12 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3259",
+          "Identificador": "00A00014ZY",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 5,41 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3260",
+          "Identificador": "00A00014ZZ",
+          "Diferença": "23,98",
+          " Valor Entrada ": "125,00"
+        }
+      },
+      {
+        "json": {
+          "ID": "3261",
+          "Identificador": "00A0001500",
+          "Diferença": "8,68",
+          " Valor Entrada ": "142,71"
+        }
+      },
+      {
+        "json": {
+          "ID": "3262",
+          "Identificador": "00A0001570",
+          "Diferença": "2711,00",
+          " Valor Entrada ": " R$ 1,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3263",
+          "Identificador": "00A0001571",
+          "Diferença": "2909,00",
+          " Valor Entrada ": " R$ 1,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3264",
+          "Identificador": "00A0001572",
+          "Diferença": "1049,00",
+          " Valor Entrada ": " R$ 1,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3265",
+          "Identificador": "00A0001573",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 9,07 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3266",
+          "Identificador": "00A000157J",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 4,03 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3267",
+          "Identificador": "00A000157K",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 4,57 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3268",
+          "Identificador": "00A00015IQ",
+          "Diferença": "123,00",
+          " Valor Entrada ": " R$ 12,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3269",
+          "Identificador": "00A00015VT",
+          "Diferença": "2,18",
+          " Valor Entrada ": " R$ 9,94 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3270",
+          "Identificador": "00A00015WC",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 5,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3271",
+          "Identificador": "00A00015WD",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 5,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3272",
+          "Identificador": "00A00015WN",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 5,55 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3273",
+          "Identificador": "00A00015WP",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 4,59 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3274",
+          "Identificador": "00A00016R3",
+          "Diferença": "100,00",
+          " Valor Entrada ": " R$ 14,68 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3275",
+          "Identificador": "00A00016R4",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 44,60 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3276",
+          "Identificador": "00A00016RT",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 209,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3277",
+          "Identificador": "00A00016ZS",
+          "Diferença": "183,00",
+          " Valor Entrada ": " R$ 14,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3278",
+          "Identificador": "00A0001747",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 33,47 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3279",
+          "Identificador": "00A00017G7",
+          "Diferença": "22,00",
+          " Valor Entrada ": " R$ 0,14 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3280",
+          "Identificador": "00A00017M7",
+          "Diferença": "280,84",
+          " Valor Entrada ": " R$ 0,94 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3281",
+          "Identificador": "00A00017M8",
+          "Diferença": "20,00",
+          " Valor Entrada ": " R$ 2,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3282",
+          "Identificador": "00A00017M9",
+          "Diferença": "65,00",
+          " Valor Entrada ": " R$ 2,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3283",
+          "Identificador": "00A00017ME",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 3,70 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3284",
+          "Identificador": "00A00017MK",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 4,60 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3285",
+          "Identificador": "00A00017P7",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 11,66 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3286",
+          "Identificador": "00A0001872",
+          "Diferença": "11,00",
+          " Valor Entrada ": " R$ 10,72 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3287",
+          "Identificador": "00A0001874",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 14,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3288",
+          "Identificador": "00A000187W",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 131,64 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3289",
+          "Identificador": "00A000188Q",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 15,14 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3290",
+          "Identificador": "00A000192H",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 25,40 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3291",
+          "Identificador": "00A000193B",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 137,25 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3292",
+          "Identificador": "00A000194Z",
+          "Diferença": "49,00",
+          " Valor Entrada ": " R$ 13,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3293",
+          "Identificador": "00A000195W",
+          "Diferença": "13,00",
+          " Valor Entrada ": " R$ 27,61 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3294",
+          "Identificador": "00A000195Z",
+          "Diferença": "39,00",
+          " Valor Entrada ": " R$ 27,61 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3295",
+          "Identificador": "00A0001960",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 13,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3296",
+          "Identificador": "00A0001A5X",
+          "Diferença": "35,00",
+          " Valor Entrada ": " R$ 4,15 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3297",
+          "Identificador": "00A0001A9Z",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 182,33 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3298",
+          "Identificador": "00A0001AM6",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 3,45 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3299",
+          "Identificador": "00A0001AVR",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 17,88 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3300",
+          "Identificador": "00A0001AVS",
+          "Diferença": "16,00",
+          " Valor Entrada ": " R$ 19,48 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3301",
+          "Identificador": "00A0001B5G",
+          "Diferença": "41,00",
+          " Valor Entrada ": " R$ 40,46 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3302",
+          "Identificador": "00A0001B5I",
+          "Diferença": "33,00",
+          " Valor Entrada ": " R$ 40,46 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3303",
+          "Identificador": "00A0001BSD",
+          "Diferença": "30,00",
+          " Valor Entrada ": " R$ 1,76 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3304",
+          "Identificador": "00A0001BSE",
+          "Diferença": "9,70",
+          " Valor Entrada ": " R$ 1,88 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3305",
+          "Identificador": "00A0001BSG",
+          "Diferença": "31,97",
+          " Valor Entrada ": " R$ 1,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3306",
+          "Identificador": "00A0001BSH",
+          "Diferença": "9,60",
+          " Valor Entrada ": " R$ 2,28 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3307",
+          "Identificador": "00A0001BUU",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 16,01 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3308",
+          "Identificador": "00A0001BUV",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 102,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3309",
+          "Identificador": "00A0001BUY",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 54,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3310",
+          "Identificador": "00A0001C2F",
+          "Diferença": "13,00",
+          " Valor Entrada ": " R$ 8,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3311",
+          "Identificador": "00A0001C51",
+          "Diferença": "78,00",
+          " Valor Entrada ": " R$ 5,21 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3312",
+          "Identificador": "00A0001C9D",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 200,09 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3313",
+          "Identificador": "00A0001CER",
+          "Diferença": "64,00",
+          " Valor Entrada ": " R$ 2,81 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3314",
+          "Identificador": "00A0001CQL",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 9,60 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3315",
+          "Identificador": "00A0001CSR",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 2,22 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3316",
+          "Identificador": "00A0001CSS",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 70,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3317",
+          "Identificador": "00A0001CSV",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 42,17 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3318",
+          "Identificador": "00A0001CSY",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 142,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3319",
+          "Identificador": "00A0001CSZ",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 17,16 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3320",
+          "Identificador": "00A0001DXR",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 6,67 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3321",
+          "Identificador": "00A0001DXS",
+          "Diferença": "17,00",
+          " Valor Entrada ": " R$ 6,67 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3322",
+          "Identificador": "00A0001E3E",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 1,89 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3323",
+          "Identificador": "00A0001EIH",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 3,38 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3324",
+          "Identificador": "00A0001EM3",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 12,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3325",
+          "Identificador": "00A0001ETZ",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 86,16 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3326",
+          "Identificador": "00A0001FPG",
+          "Diferença": "29,00",
+          " Valor Entrada ": " R$ 9,52 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3327",
+          "Identificador": "00A0001FPJ",
+          "Diferença": "21,00",
+          " Valor Entrada ": " R$ 10,36 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3328",
+          "Identificador": "00A0001FPM",
+          "Diferença": "94,00",
+          " Valor Entrada ": " R$ 14,09 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3329",
+          "Identificador": "00A0001FPN",
+          "Diferença": "52,00",
+          " Valor Entrada ": " R$ 16,53 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3330",
+          "Identificador": "00A0001FPO",
+          "Diferença": "159,00",
+          " Valor Entrada ": " R$ 16,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3331",
+          "Identificador": "00A0001G1L",
+          "Diferença": "494,00",
+          " Valor Entrada ": " R$ 2,72 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3332",
+          "Identificador": "00A0001G1M",
+          "Diferença": "402,00",
+          " Valor Entrada ": " R$ 2,72 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3333",
+          "Identificador": "00A0001G1N",
+          "Diferença": "250,00",
+          " Valor Entrada ": " R$ 2,72 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3334",
+          "Identificador": "00A0001GOX",
+          "Diferença": "542,00",
+          " Valor Entrada ": " R$ 1,99 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3335",
+          "Identificador": "00A0001GRO",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 12,91 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3336",
+          "Identificador": "00A0001GRP",
+          "Diferença": "100,00",
+          " Valor Entrada ": " R$ 0,16 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3337",
+          "Identificador": "00A0001H8F",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 19,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3338",
+          "Identificador": "00A0001H8P",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 3,99 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3339",
+          "Identificador": "00A0001HF4",
+          "Diferença": "37,00",
+          " Valor Entrada ": " R$ 14,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3340",
+          "Identificador": "00A0001HF6",
+          "Diferença": "21,00",
+          " Valor Entrada ": " R$ 24,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3341",
+          "Identificador": "00A0001HF7",
+          "Diferença": "34,00",
+          " Valor Entrada ": " R$ 9,93 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3342",
+          "Identificador": "00A0001HFA",
+          "Diferença": "54,00",
+          " Valor Entrada ": " R$ 9,27 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3343",
+          "Identificador": "00A0001HFB",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 24,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3344",
+          "Identificador": "00A0001HPK",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 33,97 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3345",
+          "Identificador": "00A0001HX9",
+          "Diferença": "11,00",
+          " Valor Entrada ": " R$ 2,44 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3346",
+          "Identificador": "00A0001HXA",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 2,68 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3347",
+          "Identificador": "00A0001HXB",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 2,94 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3348",
+          "Identificador": "00A0001HXC",
+          "Diferença": "26,00",
+          " Valor Entrada ": " R$ 3,70 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3349",
+          "Identificador": "00A0001HXD",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 10,42 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3350",
+          "Identificador": "00A0001IF4",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 35,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3351",
+          "Identificador": "00A0001IF6",
+          "Diferença": "11,00",
+          " Valor Entrada ": " R$ 21,53 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3352",
+          "Identificador": "00A0001IF8",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 21,54 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3353",
+          "Identificador": "00A0001IFE",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 218,93 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3354",
+          "Identificador": "00A0001IFG",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 218,93 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3355",
+          "Identificador": "00A0001IFH",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 11,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3356",
+          "Identificador": "00A0001IFI",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 11,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3357",
+          "Identificador": "00A0001IFJ",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 8,36 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3358",
+          "Identificador": "00A0001IJM",
+          "Diferença": "22,00",
+          " Valor Entrada ": " R$ 18,02 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3359",
+          "Identificador": "00A0001IJN",
+          "Diferença": "41,00",
+          " Valor Entrada ": " R$ 2,44 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3360",
+          "Identificador": "00A0001IK8",
+          "Diferença": "124,00",
+          " Valor Entrada ": " R$ 0,85 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3361",
+          "Identificador": "00A0001INT",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 3,56 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3362",
+          "Identificador": "00A0001JU6",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 18,65 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3363",
+          "Identificador": "00A0001JZK",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 48,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3364",
+          "Identificador": "00A0001KF2",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 15,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3365",
+          "Identificador": "00A0001KNY",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 27,59 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3366",
+          "Identificador": "00A0001ON0",
+          "Diferença": "67,00",
+          " Valor Entrada ": " R$ 26,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3367",
+          "Identificador": "00A0001ON2",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 5,12 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3368",
+          "Identificador": "00A0001P75",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 10,19 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3369",
+          "Identificador": "00A0001P77",
+          "Diferença": "45,00",
+          " Valor Entrada ": " R$ 21,33 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3370",
+          "Identificador": "00A0001P78",
+          "Diferença": "57,00",
+          " Valor Entrada ": " R$ 4,53 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3371",
+          "Identificador": "00A0001P79",
+          "Diferença": "64,00",
+          " Valor Entrada ": " R$ 5,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3372",
+          "Identificador": "00A0001PMO",
+          "Diferença": "32,00",
+          " Valor Entrada ": " R$ 3,87 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3373",
+          "Identificador": "00A0001PMP",
+          "Diferença": "40,00",
+          " Valor Entrada ": " R$ 2,92 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3374",
+          "Identificador": "00A0001PMQ",
+          "Diferença": "17,00",
+          " Valor Entrada ": " R$ 62,04 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3375",
+          "Identificador": "00A0001Q7K",
+          "Diferença": "31,00",
+          " Valor Entrada ": " R$ 3,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3376",
+          "Identificador": "00A0001Q7L",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 7,09 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3377",
+          "Identificador": "00A0001Q7Y",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 8,01 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3378",
+          "Identificador": "00A0001Q84",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 9,15 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3379",
+          "Identificador": "00A0001Q86",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 10,13 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3380",
+          "Identificador": "00A0001Q87",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 9,45 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3381",
+          "Identificador": "00A0001Q88",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 9,91 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3382",
+          "Identificador": "00A0001Q89",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 10,38 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3383",
+          "Identificador": "00A0001Q8A",
+          "Diferença": "18,00",
+          " Valor Entrada ": " R$ 10,86 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3384",
+          "Identificador": "00A0001Q8B",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 11,34 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3385",
+          "Identificador": "00A0001Q8E",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 12,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3386",
+          "Identificador": "00A0001QGK",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 10,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3387",
+          "Identificador": "00A0001QGR",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 5,51 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3388",
+          "Identificador": "00A0001QGT",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 10,19 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3389",
+          "Identificador": "00A0001QIA",
+          "Diferença": "19,00",
+          " Valor Entrada ": " R$ 0,73 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3390",
+          "Identificador": "00A0001QUD",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 76,12 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3391",
+          "Identificador": "00A0001QW9",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 9,01 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3392",
+          "Identificador": "00A0001R0N",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 10,72 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3393",
+          "Identificador": "00A0001R20",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 86,80 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3394",
+          "Identificador": "00A0001R8I",
+          "Diferença": "646,00",
+          " Valor Entrada ": " R$ 14,67 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3395",
+          "Identificador": "00A0001R9I",
+          "Diferença": "1,36",
+          " Valor Entrada ": " R$ 172,80 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3396",
+          "Identificador": "00A0001RGR",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 260,03 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3397",
+          "Identificador": "00A0001RGS",
+          "Diferença": "24,00",
+          " Valor Entrada ": " R$ 7,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3398",
+          "Identificador": "00A0001RQ0",
+          "Diferença": "14,00",
+          " Valor Entrada ": " R$ 3,93 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3399",
+          "Identificador": "00A0001RQ1",
+          "Diferença": "23,00",
+          " Valor Entrada ": " R$ 8,94 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3400",
+          "Identificador": "00A0001RQ2",
+          "Diferença": "24,00",
+          " Valor Entrada ": " R$ 10,46 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3401",
+          "Identificador": "00A0001RQ3",
+          "Diferença": "24,00",
+          " Valor Entrada ": " R$ 11,88 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3402",
+          "Identificador": "00A0001RQ4",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 15,26 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3403",
+          "Identificador": "00A0001SFK",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 2,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3404",
+          "Identificador": "00A0001SGI",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 1,26 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3405",
+          "Identificador": "00A0001SGJ",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 4,21 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3406",
+          "Identificador": "00A0001SGK",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 51,99 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3407",
+          "Identificador": "00A0001SL4",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 65,24 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3408",
+          "Identificador": "00A0001SL6",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 30,42 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3409",
+          "Identificador": "00A0001SR0",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 147,25 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3410",
+          "Identificador": "00A0001SR4",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 204,69 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3411",
+          "Identificador": "00A0001SUW",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 16,01 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3412",
+          "Identificador": "00A0001T4J",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 14,89 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3413",
+          "Identificador": "00A0001TOS",
+          "Diferença": "30,00",
+          " Valor Entrada ": " R$ 2,80 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3414",
+          "Identificador": "00A0001TQ9",
+          "Diferença": "17,00",
+          " Valor Entrada ": " R$ 40,95 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3415",
+          "Identificador": "00A0001U0C",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 104,96 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3416",
+          "Identificador": "00A0001U4B",
+          "Diferença": "7,00",
+          " Valor Entrada ": " R$ 11,40 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3417",
+          "Identificador": "00A0001UXD",
+          "Diferença": "16,00",
+          " Valor Entrada ": " R$ 10,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3418",
+          "Identificador": "00A0001UXR",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 29,68 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3419",
+          "Identificador": "00A0001UXT",
+          "Diferença": "10,00",
+          " Valor Entrada ": " R$ 3,58 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3420",
+          "Identificador": "00A0001UXU",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 34,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3421",
+          "Identificador": "00A0001UXV",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 5,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3422",
+          "Identificador": "00A0001UXS",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 26,04 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3423",
+          "Identificador": "00A0001V0Q",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 69,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3424",
+          "Identificador": "00A0001V0R",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 82,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3425",
+          "Identificador": "00A0001V0U",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 134,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3426",
+          "Identificador": "00A0001V0W",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 169,90 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3427",
+          "Identificador": "00A0001V0X",
+          "Diferença": "42,00",
+          " Valor Entrada ": " R$ 15,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3428",
+          "Identificador": "00A0001V0Y",
+          "Diferença": "42,00",
+          " Valor Entrada ": " R$ 6,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3429",
+          "Identificador": "00A0001V12",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 220,31 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3430",
+          "Identificador": "00A0001V8L",
+          "Diferença": "3,00",
+          " Valor Entrada ": " R$ 135,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3431",
+          "Identificador": "00A0001V8N",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 163,30 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3432",
+          "Identificador": "00A0001V8O",
+          "Diferença": "25,00",
+          " Valor Entrada ": " R$ 6,11 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3433",
+          "Identificador": "00A0001V8P",
+          "Diferença": "24,00",
+          " Valor Entrada ": " R$ 6,11 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3434",
+          "Identificador": "00A0001VKY",
+          "Diferença": "9,00",
+          " Valor Entrada ": " R$ 2,55 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3435",
+          "Identificador": "00A0001VKZ",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 47,18 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3436",
+          "Identificador": "00A0001VL0",
+          "Diferença": "5,00",
+          " Valor Entrada ": " R$ 37,40 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3437",
+          "Identificador": "00A0001VL1",
+          "Diferença": "4,00",
+          " Valor Entrada ": " R$ 25,50 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3438",
+          "Identificador": "00A0001VOO",
+          "Diferença": "12,00",
+          " Valor Entrada ": " R$ 8,12 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3439",
+          "Identificador": "00A0001VOP",
+          "Diferença": "60,00",
+          " Valor Entrada ": " R$ 3,58 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3440",
+          "Identificador": "00A0001VOR",
+          "Diferença": "20,00",
+          " Valor Entrada ": " R$ 1,13 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3441",
+          "Identificador": "00A0001VUD",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 14,93 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3442",
+          "Identificador": "00A0001VUE",
+          "Diferença": "13,00",
+          " Valor Entrada ": " R$ 11,80 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3443",
+          "Identificador": "00A0001VUF",
+          "Diferença": "25,00",
+          " Valor Entrada ": " R$ 3,86 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3444",
+          "Identificador": "00A0001VVG",
+          "Diferença": "24,00",
+          " Valor Entrada ": " R$ 5,82 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3445",
+          "Identificador": "00A0001VVV",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 2,37 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3446",
+          "Identificador": "00A0001VYO",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 34,87 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3447",
+          "Identificador": "00A0001W12",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 36,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3448",
+          "Identificador": "00A0001W13",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 42,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3449",
+          "Identificador": "00A0001W8M",
+          "Diferença": "16,00",
+          " Valor Entrada ": " R$ 12,12 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3450",
+          "Identificador": "00A0001W9F",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 9,20 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3451",
+          "Identificador": "00A0001WDV",
+          "Diferença": "64,00",
+          " Valor Entrada ": " R$ 44,65 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3452",
+          "Identificador": "00A0001WDZ",
+          "Diferença": "30,00",
+          " Valor Entrada ": " R$ 25,23 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3453",
+          "Identificador": "00A0001WE3",
+          "Diferença": "30,00",
+          " Valor Entrada ": " R$ 28,03 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3454",
+          "Identificador": "00A0001WE4",
+          "Diferença": "15,00",
+          " Valor Entrada ": " R$ 29,24 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3455",
+          "Identificador": "00A0001WE5",
+          "Diferença": "2,00",
+          " Valor Entrada ": " R$ 10,97 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3456",
+          "Identificador": "00A0001WE7",
+          "Diferença": "100,00",
+          " Valor Entrada ": " R$ 6,61 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3457",
+          "Identificador": "00A0001WE8",
+          "Diferença": "6,00",
+          " Valor Entrada ": " R$ 6,61 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3458",
+          "Identificador": "00A0001WE9",
+          "Diferença": "66,00",
+          " Valor Entrada ": " R$ 6,61 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3459",
+          "Identificador": "00A0001XTS",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 41,00 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3460",
+          "Identificador": "00A0001Y5I",
+          "Diferença": "34,00",
+          " Valor Entrada ": " R$ 2,85 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3461",
+          "Identificador": "00A0000GCX",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 98,85 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3462",
+          "Identificador": "00A0000GCZ",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 69,75 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3463",
+          "Identificador": "00A0000GD0",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 116,47 "
+        }
+      },
+      {
+        "json": {
+          "ID": "3464",
+          "Identificador": "00A0000GD4",
+          "Diferença": "1,00",
+          " Valor Entrada ": " R$ 65,95 "
+        }
+      }
+    ],
+    "Customer Datastore (n8n training)1": [
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007XR",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 9,
+          "ValorUnitario": 8.25
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y1",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 0.55,
+          "ValorUnitario": 2.07
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y2",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 200
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y3",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 19.09
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y5",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 120.51,
+          "ValorUnitario": 18.36
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y7",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 42.71
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Y9",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 68.07
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YI",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 56.85
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YJ",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 53.5
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YM",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 51,
+          "ValorUnitario": 0.29
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YO",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 39.64
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YP",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 0.24
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007YQ",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 37.45
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Z6",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 221,
+          "ValorUnitario": 0.03
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Z7",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 18.75,
+          "ValorUnitario": 1.74
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007Z9",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 8.65
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007ZD",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 31,
+          "ValorUnitario": 1.12
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007ZH",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 15,
+          "ValorUnitario": 17.55
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007ZK",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 11.75
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007ZM",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 4,
+          "ValorUnitario": 81.42
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A00007ZV",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 20.37
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000800",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 10.41
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000803",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 11.28
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000804",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 3.88
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000805",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 8.55
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000807",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 53.59
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080B",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 28.44
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080C",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 34.48
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080D",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 25.27
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080E",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 27.73
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080G",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 209,
+          "ValorUnitario": 26.5
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080H",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 4.09
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080I",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 15.95
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080O",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 5.13
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000080T",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 40.52
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000815",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 11.39
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081F",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 28,
+          "ValorUnitario": 3.74
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081M",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 8.61
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081N",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 13.67
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081Q",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 13.5,
+          "ValorUnitario": 15.33
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081R",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 28.48
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081V",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 6.61
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000081W",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 6.68
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000824",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 1.35
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000082N",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 7,
+          "ValorUnitario": 26.42
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000082O",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 27.66
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000082P",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 12.3
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000082R",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 30,
+          "ValorUnitario": 7.16
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000082W",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 23.34
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000833",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 22.17
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000083Z",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 114,
+          "ValorUnitario": 4.47
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000846",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 18,
+          "ValorUnitario": 3.56
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084B",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 26,
+          "ValorUnitario": 4.57
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084C",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 43.07
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084D",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 44.04
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084L",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 89,
+          "ValorUnitario": 9.23
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084O",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 146.52
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000084R",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3.16,
+          "ValorUnitario": 165
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000850",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 0.95
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000853",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 11.32
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000854",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 2.66
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000859",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 6.75
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085A",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 8.5
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085C",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 12.36,
+          "ValorUnitario": 5.35
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085T",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 130.52
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085V",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 149.24
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085W",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 146.72
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085Y",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 30,
+          "ValorUnitario": 22.41
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000085Z",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 6.19
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000860",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 9.17
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086A",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 6,
+          "ValorUnitario": 4.14
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086B",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 2.83
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086D",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 96,
+          "ValorUnitario": 1.93
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086E",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 2.49
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086I",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 17.63
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086L",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 43,
+          "ValorUnitario": 69.55
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086M",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 69.55
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086N",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 11,
+          "ValorUnitario": 65.17
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086O",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 65.17
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086P",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 65.17
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086Q",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 10,
+          "ValorUnitario": 28.45
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086R",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 28.45
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086S",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 26.71
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086T",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 26.71
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000086V",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 13,
+          "ValorUnitario": 27.74
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000870",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 3,
+          "ValorUnitario": 40.82
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000872",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 11,
+          "ValorUnitario": 36.83
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000873",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 2,
+          "ValorUnitario": 36.83
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000875",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 34,
+          "ValorUnitario": 61.21
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000877",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 11,
+          "ValorUnitario": 56.95
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087A",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 36,
+          "ValorUnitario": 42.33
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087H",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 0.91
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087K",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 3.31
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087P",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 39,
+          "ValorUnitario": 58.01
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087Q",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 58.01
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087R",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 4.44
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A000087X",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 17,
+          "ValorUnitario": 53.69
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000880",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 135,
+          "ValorUnitario": 0.67
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000881",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 1,
+          "ValorUnitario": 0.71
+        }
+      },
+      {
+        "json": {
+          "CFOP": "5.927",
+          "IdentificadorProduto": "00A0000882",
+          "IdentificadorSetorSaida": "00A0000005",
+          "Quantidade": 5,
+          "ValorUnitario": 0.93
+        }
+      }
+    ]
+  },
+  "versionId": "21bd6317-b2e5-4d8e-ad4e-897ebc990b7f",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-13T17:06:31.851Z",
+      "updatedAt": "2024-12-13T17:06:31.851Z",
+      "role": "workflow:owner",
+      "workflowId": "C5kFp36EZBQyRWAt",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
