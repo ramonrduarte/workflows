@@ -1,0 +1,160 @@
+{
+  "createdAt": "2024-10-30T11:25:47.910Z",
+  "updatedAt": "2024-11-18T17:40:26.494Z",
+  "id": "sPaBNF7eHRUD61PH",
+  "name": "Postgres Ultimo Contato",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "3afb14e8-6918-474b-927c-6b9e2c1455c2",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    c.contact_id, \n    con.name AS contact_name, \n    MAX(c.created_at) AS last_conversation_started\nFROM \n    public.conversations c\nJOIN \n    public.contacts con ON c.contact_id = con.id\nGROUP BY \n    c.contact_id, con.name\nORDER BY \n    last_conversation_started ASC\nLIMIT 10;\n",
+        "options": {}
+      },
+      "id": "f18c9b81-0e98-4f0e-be67-1e23aaeead8f",
+      "name": "Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        760,
+        240
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "VQsHvbC2Qm0D2t30",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "555193732861@s.whatsapp.net"
+            },
+            {
+              "name": "=text",
+              "value": "={{ $json.contatos }}\n"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "13e43b9e-8743-4dfb-b4ef-318feb3fa987",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      contatos: [\n        \"📋 *Relatório de Últimos Contatos* 📋\", // Cabeçalho\n        \"\",\n        ...$items().map(item => {\n          const { contact_name, last_conversation_started } = item.json;\n          const formattedDate = new Date(last_conversation_started).toLocaleString('pt-BR');\n          return `${formattedDate} | *${contact_name}*`;\n        }),\n        \"\",\n        \"🤖 *Mensagem gerada automaticamente pelo sistema.*\" // Rodapé\n      ].join('\\n') // Junta tudo com quebras de linha\n    }\n  }\n];\n"
+      },
+      "id": "f0ca06ba-f1ce-4b5c-afbd-e4705c535453",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5dbc85b3-66b5-4879-bac2-0000878e96c9",
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-10-30T11:25:47.910Z",
+      "updatedAt": "2024-10-30T11:25:47.910Z",
+      "role": "workflow:owner",
+      "workflowId": "sPaBNF7eHRUD61PH",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
