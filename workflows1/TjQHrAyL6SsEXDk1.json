@@ -1,0 +1,256 @@
+{
+  "createdAt": "2024-12-03T20:30:42.056Z",
+  "updatedAt": "2024-12-04T13:50:09.146Z",
+  "id": "TjQHrAyL6SsEXDk1",
+  "name": "AAAA11",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "id": "0be0195e-f1a5-4fe6-8e32-6aa2e08c272c",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        700,
+        620
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "lGYQEgVJSu1P8jVH",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.data.key.remoteJid }}"
+      },
+      "id": "3ea39175-3d9a-404a-9d13-8a0bb1f43bb7",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "name": "Wikipedia",
+        "description": "chame essa função quando for preciso pesquisar algo no wikipedia",
+        "workflowId": {
+          "__rl": true,
+          "value": "n85iMWWgckQLkvB5",
+          "mode": "list",
+          "cachedResultName": "Chamada"
+        }
+      },
+      "id": "e8090df8-9086-41ff-a5ad-115a6d1cd93c",
+      "name": "Wikipedia",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1020,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "name": "Consultaitem",
+        "description": "Chame essa função sempre que precisar presquisar sobre algum item, deve sempre usar 6 digitos para pesquisa complentando o codigo com zeros a esquerda e passando para a query somente o codigo do item",
+        "workflowId": {
+          "__rl": true,
+          "value": "DOQhklHrYwKpsvWh",
+          "mode": "list",
+          "cachedResultName": "Chamada1"
+        }
+      },
+      "id": "231750ed-ef55-4c27-b37e-3ce37282dadd",
+      "name": "Consultaitem",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1260,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "183186a5-ae1d-4768-a84a-0b9114986112",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ed4387a2-2598-459d-8ab5-0d03605fc080",
+        "options": {}
+      },
+      "id": "4da9c142-cedb-4794-9dfa-741439c50637",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        280
+      ],
+      "webhookId": "ed4387a2-2598-459d-8ab5-0d03605fc080"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.data.message.conversation }}",
+        "options": {}
+      },
+      "id": "5a52fb77-e447-472a-a37c-53b0ed8f46ba",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        800,
+        380
+      ]
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultaitem": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f711a21a-4935-4b14-8987-43c589cf2162",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-03T20:30:42.056Z",
+      "updatedAt": "2024-12-03T20:30:42.056Z",
+      "role": "workflow:owner",
+      "workflowId": "TjQHrAyL6SsEXDk1",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
