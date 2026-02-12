@@ -1,0 +1,433 @@
+{
+  "createdAt": "2025-06-06T11:55:30.958Z",
+  "updatedAt": "2025-06-09T10:31:21.285Z",
+  "id": "xjCs0YVxfg7SXp9N",
+  "name": "ANALISE DE CONVERSA",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "53a805cb-9914-458f-8734-3dc6280bae9f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        660,
+        880
+      ],
+      "id": "a925de1b-0354-4398-a230-c59d97e7b46f",
+      "name": "webhookDataChatwoot",
+      "webhookId": "53a805cb-9914-458f-8734-3dc6280bae9f"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('setVariables').item.json.baseUrl }}/api/v1/accounts/1/conversations/{{ $('webhookDataChatwoot').item.json.body.messages[0].conversation_id }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        880
+      ],
+      "id": "71c64c8d-a6f4-4e49-816c-ff4bb87ece2e",
+      "name": "getMessages",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "payload",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        880
+      ],
+      "id": "aa67327a-6336-41b2-9b07-414c18ffcd6c",
+      "name": "splitMessages"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb1ab9f0-407a-4173-ac1c-40ac31a77001",
+              "name": "message.content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "f8164e78-af89-4bc9-a639-5b04fcd523df",
+              "name": "message.name",
+              "value": "={{ $json.sender.name }}",
+              "type": "string"
+            },
+            {
+              "id": "52cd4fa9-0a0b-4248-8f6c-d36815f415b2",
+              "name": "message.created_at",
+              "value": "={{ $json.created_at }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        880
+      ],
+      "id": "62917730-8b45-46b7-a262-a7af70c8e48e",
+      "name": "payloadResume"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "message",
+              "includeEmpty": true,
+              "separateBy": "\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        880
+      ],
+      "id": "6136cf6c-2cd3-40d7-946b-1eb41481544a",
+      "name": "summarizeMessages"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.concatenated_message }}",
+        "options": {
+          "systemMessage": "=role: Experiente gestor de Customer Success\ninput: |\n  Você receberá a transcrição de uma conversa entre um cliente e um atendente de suporte ou sucesso do cliente.\n  Analise cuidadosamente o conteúdo e extraia as seguintes informações:\n    - Principais pontos discutidos\n    - Quais serviços foram solicitados ou mencionados\n    - Qual foi o tom geral da conversa (ex: amigável, impaciente, confuso, objetivo, etc.)\n    - Se houve algum conflito ou mal-entendido\n    - Quais foram os acertos no atendimento\n    - O que pode ser melhorado na abordagem, tempo de resposta ou clareza\nsteps:\n  - Leia a conversa completa com atenção\n  - Extraia os tópicos centrais discutidos\n  - Identifique se houve solicitações de serviço ou dúvidas relevantes\n  - Avalie o tom de ambos os lados (cliente e atendente)\n  - Aponte qualquer oportunidade de melhoria no atendimento ou no processo identificado durante a conversa.\n  - Registre os próximos passos e quem será responsável por cada um.\n  - Gere um resumo objetivo e organizado em tópicos\nexpectation: |\n  Fornecer um relatório claro e útil sobre a interação, para que a equipe de sucesso do cliente possa aprender com a experiência e fazer melhorias contínuas no atendimento.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1900,
+        880
+      ],
+      "id": "87541469-615e-4190-9499-5f4e9493f353",
+      "name": "agentMessages"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1900,
+        1080
+      ],
+      "id": "9308a870-a888-478b-909b-0c14c8361869",
+      "name": "modelMessages",
+      "credentials": {
+        "openAiApi": {
+          "id": "g75nfi724uNIb6dc",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('setVariables').item.json.baseUrl }}/api/v1/accounts/1/conversations/{{ $('webhookDataChatwoot').item.json.body.messages[0].conversation_id }}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "private",
+              "value": "={{ true }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2260,
+        880
+      ],
+      "id": "eb9e3d16-a9e0-484b-9efc-71ce6f342d89",
+      "name": "sendResumeConversation",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2vnfEv1SPKSY2s5h",
+          "name": "ChatwootAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "68ad9904-120b-421e-ad44-49418f0f7a73",
+              "name": "baseUrl",
+              "value": "https://chat.rdmon.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        880
+      ],
+      "id": "304497e4-81e0-42e1-a128-1402b63f0259",
+      "name": "setVariables"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2460,
+        880
+      ],
+      "id": "0cdf04ab-bc74-434e-99c3-eb4a7a34bb73",
+      "name": "endProcessing"
+    },
+    {
+      "parameters": {
+        "content": "### ⚙️ Configuração Inicial deste Workflow\nAntes de executar o fluxo, confira e preencha as credenciais e variáveis abaixo:\n\n### 🔗 Webhook Chatwoot\n- **webhookDataChatwoot**  \n\n### 🌐 Variáveis de Ambiente\n- **`baseUrl`**: URL pública da instância Chatwoot  \n  _Ex.:_ `https://chat.seudominio.com`\n\n### 🔐 Credenciais Chatwoot\n- **Overview / Credentials**\n\n### 🧠 Credenciais OpenAI\n- **Overview / Credentials**\n\n### ✍️ Autor / Contato\n- **Nome**: Promovaweb\n- **E-mail**: contato@promovaweb.com\n- **WhatsApp**: +55 (11) 9 7671-5006\n",
+        "height": 760,
+        "width": 580,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "1cf9a70d-383c-4ab9-b9a0-22ce1a00de3e",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### 💬 Entrada e Preparação de Dados\nAqui capturamos e organizamos o payload antes de chamar a LLM:\n\n1. 📥 **webhookDataChatwoot**  \n   Recebe o POST do Chatwoot com o corpo da conversa.  \n2. ⚙️ **setVariables**  \n   Define a variável `baseUrl` usada nas próximas requisições.  \n3. 🌐 **getMessages**  \n   Busca via API todo o histórico de mensagens da conversa.  \n4. 🔀 **splitMessages**  \n   Separa o array `payload` em itens individuais para processamento.  \n5. 📝 **payloadResume**  \n   Mapeia cada item em campos chave:  \n   - `message.content`  \n   - `message.name` (remetente)  \n   - `message.created_at` (timestamp)  \n6. 📄 **summarizeMessages**  \n   Concatena todas as mensagens em um único texto para resumo.  \n",
+        "height": 760,
+        "width": 1240,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "c983c444-42ae-4276-abb2-46210e4a8b34",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### 🤖 Processamento e Envio de Resumo\nNeste bloco a LLM analisa e devolve o relatório:\n\n1. 🤖 **agentMessages** (LangChain Agent)  \n   - Recebe o texto resumido  \n   - Aplica prompt de “gestor de Customer Success”  \n   - Extrai insights e próximos passos  \n\n2. 🧠 **modelMessages** (gpt-4o-mini)  \n   └ Conecta o agente ao modelo OpenAI para gerar a resposta.  \n\n3. 📤 **sendResumeConversation**  \n   Envia de volta ao Chatwoot o relatório gerado (`$json.output`).  \n\n4. ✅ **endProcessing**  \n   NoOp final para encerrar o fluxo.  \n",
+        "height": 760,
+        "width": 800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1860,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "c363c06c-655c-41da-aba8-4b8f3ac835bc",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        660,
+        1060
+      ],
+      "id": "6e0976df-ad1b-4166-a926-1e301bf941bb",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "connections": {
+    "webhookDataChatwoot": {
+      "main": [
+        [
+          {
+            "node": "setVariables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getMessages": {
+      "main": [
+        [
+          {
+            "node": "splitMessages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "splitMessages": {
+      "main": [
+        [
+          {
+            "node": "payloadResume",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "payloadResume": {
+      "main": [
+        [
+          {
+            "node": "summarizeMessages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "summarizeMessages": {
+      "main": [
+        [
+          {
+            "node": "agentMessages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agentMessages": {
+      "main": [
+        [
+          {
+            "node": "sendResumeConversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "modelMessages": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "agentMessages",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setVariables": {
+      "main": [
+        [
+          {
+            "node": "getMessages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendResumeConversation": {
+      "main": [
+        [
+          {
+            "node": "endProcessing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "setVariables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5b00633c-7e48-4d8e-8824-355a29801ab4",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2025-06-06T11:55:30.958Z",
+      "updatedAt": "2025-06-06T11:55:30.958Z",
+      "role": "workflow:owner",
+      "workflowId": "xjCs0YVxfg7SXp9N",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
