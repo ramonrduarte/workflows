@@ -1,0 +1,1075 @@
+{
+  "createdAt": "2024-12-04T13:51:01.067Z",
+  "updatedAt": "2025-06-02T11:59:36.777Z",
+  "id": "CEJa5JbYbRLTIRBh",
+  "name": "AAAA FLUXO",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "responseFormat": "text"
+        }
+      },
+      "id": "ba89d0f5-c1d3-4ecf-b770-b68f44cab663",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        380,
+        420
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "lGYQEgVJSu1P8jVH",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Normalizacao').item.json.message.chat_id }}"
+      },
+      "id": "a2aa2b5e-5fbd-46f7-a463-5eab93a1e89d",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "name": "Wikipedia",
+        "description": "chame essa função quando for preciso pesquisar algo no wikipedia",
+        "workflowId": {
+          "__rl": true,
+          "value": "n85iMWWgckQLkvB5",
+          "mode": "list",
+          "cachedResultName": "Chamada"
+        }
+      },
+      "id": "2ecc486d-e801-46c4-8938-19402b90f6e0",
+      "name": "Wikipedia",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        540,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "name": "Consultaitem",
+        "description": "=Chame essa função sempre que precisar presquisar o codigo de algum item, deve sempre usar 6 digitos para pesquisa complentando o codigo com zeros a esquerda e passando para a query somente o codigo do item, mas cuidado, pois nem sempre quando se tem números na conversa quer dizer que a pessoa esta falando o codigo do item, voce precisa entender o contexto, pois alguns nomes podem conter numeros e pode confundir a consulta. Tenha certeza de que a pessoa esta falando o codigo do item, pode ate pedir uma confirmação se for necessario.\nVoce precisa analisar bem o contexto, caso tenha codigo: quer dizer que o numeo a seguir deve ser o codigo do item, então deve fazer a consulta por ele. E essa consulta deve ser priorizada a consulta por nome.",
+        "workflowId": {
+          "__rl": true,
+          "value": "DOQhklHrYwKpsvWh",
+          "mode": "list",
+          "cachedResultName": "Chamada1"
+        }
+      },
+      "id": "827aaf1a-a67d-40c1-a361-f59f8e157290",
+      "name": "Consultaitem",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        620,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Bot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "9e91372b-86fb-436e-ba93-ec85142f1ef5",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "name": "Consultaitemnome",
+        "description": "=Chame essa função sempre que precisar pesquisar sobre o nome ou descrição de algum item, precisa usar palavras chaves do que o cliente precisa para ter um melhor resultado na busca. Cuidado, pois alguns nomes de itens podem conveter numeros junto, como kit ro 47 ou algo nesse sentido, entenda o contexto para ter certeza de que se trava de uma consulta de nome do item.\nSe o contexto tiver codigo: a consulta deve ser por codigo e não pelo nome, cuidado ao analisar.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "NsqiLdfzWpuU9XQe",
+          "cachedResultName": "Chamada2"
+        }
+      },
+      "id": "9f8f09a1-c4a5-4926-aafc-bf62ebb65248",
+      "name": "Consultaitemnome",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "id": "85d177b3-6510-4db5-a639-86077e924301",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        760
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "lGYQEgVJSu1P8jVH",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "eb6ec86f-5f54-4425-b2c1-ca7d7212eb56",
+      "name": "Calculator",
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fa7a9e85-0ae3-4206-88d8-46b942553703",
+              "leftValue": "={{ $('AI Agent').item.json.output.output.response[0].imagem.url }}",
+              "rightValue": ".jpg",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "64558546-4507-4e61-9aef-60eac3f17b00",
+      "name": "Possui Imagem",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1660,
+        540
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendMedia/Bot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "mediatype",
+              "value": "image"
+            },
+            {
+              "name": "mimetype",
+              "value": "image/png"
+            },
+            {
+              "name": "caption",
+              "value": "=Código: {{ $json.dadosBasicos.codigo }}\n\nDescrição: {{ $json.dadosBasicos.nome }}\n\n{{ $json.dadosBasicos.descricao }}\n\nPreço: {{ $json.dadosBasicos.valor }}\n\nLink: {{ $json.dadosBasicos.url }}\n"
+            },
+            {
+              "name": "media",
+              "value": "={{ $json.imagem.url }}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{ $json.dadosBasicos.codigo }}.png"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "4b7c8d40-bfeb-4eac-9c26-b0ceb3d2768f",
+      "name": "Envia Imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bd829ed7-26ed-4f5f-9f9a-77bd49845f4c",
+              "name": "Imagem",
+              "value": "={{$json[\"output\"].match(/\\!\\[.*?\\]\\((https?:\\/\\/[^\\s]+)\\)/)?.[1].trim() || ''}}",
+              "type": "string"
+            },
+            {
+              "id": "294e9e83-975f-4cf8-ab51-4049aab82f9a",
+              "name": "mensagem",
+              "value": "={{$json[\"output\"].replace(/\\n\\*\\*Imagem:\\*\\*\\s*!\\[.*?\\]\\((https?:\\/\\/[^\\s]+)\\)\\n/, '').trim()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4833f83c-e9cb-49e7-9bf2-12270e3ea581",
+      "name": "Extrai url imagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1780,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"response\": [\n    {\n      \"dadosBasicos\": {\n        \"id\": \"98757625\",\n        \"codigo\": \"000013\",\n        \"nome\": \"Cadeado Papaiz 45mm com Chave Simples Padrão CEEE (RS)\",\n        \"descricao\": \"Cadeado com alta segurança.\",\n        \"valor\": \"10.00\",\n        \"url\": \"https://www.adrofecha.com.br/produto\"\n      },\n      \"imagem\": {\n        \"url\": \"https://images.tcdn.com.br/img/img_prod/888811/cadeado_papaiz_45mm.jpg\"\n      },\n      \"dimensoes\": {\n        \"largura\": \"10\",\n        \"altura\": \"20\",\n        \"comprimento\": \"20\",\n        \"peso\": \"250\"\n      }\n    }\n  ]\n}"
+      },
+      "id": "fbf99d07-741c-4077-9bd1-25dfaaebdc27",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output.output.response }}",
+        "options": {
+          "systemMessage": "=Você deve formatar o texto removendo * desnecessarios, um titulo deve ter somente *titulo* e não deve ficar dessa forma **titulo**.\n\ndestaque os titulos com *titulo*, para que eles fiquem em negrito.\n\nfaça outras correçoes se necessarios, mas não invente dados, use somente o que foi disponibilizado."
+        }
+      },
+      "id": "bda34ad1-a9c9-49d4-a8aa-49bfad560f5c",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1200,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f194a887-611c-4670-b982-601bb2655c3b",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1160,
+        40
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {},
+      "id": "8a310f8b-64f5-456d-9774-b2721a54be8a",
+      "name": "Replace Me",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3e9fe9ce-1389-4229-96f7-0b544390d08c",
+              "name": "response",
+              "value": "={{ $json[\"output\"][\"output\"][\"response\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "70b04ee0-a998-4746-94d9-251f1a2e2fce",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtemos a string JSON de \"response\"\nconst responseString = $json.response;\n\n// Convertendo a string JSON para um objeto real\nconst responseArray = JSON.parse(responseString);\n\n// Retornamos o array como saída\nreturn responseArray.map(item => ({ json: item }));\n"
+      },
+      "id": "efabf861-32f7-4cf9-8947-84ce06e3900c",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aab7cb72-8ced-4ad3-b9c2-f82005de910c",
+              "name": "message.message_id",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "d839117f-7fd0-4e40-9841-260b88b17796",
+              "name": "message.chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "bd586774-cbf4-4e5d-a9a1-4fc9d1a13ecf",
+              "name": "message.content_type",
+              "value": "text",
+              "type": "string"
+            },
+            {
+              "id": "315aded7-c0c5-454f-bc1a-621b393b21fc",
+              "name": "message.content",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "bfd7e575-c836-4941-abc3-c650fa338aac",
+              "name": "message.timestamp",
+              "value": "={{ $json.body.date_time }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1e434091-a227-43d3-b0bc-7c87fd7e7286",
+      "name": "Normalizacao",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $json.message.chat_id }}",
+        "messageData": "={{ JSON.stringify($json.message) }}",
+        "tail": true
+      },
+      "id": "9e51e1d4-b430-4455-bf61-191b3775556f",
+      "name": "push buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -160
+      ],
+      "credentials": {
+        "redis": {
+          "id": "ctY9vvPFn5U3mOdJ",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Normalizacao').item.json.message.chat_id }}",
+        "options": {}
+      },
+      "id": "61252bee-b565-4086-a4fa-07b86bdd1e31",
+      "name": "get messages buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        120
+      ],
+      "credentials": {
+        "redis": {
+          "id": "ctY9vvPFn5U3mOdJ",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ JSON.parse($json.messages.first()).message_id }}",
+                    "rightValue": "={{ $('Normalizacao').item.json.message.message_id }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "nada a fazer"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "27163f29-6194-4d6f-9506-ec6955556b47",
+                    "leftValue": "={{ JSON.parse($json.messages.last()).timestamp }}",
+                    "rightValue": "={{ $now.minus(15, 'seconds') }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "before"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "prosseguir"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "esperar"
+        }
+      },
+      "id": "87da1bd9-2d24-48dd-8dfe-2180f8886fd1",
+      "name": "Switch1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -360,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "id": "565b5e85-ea4f-4fbc-8162-8850847c466d",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -460,
+        360
+      ],
+      "webhookId": "4a5d6454-601e-4792-ac0d-9eb892e58683"
+    },
+    {
+      "parameters": {},
+      "id": "7f882623-537e-4f44-a5e9-7f9e333e8792",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        20,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38865e0d-eecd-45eb-ae72-2a209e9d5850",
+              "name": "messages",
+              "value": "={{ $json.messages.map(value => JSON.parse(value).content).join('\\n') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "58edd005-4dbb-4600-9ef8-8298aed20137",
+      "name": "messages",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Normalizacao').item.json.message.chat_id }}"
+      },
+      "id": "c9bbab2c-dfcd-4957-9137-874a7fcc7506",
+      "name": "delete buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        0,
+        220
+      ],
+      "credentials": {
+        "redis": {
+          "id": "ctY9vvPFn5U3mOdJ",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.data.message.conversation }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "386565e4-4e4c-4ee0-9173-248e7b12ef96",
+                    "leftValue": "={{ $json.body.data.message.imageMessage }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "21ed38b2-7227-46a5-880d-1b2e474fda36",
+                    "leftValue": "{{ $json.body.data.message.audioMessage }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b64a4b8a-4695-4fa5-9a24-28d0330a0a5c",
+                    "leftValue": "={{ $json.body.data.message.documentMessage }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "documento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0eb5ec20-d368-49bc-ad32-dee157476925",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -440,
+        -140
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8f76203b-7488-4d41-a655-8a19b4e6c9a5",
+        "options": {}
+      },
+      "id": "8833c1cd-a7d1-467c-84b2-5b968e0dc97c",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -700,
+        -140
+      ],
+      "webhookId": "8f76203b-7488-4d41-a655-8a19b4e6c9a5"
+    },
+    {
+      "parameters": {
+        "agent": "openAiFunctionsAgent",
+        "promptType": "define",
+        "text": "={{ $json.messages }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Voce é um atendente de whatsapp de uma loja de ferragens. Deve atender os clientes de forma simpatica e prestativa. Voce vai classificar o atendimento de acordo com a conversa para saber qual chamada de ferramenta deve ser feito.\n\nVoce não deve inventar dados, deve entender a mensagem do cliente e fazer a consulta necessaria para obter os dados.\nCaso não tenha o que precisa para consulta, peça mais informações.\n\nse na conversa tiver certeza que o cliente informou um codigo de item, voce precisa chamar a ferramenta Consultaitem.\n\nCaso o cliente esteja procurando um item e dando uma descrição pelo nome do item, voce deve chamar a ferramente Consultaitemnome\n\no Json gerado na saída com o outputparser, não deve ter dados gerados, voce deve preencher os campos somente se os dados existerem na consulta, se não tiver deixe o campo fora do json. E tambem não complemente as medidas com cm, g ou outras medidas, deixe somente o valor numerico."
+        }
+      },
+      "id": "e0107db6-9cbd-40fe-a403-4cfdd0d59941",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        440,
+        220
+      ]
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultaitem": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultaitemnome": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Possui Imagem": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Envia Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizacao": {
+      "main": [
+        [
+          {
+            "node": "push buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "push buffer": {
+      "main": [
+        [
+          {
+            "node": "get messages buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get messages buffer": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "delete buffer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "get messages buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "delete buffer": {
+      "main": [
+        [
+          {
+            "node": "messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messages": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Normalizacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "7803dc3d-283f-479d-9633-f9d587e4a64c",
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "createdAt": "2024-12-04T13:51:01.067Z",
+      "updatedAt": "2024-12-04T13:51:01.067Z",
+      "role": "workflow:owner",
+      "workflowId": "CEJa5JbYbRLTIRBh",
+      "projectId": "K9dNCjcSCexf3aBf",
+      "project": {
+        "createdAt": "2024-10-15T13:38:49.068Z",
+        "updatedAt": "2024-10-15T13:43:37.131Z",
+        "id": "K9dNCjcSCexf3aBf",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null
+      }
+    }
+  ]
+}
