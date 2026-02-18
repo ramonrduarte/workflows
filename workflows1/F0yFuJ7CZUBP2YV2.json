@@ -1,0 +1,531 @@
+{
+  "updatedAt": "2026-02-18T11:32:46.181Z",
+  "createdAt": "2026-02-13T11:05:05.232Z",
+  "id": "F0yFuJ7CZUBP2YV2",
+  "name": "BACKUP WORKFLOWS",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "74958616-4bf4-44d6-9983-56159727e9eb",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        544,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "df4a9423-3429-4b63-b01c-469c917d4302",
+      "name": "Workflow",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "seconds"
+      },
+      "id": "3c03b050-bfdd-4c9b-96bd-c354ca70c974",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        816,
+        400
+      ],
+      "webhookId": "154226ae-b163-4932-a2f2-12865e621905"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "ramonrduarte",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "workflows",
+          "mode": "list",
+          "cachedResultName": "workflows",
+          "cachedResultUrl": "https://github.com/ramonrduarte/workflows"
+        },
+        "filePath": "=workflows1/{{ $('Workflow').item.json.id }}.json",
+        "fileContent": "={{ JSON.stringify($('Workflow').item.json, null, 2) }}",
+        "commitMessage": "=Backup Realizado em {{ $now }}",
+        "additionalParameters": {
+          "branch": {
+            "branch": "main"
+          }
+        }
+      },
+      "id": "c70dd9c2-f8ac-48a6-af5d-777cd32f7297",
+      "name": "GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        3360,
+        976
+      ],
+      "webhookId": "9272c509-fefb-4213-8757-ecd4cf3d0b8a",
+      "credentials": {
+        "githubApi": {
+          "id": "7Rad87C4FxY6NyDd",
+          "name": "GitHub Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "n8n export:workflow --backup --output=/home/node/.n8n-files/workflows"
+      },
+      "id": "910b4a26-b445-4729-8654-eabac5a19605",
+      "name": "ExportarWorkflows",
+      "type": "n8n-nodes-base.executeCommand",
+      "position": [
+        -320,
+        384
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/.n8n-files/workflows/*.json"
+      },
+      "id": "f45ea1da-fbc6-42f0-aac5-970d883c60c0",
+      "name": "Read Binary Files",
+      "type": "n8n-nodes-base.readBinaryFiles",
+      "position": [
+        -80,
+        384
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "fb90699f-80c5-48e1-b57f-c6a630c6c071",
+      "name": "Move Binary Data",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "position": [
+        176,
+        384
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Configura o Backup dos Workflows ",
+        "height": 326.29607250755294,
+        "width": 1097.2219381826642
+      },
+      "id": "dd7a82e3-8c6a-4250-972c-97772f053b30",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "id": "022e5e45-93b9-46d0-8f9b-a7f52aec7d1c",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -960,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "command": "rm -rf /home/node/.n8n-files/credentials/"
+      },
+      "id": "f6ae7e66-0fdd-48cf-94fc-c3109d2ba4f6",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "ramonrduarte",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "workflows",
+          "mode": "list",
+          "cachedResultName": "workflows",
+          "cachedResultUrl": "https://github.com/ramonrduarte/workflows"
+        },
+        "filePath": "=workflows1/{{ $('Workflow').item.json.id }}.json",
+        "fileContent": "={{ JSON.stringify($('Workflow').item.json, null, 2) }}",
+        "commitMessage": "=Backup Realizado em {{ $now }}",
+        "additionalParameters": {
+          "branch": {
+            "branch": "main"
+          }
+        }
+      },
+      "id": "0766c824-19bc-43fb-b297-d890ad3cc48c",
+      "name": "GitHub1",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        2656,
+        896
+      ],
+      "webhookId": "e9c9d1be-125e-4be8-a3ba-812cafc3078b",
+      "credentials": {
+        "githubApi": {
+          "id": "7Rad87C4FxY6NyDd",
+          "name": "GitHub Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "ramonrduarte",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "workflows",
+          "mode": "list",
+          "cachedResultName": "workflows",
+          "cachedResultUrl": "https://github.com/ramonrduarte/workflows"
+        },
+        "filePath": "=workflows1/{{ $json.id }}.json",
+        "additionalParameters": {}
+      },
+      "id": "04494ca6-235a-4e48-b40a-36d6e607b609",
+      "name": "GitHubWorkflow",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        400
+      ],
+      "webhookId": "7da2650a-678a-4e3f-bc38-d9391774ef58",
+      "credentials": {
+        "githubApi": {
+          "id": "7Rad87C4FxY6NyDd",
+          "name": "GitHub Token"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.error }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "77e2a597-0c84-4aa8-86f5-6c622e38785e",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "94ded9d3-de10-4822-ac43-19c34149140e",
+      "name": "Convert to/from binary data",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.updatedAt }}",
+              "operation": "notEqual",
+              "value2": "={{ $('Workflow').item.json.updatedAt }}"
+            }
+          ]
+        }
+      },
+      "id": "0f3a00c3-ebed-44a0-8c67-1fa46fe5f5fe",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2256,
+        800
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "11fea3f6-fc77-40e6-9994-3635287e50aa",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        816,
+        48
+      ]
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow": {
+      "main": [
+        [
+          {
+            "node": "GitHubWorkflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExportarWorkflows": {
+      "main": [
+        [
+          {
+            "node": "Read Binary Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Binary Files": {
+      "main": [
+        [
+          {
+            "node": "Move Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Binary Data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "ExportarWorkflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHubWorkflow": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Convert to/from binary data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to/from binary data": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "GitHub1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2056ff75-3303-4780-a9c4-7d7370e4057f",
+  "activeVersionId": null,
+  "versionCounter": 14,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-13T11:05:05.232Z",
+      "createdAt": "2026-02-13T11:05:05.232Z",
+      "role": "workflow:owner",
+      "workflowId": "F0yFuJ7CZUBP2YV2",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
