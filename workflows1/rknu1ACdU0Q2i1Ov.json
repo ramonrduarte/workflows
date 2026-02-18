@@ -1,0 +1,184 @@
+{
+  "updatedAt": "2026-02-17T00:36:45.653Z",
+  "createdAt": "2026-02-17T00:07:02.788Z",
+  "id": "rknu1ACdU0Q2i1Ov",
+  "name": "QRCODE",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ca218a59-8995-4244-b247-9c3e18e9976b",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        0
+      ],
+      "id": "7bf7e753-e78b-4036-b912-da51efb01351",
+      "name": "Webhook",
+      "webhookId": "ca218a59-8995-4244-b247-9c3e18e9976b"
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "www.adrofecha.com.br",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        336,
+        0
+      ],
+      "id": "19bcde8d-bdbf-4530-8746-53436db43c81",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3689de5b-3ef2-4476-8d47-9aa9e74a0b1d",
+              "name": "navegador",
+              "value": "={{ $json.headers['user-agent'] }}",
+              "type": "string"
+            },
+            {
+              "id": "cbf36224-58ce-4995-9ee3-0013200772a3",
+              "name": "ip",
+              "value": "={{ $json.headers['x-real-ip'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        0
+      ],
+      "id": "e23d1cee-238c-46a7-a583-495a3fa0859c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ua = $json.headers['user-agent'] || '';\n\nlet sistema = 'Desconhecido';\nlet sistemaVersao = '';\nlet navegador = 'Desconhecido';\nlet navegadorVersao = '';\nlet dispositivo = /Mobile/i.test(ua) ? 'Mobile' : 'Desktop';\n\n\n// ================= SISTEMA OPERACIONAL =================\nif (/Android/i.test(ua)) {\n  sistema = 'Android';\n  sistemaVersao = ua.match(/Android\\s([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/iPhone|iPad|iOS/i.test(ua)) {\n  sistema = 'iOS';\n  sistemaVersao = ua.match(/OS\\s([\\d_]+)/)?.[1]?.replace(/_/g,'.') || '';\n}\nelse if (/Windows NT/i.test(ua)) {\n  sistema = 'Windows';\n  sistemaVersao = ua.match(/Windows NT\\s([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/Mac OS X/i.test(ua)) {\n  sistema = 'MacOS';\n  sistemaVersao = ua.match(/Mac OS X\\s([\\d_]+)/)?.[1]?.replace(/_/g,'.') || '';\n}\nelse if (/Linux/i.test(ua)) {\n  sistema = 'Linux';\n}\n\n\n// ================= NAVEGADOR =================\nif (/Chrome/i.test(ua) && !/Edg|OPR/i.test(ua)) {\n  navegador = 'Chrome';\n  navegadorVersao = ua.match(/Chrome\\/([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) {\n  navegador = 'Safari';\n  navegadorVersao = ua.match(/Version\\/([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/Edg/i.test(ua)) {\n  navegador = 'Edge';\n  navegadorVersao = ua.match(/Edg\\/([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/Firefox/i.test(ua)) {\n  navegador = 'Firefox';\n  navegadorVersao = ua.match(/Firefox\\/([\\d\\.]+)/)?.[1] || '';\n}\nelse if (/OPR/i.test(ua)) {\n  navegador = 'Opera';\n  navegadorVersao = ua.match(/OPR\\/([\\d\\.]+)/)?.[1] || '';\n}\n\n\nreturn [\n  {\n    json: {\n      user_agent: ua,\n      sistema,\n      sistema_versao: sistemaVersao,\n      navegador,\n      navegador_versao: navegadorVersao,\n      dispositivo\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "2e3884ce-059a-4827-a454-20dfd12d4ed6",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Mobile Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "priority": "u=0, i",
+            "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "cross-site",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "191.243.6.79",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "191.243.6.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/ca218a59-8995-4244-b247-9c3e18e9976b",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "7babb0dc-a259-412a-9dfe-bac32f36f5df",
+  "activeVersionId": "7babb0dc-a259-412a-9dfe-bac32f36f5df",
+  "versionCounter": 46,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-17T00:07:02.788Z",
+      "createdAt": "2026-02-17T00:07:02.788Z",
+      "role": "workflow:owner",
+      "workflowId": "rknu1ACdU0Q2i1Ov",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
