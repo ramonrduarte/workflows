@@ -1,0 +1,172 @@
+{
+  "updatedAt": "2026-02-13T19:05:26.265Z",
+  "createdAt": "2026-02-13T19:04:55.229Z",
+  "id": "jYRSil3TXCQJEEtD",
+  "name": "[func] CONSULTA CLIENTE TRAY",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "id_cliente"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "35773439-c11b-48fc-b611-98cc511c6414",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-globals.globalConstants",
+      "typeVersion": 1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "e799f42c-54eb-448d-a7e0-46b4e8c9565a",
+      "name": "URLs",
+      "credentials": {
+        "globalConstantsApi": {
+          "id": "mdiGXMzCTMikAePk",
+          "name": "Url Imperador"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LqTstnWZGbYy8pHB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LqTstnWZGbYy8pHB",
+          "cachedResultName": "[func] Token Imperador"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        0
+      ],
+      "id": "8f56aa04-eb8e-4257-97b4-09056f003844",
+      "name": "Token Tray"
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $('URLs').item.json.constants.url_tray }}/customers/{{ $('When Executed by Another Workflow').item.json.id_cliente }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Token Tray').item.json.token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "46d304ad-f1ee-4742-8ff2-51ebc6908f65",
+      "name": "Consulta Cliente Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        0
+      ],
+      "retryOnFail": false
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URLs": {
+      "main": [
+        [
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Consulta Cliente Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e8bdd304-05f7-4513-93ce-23fe5cb57ac2",
+  "activeVersionId": null,
+  "versionCounter": 5,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-13T19:04:55.229Z",
+      "createdAt": "2026-02-13T19:04:55.229Z",
+      "role": "workflow:owner",
+      "workflowId": "jYRSil3TXCQJEEtD",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
