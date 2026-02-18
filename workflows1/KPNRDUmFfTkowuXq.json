@@ -1,0 +1,1133 @@
+{
+  "updatedAt": "2026-02-16T23:50:29.586Z",
+  "createdAt": "2026-02-13T19:06:23.785Z",
+  "id": "KPNRDUmFfTkowuXq",
+  "name": "Webhook Tray Imperador",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "725bc4e7-f287-4860-86be-3ff94abc9b13",
+        "options": {}
+      },
+      "id": "1881cf4b-6c01-4153-ab66-025ab85a90f6",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        -336
+      ],
+      "webhookId": "725bc4e7-f287-4860-86be-3ff94abc9b13"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1d812044-a398-4cc6-bf18-f4ae2f085d28",
+              "leftValue": "={{ $json.body[0].message.body.scope_name }}",
+              "rightValue": "order",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "94182bc2-99ef-43f5-814e-9e3f82af0ceb",
+              "leftValue": "={{ $json.body[0].message.body.seller_id }}",
+              "rightValue": "1145224",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "08bec0f7-bc8b-4b96-8e92-459fa4ea6d5c",
+      "name": "Filtro",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        -336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b50dfd72-633a-42d5-80df-addcacc6689a",
+              "leftValue": "={{ $('Webhook').item.json.body[0].message.body.act }}",
+              "rightValue": "insert",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4726f944-7799-4f8a-91fe-aa4b86908165",
+              "leftValue": "={{ $('Webhook').item.json.body[0].message.body.act }}",
+              "rightValue": "update",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        -336
+      ],
+      "id": "b246e83d-f3b5-476e-8227-55394d853286",
+      "name": "Insert Or Update"
+    },
+    {
+      "parameters": {
+        "url": "https://xpaqrwhayhegsmlhrqof.supabase.co/functions/v1/delete",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "queue_name",
+              "value": "tray"
+            },
+            {
+              "name": "message_id",
+              "value": "={{ $('Webhook').first().json.body[0].msg_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1856,
+        -528
+      ],
+      "id": "41c8663d-fdd5-4345-9654-f8e602d31306",
+      "name": "Limpa Lista"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "mhEQriwjFVpvomoL",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/mhEQriwjFVpvomoL",
+          "cachedResultName": "[func] CONSULTA PEDIDO TRAY"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nr_pedido": "={{ $json.body[0].message.body.scope_id }}"
+          },
+          "matchingColumns": [
+            "nr_pedido"
+          ],
+          "schema": [
+            {
+              "id": "nr_pedido",
+              "displayName": "nr_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        -336
+      ],
+      "id": "6af6b3e9-e7ae-42f4-95e4-be2f3055220f",
+      "name": "Call '[func] CONSULTA PEDIDO TRAY'"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad0b4fdc-e204-4c65-81cf-2c979baf475c",
+              "name": "pedido_status",
+              "value": "={{ $json.Order.status }}",
+              "type": "string"
+            },
+            {
+              "id": "2070f90c-5c1a-48d5-b21a-e52a18ce6734",
+              "name": "pedido_observacoes",
+              "value": "={{ $json.Order.store_note }}",
+              "type": "string"
+            },
+            {
+              "id": "0e665a85-38b0-413b-b145-b1f4843e01ae",
+              "name": "pedido_url",
+              "value": "={{ $json.Order.urls.payment }}",
+              "type": "string"
+            },
+            {
+              "id": "60ef3e6f-a4cf-4c70-9e25-6d22393069e2",
+              "name": "cliente_id",
+              "value": "={{ $json.Order.Customer.id }}",
+              "type": "string"
+            },
+            {
+              "id": "3354e635-f116-44b2-9a3b-1fce4ff14831",
+              "name": "cliente_nome",
+              "value": "={{ $json.Order.Customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "f135a28f-6953-4953-8f21-1d17b6ab5f88",
+              "name": "cliente_telefone",
+              "value": "={{ $json.Order.Customer.cellphone }}",
+              "type": "string"
+            },
+            {
+              "id": "fea8ae27-0378-4773-b6b8-4c1bd34d2420",
+              "name": "nr_pedido",
+              "value": "={{ $('Webhook').item.json.body[0].message.body.scope_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        -336
+      ],
+      "id": "8b07d6df-c846-468f-86e5-f512d4daadc4",
+      "name": "Normaliza"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "40de405f-d7b5-49c3-990f-27ab3c50d667",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "PENDENTE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PENDENTE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "44072ed3-8888-4621-a0b8-f1b41f8df21d",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO ENVIO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO ENVIO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8df61800-741c-4cf1-92cb-77a22f28fc9d",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO VINDI",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO VINDI"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "A ENVIAR",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "26ece9d6-b601-4e4c-882c-f4e3f4ca7491"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A ENVIAR"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e5f428ff-a363-4b02-b5fb-eac5fe104936",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "A ENVIAR VINDI",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A ENVIAR VINDI"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e1abce58-c8f5-4a8b-85c2-9bb1f0179dbe",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "ENVIADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ENVIADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "66f9ccc4-67b4-4951-b084-4615d039eab3",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "FINALIZADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "FINALIZADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3aa04811-f289-4506-b2f8-1acd66b6cb35",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "CANCELADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CANCELADO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        -224
+      ],
+      "id": "d11808ed-c9a4-48a5-8149-2fea6725e537",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5551993732861"
+            },
+            {
+              "name": "text",
+              "value": "=Olá! 😊\nRecebemos a confirmação do pagamento do seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}*.\n\nJá estamos preparando tudo com carinho e em breve ele será enviado. Assim que despachar, avisaremos por aqui!\n\nQualquer dúvida, estou à disposição."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1392,
+        -240
+      ],
+      "id": "7cc942e2-55ba-44ee-aca2-98f3b1d5fc5a",
+      "name": "MSG A ENVIAR"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5551993732861"
+            },
+            {
+              "name": "text",
+              "value": "=Olá! ✨\nVimos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue!\n\nEsperamos que tenha gostado da sua compra 💛\nSe puder, nos envie um feedback — sua opinião é muito importante.\n\nE se quiser, tire uma foto do produto e nos marque no Instagram @imperadordoslustres. Vamos adorar compartilhar! 📸"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1392,
+        112
+      ],
+      "id": "2458a66c-fdfe-4332-a84a-46302c6bd716",
+      "name": "MSG  FINALIZADO"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5551993732861"
+            },
+            {
+              "name": "text",
+              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1392,
+        -64
+      ],
+      "id": "bbadc21b-62a4-4d34-9986-de0db6447d07",
+      "name": "MSG ENVIADO"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5551993732861"
+            },
+            {
+              "name": "text",
+              "value": "=Olá!\nNotamos que o pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi cancelado.\n\nSe quiser finalizar sua compra, é só clicar no link abaixo — seu carrinho ainda está salvo:\n{{ $('Normaliza').item.json.pedido_url }}\n\nSe precisar de ajuda, estou aqui para você 😊"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1392,
+        288
+      ],
+      "id": "31f64cd8-4989-48b4-929c-3b0f4e9dda5d",
+      "name": "MSG  CANCELADO"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE msg_imperador (\n    id SERIAL PRIMARY KEY,\n    nr_pedido INTEGER NOT NULL,\n    tipo VARCHAR(50) NOT NULL,\n    enviado BOOLEAN NOT NULL DEFAULT FALSE,\n    data_envio TIMESTAMP,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW(),\n\n    CONSTRAINT unique_msg UNIQUE (nr_pedido, tipo)\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -256,
+        -528
+      ],
+      "id": "4b8df609-3282-401a-9836-77bc7286141d",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS (\n    SELECT 1\n    FROM msg_imperador\n    WHERE nr_pedido = {{ $('Normaliza').item.json.nr_pedido }}\n      AND tipo = '{{ $('Normaliza').item.json.pedido_status }}'\n      AND enviado = TRUE\n) AS ja_enviado;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        272,
+        -336
+      ],
+      "id": "b5750d54-a00b-459b-872f-d7b189702ffa",
+      "name": "Consulta mensagens",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "03ad044b-db59-4cb0-b631-eb9c0b3b3dd3",
+              "leftValue": "={{ $json.ja_enviado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        -336
+      ],
+      "id": "f8e688bd-d87d-4e89-bb7b-24a61a92e15a",
+      "name": "Ja enviada?"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM msg_imperador",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -48,
+        -528
+      ],
+      "id": "e5e29f9f-a9e1-41f2-9ec8-700f2f4f476d",
+      "name": "Consulta tabela",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "msg_imperador",
+          "mode": "list",
+          "cachedResultName": "msg_imperador"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "enviado": true,
+            "nr_pedido": "={{ $('Normaliza').item.json.nr_pedido }}",
+            "tipo": "={{ $('Normaliza').item.json.pedido_status }}",
+            "data_envio": "={{ new Date().toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "nr_pedido",
+            "tipo"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nr_pedido",
+              "displayName": "nr_pedido",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "enviado",
+              "displayName": "enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "data_envio",
+              "displayName": "data_envio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1696,
+        -16
+      ],
+      "id": "879b1a81-ad2b-4517-8a98-d36f3729982c",
+      "name": "Atualiza Tabela",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filtro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro": {
+      "main": [
+        [
+          {
+            "node": "Insert Or Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Or Update": {
+      "main": [
+        [
+          {
+            "node": "Call '[func] CONSULTA PEDIDO TRAY'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call '[func] CONSULTA PEDIDO TRAY'": {
+      "main": [
+        [
+          {
+            "node": "Normaliza",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normaliza": {
+      "main": [
+        [
+          {
+            "node": "Consulta mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MSG A ENVIAR",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MSG ENVIADO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MSG  FINALIZADO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MSG  CANCELADO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG A ENVIAR": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG  CANCELADO": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG  FINALIZADO": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MSG ENVIADO": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta mensagens": {
+      "main": [
+        [
+          {
+            "node": "Ja enviada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ja enviada?": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Tabela": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.70.3)",
+            "content-length": "1088",
+            "accept": "*/*",
+            "accept-encoding": "gzip,br",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "x-forwarded-for": "54.200.197.101",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "54.200.197.101"
+          },
+          "params": {},
+          "query": {},
+          "body": [
+            {
+              "msg_id": 15,
+              "read_ct": 290,
+              "enqueued_at": "2026-02-15T18:10:21.077088+00:00",
+              "vt": "2026-02-16T18:58:06.079327+00:00",
+              "message": {
+                "body": {
+                  "act": "update",
+                  "scope_id": "2125",
+                  "seller_id": "1145224",
+                  "scope_name": "order"
+                },
+                "headers": {
+                  "host": "edge-runtime.supabase.com",
+                  "accept": "*/*",
+                  "cf-ray": "9ce6c2ef524ba44b-GRU",
+                  "baggage": "sb-request-id=019c627f-0fc9-7815-bcad-26f4214ef28d",
+                  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+                  "cf-ew-via": "15",
+                  "cf-worker": "supabase.co",
+                  "cf-visitor": "{\"scheme\":\"https\"}",
+                  "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
+                  "content-type": "application/x-www-form-urlencoded",
+                  "sb-request-id": "019c627f-0fc9-7815-bcad-26f4214ef28d",
+                  "x-newrelic-id": "UAcHVVRaGwUFXVlSBwAHUA==",
+                  "content-length": "59",
+                  "accept-encoding": "gzip",
+                  "x-amzn-trace-id": "Root=1-69920c0c-77b0c29208b1225e4379f782",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.22",
+                  "cf-connecting-ip": "138.122.172.11",
+                  "x-forwarded-port": "443",
+                  "x-forwarded-proto": "https",
+                  "x-newrelic-transaction": "PxRVUVEAWgUGBldXBAMOUF0EFB8EBw8RVU4aAAgPV1AFU1tXBFIBW1IPAkNKQQkLCVRVWlIBFTs="
+                }
+              },
+              "headers": null
+            }
+          ],
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/725bc4e7-f287-4860-86be-3ff94abc9b13",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "1d6d3c22-00d7-4a52-b6e5-c8e5ea77608c",
+  "activeVersionId": "1d6d3c22-00d7-4a52-b6e5-c8e5ea77608c",
+  "versionCounter": 344,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-13T19:06:23.785Z",
+      "createdAt": "2026-02-13T19:06:23.785Z",
+      "role": "workflow:owner",
+      "workflowId": "KPNRDUmFfTkowuXq",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
