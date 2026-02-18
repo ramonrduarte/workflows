@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-16T23:50:29.586Z",
+  "updatedAt": "2026-02-18T17:57:15.371Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -523,7 +523,7 @@
             },
             {
               "name": "text",
-              "value": "=Olá! ✨\nVimos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue!\n\nEsperamos que tenha gostado da sua compra 💛\nSe puder, nos envie um feedback — sua opinião é muito importante.\n\nE se quiser, tire uma foto do produto e nos marque no Instagram @imperadordoslustres. Vamos adorar compartilhar! 📸"
+              "value": "=Olá! ✨\nVimos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue!\n\nEsperamos que tenha gostado da sua compra 💛\nSe puder, nos envie um feedback sua opinião é muito importante.\n\nTire uma foto do produto e nos marque no Instagram @imperadordoslustres. Vamos adorar compartilhar! 📸"
             }
           ]
         },
@@ -605,7 +605,7 @@
             },
             {
               "name": "text",
-              "value": "=Olá!\nNotamos que o pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi cancelado.\n\nSe quiser finalizar sua compra, é só clicar no link abaixo — seu carrinho ainda está salvo:\n{{ $('Normaliza').item.json.pedido_url }}\n\nSe precisar de ajuda, estou aqui para você 😊"
+              "value": "=Olá!\nNotamos que o pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi cancelado.\n\nSe quiser finalizar sua compra, é só clicar no link abaixo seu carrinho ainda está salvo:\n{{ $('Normaliza').item.json.pedido_url }}\n\nSe precisar de ajuda, estou aqui para você 😊"
             }
           ]
         },
@@ -1106,9 +1106,9 @@
       }
     ]
   },
-  "versionId": "1d6d3c22-00d7-4a52-b6e5-c8e5ea77608c",
-  "activeVersionId": "1d6d3c22-00d7-4a52-b6e5-c8e5ea77608c",
-  "versionCounter": 344,
+  "versionId": "e20ac7c8-d05c-4ff4-8458-4e5368fcae98",
+  "activeVersionId": "e20ac7c8-d05c-4ff4-8458-4e5368fcae98",
+  "versionCounter": 364,
   "triggerCount": 1,
   "tags": [],
   "shared": [
