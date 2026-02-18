@@ -1,0 +1,172 @@
+{
+  "updatedAt": "2026-02-13T19:03:52.019Z",
+  "createdAt": "2026-02-13T18:56:38.844Z",
+  "id": "mhEQriwjFVpvomoL",
+  "name": "[func] CONSULTA PEDIDO TRAY",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "nr_pedido"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "844fe827-7ae7-404a-a37e-16173b8b25d1",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LqTstnWZGbYy8pHB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LqTstnWZGbYy8pHB",
+          "cachedResultName": "[func] Token Imperador"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        0
+      ],
+      "id": "b168b422-33e1-42c8-81f5-2e06d10db56e",
+      "name": "Token Tray"
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $('URLs').item.json.constants.url_tray }}/orders/{{ $('When Executed by Another Workflow').item.json.nr_pedido }}/complete",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $('Token Tray').item.json.token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "eda72766-048e-42c2-ada9-6d607212de26",
+      "name": "Consulta Pedido Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        0
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-globals.globalConstants",
+      "typeVersion": 1,
+      "position": [
+        128,
+        0
+      ],
+      "id": "a40db9d0-0270-4123-9113-7b41fec7cec1",
+      "name": "URLs",
+      "credentials": {
+        "globalConstantsApi": {
+          "id": "mdiGXMzCTMikAePk",
+          "name": "Url Imperador"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "Consulta Pedido Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URLs": {
+      "main": [
+        [
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "7928cb31-f86f-4b8b-b202-02489a329150",
+  "activeVersionId": "7928cb31-f86f-4b8b-b202-02489a329150",
+  "versionCounter": 23,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-13T18:56:38.844Z",
+      "createdAt": "2026-02-13T18:56:38.844Z",
+      "role": "workflow:owner",
+      "workflowId": "mhEQriwjFVpvomoL",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
