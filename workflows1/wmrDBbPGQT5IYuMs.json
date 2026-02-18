@@ -1,0 +1,2252 @@
+{
+  "updatedAt": "2026-02-16T23:57:08.875Z",
+  "createdAt": "2026-02-16T23:51:40.909Z",
+  "id": "wmrDBbPGQT5IYuMs",
+  "name": "ext-21-folowup remarketing que envia mensgem fixa",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Obter a data atual como objeto Date\nlet dataAtual = new Date();\n\n// Configurar fuso horário para São Paulo\ndataAtual = new Date(dataAtual.toLocaleString(\"en-US\", {timeZone: 'America/Sao_Paulo'}));\n\n// Obter hora atual\nlet horaAtual = dataAtual.getHours();\n\n// Determinar a saudação adequada baseada na hora do dia\nlet saudacao;\n\nif (horaAtual >= 5 && horaAtual < 12) {\n  saudacao = \"Bom dia!\";\n} else if (horaAtual >= 12 && horaAtual < 18) {\n  saudacao = \"Boa tarde!\";\n} else if (horaAtual >= 18 && horaAtual <= 23) {\n  saudacao = \"Boa noite!\";\n} else {\n  saudacao = \"Boa madrugada!\";\n}\n\n// Definir a saudação como uma variável de contexto\nreturn { saudacao: saudacao };"
+      },
+      "id": "bad5a9f5-619f-4ddd-9b0d-d4e077021d17",
+      "name": "pegar hora",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d753e012-2d01-46d4-8694-a577ef2024d2",
+              "name": "url_evolution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "7a3149d7-8b06-4658-a5e6-795cffe7371c",
+              "name": "apikey_evolution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "06246722-6c29-4c0c-b817-6c2658dac666",
+              "name": "instancia",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        1280
+      ],
+      "id": "6f6d966f-f8a7-4ec1-9017-8f9ccdfdb804",
+      "name": "dados"
+    },
+    {
+      "parameters": {
+        "content": "## time programado a gosto⏲️\nEle funciona como um gatilho de tempo que inicia um fluxo de trabalho (workflow) automaticamente em intervalos programados.\n\nComo ele funciona na prática?\nO node que você mostrou está configurado para iniciar uma ação a cada 99 segundos ⏳. Pense nele como um alarme ou um cronômetro digital. ⏲️\n\n\"name\": \"Schedule Trigger\": Esse é o nome do node, que deixa claro o seu propósito: acionar algo com base em um agendamento.\n\n\"rule\": {\"interval\": [{\"field\": \"seconds\", \"secondsInterval\": 99}]}: Essa é a parte mais importante! Aqui, a regra foi definida para que o gatilho seja ativado a cada 99 segundos. É a \"mágica\" que faz a automação funcionar periodicamente. ✨",
+        "height": 576,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        672
+      ],
+      "typeVersion": 1,
+      "id": "61b8f26f-2597-43ff-8b9a-af87eb2ccff9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## dados📂\nA principal função do node \"Set\" é definir variáveis ou campos de dados. No exemplo que você mostrou, ele está criando três variáveis:\n\nurl_evolution: Uma variável do tipo string para armazenar uma URL. 🌐\n\napikey_evolution: Outra variável do tipo string para guardar uma chave de API, geralmente usada para autenticação. 🔑\n\ninstancia: Mais uma variável do tipo string para armazenar a instância de algum serviço. 📂\n\nApesar dos campos value estarem vazios no código, o propósito do node é justamente preencher essas variáveis. Por exemplo, você pode digitar a URL de uma API no campo url_evolution, a chave de acesso em apikey_evolution e o nome da instância em instancia.",
+        "height": 448,
+        "width": 368,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -192,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "d2e3b127-b9f9-46b3-818b-95d081003d7a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## pegar hora⏰\nO node \"Código\" atua como uma \"caixa de ferramentas\" 🔧 personalizada. Ele é a solução perfeita para quando os nodes padrão do n8n não conseguem fazer exatamente o que você precisa. No exemplo que você mostrou, ele está realizando uma tarefa bem específica:\n\nObtendo a data e a hora atuais ⏰: O código começa pegando a data e hora do sistema.\n\nAjustando o fuso horário 🇧🇷: Ele ajusta o fuso horário para 'America/Sao_Paulo', garantindo que a hora esteja correta, independentemente de onde o servidor do n8n esteja rodando. Isso é crucial para automações que precisam funcionar em horários locais específicos.\n\nDeterminando a saudação ☀️🌙: Ele usa uma lógica if/else para verificar a hora do dia e atribuir uma saudação apropriada (\"Bom dia!\", \"Boa tarde!\", \"Boa noite!\" ou \"Boa madrugada!\").\n\nCriando uma nova variável ✨: Por fim, ele retorna essa saudação como uma nova variável chamada saudacao. Essa variável pode então ser usada em nodes seguintes do fluxo. Por exemplo, você poderia usar essa saudação para personalizar uma mensagem de WhatsApp (\"{{ $json.saudacao }}! O nosso sistema está funcionando corretamente.\") ou um e-mail.",
+        "height": 480,
+        "width": 544,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "f0cbd98e-7c31-4bc4-aaca-999a78c1622e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## verifica etapa de 30m🆔\nA função desse node é recuperar um único contato da tabela contatos_geral que ainda não foi processado (etapa nula), que não foi atualizado nos últimos 30 minutos e que pertence a uma instância específica.\n\nImagine que você tem um fluxo de automação que processa contatos para enviar mensagens. Este node \"Postgres1\" serve para selecionar a próxima pessoa na fila que precisa ser contatada, com base em critérios que evitam que o mesmo contato seja processado várias vezes ou que a automação se sobreponha. Ele é um nó central para fluxos de automação que dependem de informações de bancos de dados. ✅",
+        "height": 544,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "1993f8c1-d4b7-40c1-afd6-4ca2374df44b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## emvia msg⏳\n está configurado para enviar uma mensagem de texto por meio de uma API de mensageria, provavelmente uma API de WhatsApp, usando a Evolution API. 📱 Ele é o ponto de ação no fluxo, onde a automação se materializa em uma tarefa concreta.\n\nAqui está o que cada parte da configuração significa:\n\n\"method\": \"POST\": Indica que a ação é uma requisição POST. Isso geralmente significa que o node está enviando dados para o servidor da API, neste caso, o texto da mensagem e o número de destino. 🚀\n\n\"url\": \"={{ $('dados').item.json.url_evolution }}/message/sendText/{{ $('dados').item.json.instancia }}\": O endereço para onde a requisição será enviada. Note que a URL é dinâmica, ou seja, ela é construída usando informações de outro node ('dados'), o que torna o fluxo flexível. Ele pega a URL e a instância definidas no node \"Set\" anterior para montar o endereço completo da API. 🔗\n\n\"headerParameters\": São os cabeçalhos da requisição. Eles contêm informações adicionais para o servidor, como o tipo de dados que está sendo enviado (accept) e a chave de autenticação (apikey) para garantir que a requisição é válida e segura. Assim como a URL, o apikey é obtido do node \"Set\". 🔑\n\n\"bodyParameters\": É o corpo da requisição, que contém os dados principais a serem enviados. Aqui, estão as informações da mensagem:\n\n\"number\": \"={{ $json.remoteJid }}\": O número de telefone de destino da mensagem. A informação remoteJid provavelmente vem do node \"Postgres1\", que selecionou o contato a ser processado. Isso permite que a mensagem seja enviada para a pessoa correta. 🎯\n\n\"text\": \"=que horas posso te ligar ?\": O conteúdo da mensagem a ser enviada. 💬\n\n\"delay\": \"={{ 1200 }}\": Um pequeno atraso em milissegundos (1.2 segundos), para evitar que as mensagens sejam enviadas rápido demais, o que pode causar problemas. ⏳",
+        "height": 976,
+        "width": 400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1392,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "3a121227-5cc8-4170-ab35-5cb0ef80f8d8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## verifica etapa de 1d➡️\nImagine que o fluxo de trabalho enviou uma mensagem para um contato. Para evitar que a automação tente enviar a mesma mensagem para a mesma pessoa novamente, este node \"Postgres3\" entra em ação.\n\nEle atualiza o registro do contato no banco de dados, alterando o status (etapa) e a data da última interação (ultima_interacao). Na próxima execução do fluxo, o node Postgres1 (o de leitura) não vai mais selecionar este contato, pois ele não atende mais às condições de \"etapa nula\" e de \"última interação há mais de 30 minutos\". Este é um padrão comum em automações para garantir que cada item seja processado de forma única e sequencial. ✅",
+        "height": 400,
+        "width": 368,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        848
+      ],
+      "typeVersion": 1,
+      "id": "0fd97c12-b00f-4d2a-8f93-17c6b0f1f0eb",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## cadastra_usuario3💾\nEste node, nomeado \"cadastra_usuario3\" 💾, é um node \"Postgres\" configurado para uma operação de atualização (update). Ele tem a importante função de salvar a etapa de atendimento identificada pela IA no banco de dados, marcando o progresso do usuário no funil de vendas ou atendimento.\n\n",
+        "height": 560,
+        "width": 576,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        1552
+      ],
+      "typeVersion": 1,
+      "id": "ad9e62ea-6491-4120-b93a-8c4ec0dfc928",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "![Video tutorial](https://i.postimg.cc/HkDDZSTm/promovaweb-og-1.png)",
+        "height": 592,
+        "width": 976,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "bc973e1a-5cfc-4c02-bc29-8efd9eb4e83f",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "![Texto alternativo da imagem](https://i.postimg.cc/4NdcFfvy/Gemini-Generated-Image-9bd2329bd2329bd2-1.png#full-width)",
+        "height": 512,
+        "width": 496,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1008,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "5e1d4cca-a475-42b2-9bd1-0651600f4326",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "![Texto alternativo da imagem](https://i.postimg.cc/FKWzScqx/Gemini-Generated-Image-jf7fe3jf7fe3jf7f-2.png#full-width)",
+        "height": 480,
+        "width": 464,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1024,
+        1808
+      ],
+      "typeVersion": 1,
+      "id": "a8d9c5cc-ee80-4da2-b2be-0c7b4ea092a9",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "![Texto alternativo da imagem](https://i.postimg.cc/DZ1Vh3qb/Gemini-Generated-Image-9kma2t9kma2t9kma-1.png#full-width)",
+        "height": 496,
+        "width": 480,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2080,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "65749694-9680-46ff-a31f-8d344485ffb1",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "![Texto alternativo da imagem](https://i.postimg.cc/fLCKmHsr/Gemini-Generated-Image-q0eijbq0eijbq0ei-1.png#full-width)",
+        "height": 512,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1808,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "23490655-fd21-4bc5-ac39-17dbb87936dc",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE contatos_geral (\n    id INT AUTO_INCREMENT PRIMARY KEY,\n    remota_id VARCHAR(255) NOT NULL,\n    atendimento_humano BOOLEAN DEFAULT FALSE,\n    ultima_interacao TIMESTAMP NULL,\n    etapa VARCHAR(255),\n    mensagem TEXT,\n    nome VARCHAR(255),\n    instanceName VARCHAR(255),\n    informacao_cliente TEXT,\n    numero_instancia VARCHAR(50),\n    contagem_followup INT DEFAULT 0,\n    token_instancia VARCHAR(255),\n    autorizacao_spam BOOLEAN NOT NULL DEFAULT FALSE\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -896,
+        1584
+      ],
+      "id": "17cf8ee6-6b30-4c52-aa59-af9238952937",
+      "name": "criar tabela",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1168,
+        1680
+      ],
+      "id": "6670db56-91bc-4005-bcee-8056cda40265",
+      "name": "fluxo"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e6e5cc07-a0b1-4314-9cb3-149b34c8cedf",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        1680
+      ],
+      "id": "e5295f84-a679-4c73-a9eb-27015103e4de",
+      "name": "altorizado"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contatos_geral",
+          "mode": "list",
+          "cachedResultName": "contatos_geral"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "remoteJid",
+              "displayName": "remoteJid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "atendimentoHumano",
+              "displayName": "atendimentoHumano",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interacao",
+              "displayName": "ultima_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instanceName",
+              "displayName": "instanceName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "informacao_cliente",
+              "displayName": "informacao_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "numero_instancia",
+              "displayName": "numero_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contagem_followup",
+              "displayName": "contagem_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_instancia",
+              "displayName": "token_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instance_wuzapi",
+              "displayName": "instance_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_wuzapi",
+              "displayName": "token_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "erro",
+              "displayName": "erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1584,
+        1632
+      ],
+      "id": "f184c81f-27b5-4235-b997-e0fb3f516ce9",
+      "name": "atualiza altorizacao",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "contatos_geral"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "etapa",
+              "value": "30min"
+            },
+            {
+              "column": "ultima_interacao",
+              "condition": "<=",
+              "value": "={{ $now.plus(1, day).format('X') }}"
+            },
+            {
+              "column": "instanceName",
+              "value": "inovarecomunidade_5591985442837"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "82d24a49-4555-440a-9c2c-217ec4c3047e",
+      "name": "verifica etapa de 1d",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1152,
+        1472
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dados').item.json.url_evolution }}/message/sendText/{{ $('dados').item.json.instancia }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('dados').item.json.apikey_evolution }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "=que horas posso te ligar ?"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0d3a5d4e-d3b7-4466-a6e9-536bc0e32dae",
+      "name": "emvia msg",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1568,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('dados').item.json.url_evolution }}/message/sendText/{{ $('dados').item.json.instancia }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('dados').item.json.apikey_evolution }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "=Oi, {{ $('pegar hora').item.json.saudacao }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "163f2d6e-7aa6-47d6-a21d-ac7fe8252434",
+      "name": "emvia msg1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1568,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "=contatos_geral",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('verifica etapa de 30m ou pesquisa de satisfacao').item.json.id }}",
+            "ultima_interacao": "={{ $now.format('X') }}",
+            "etapa": "30min"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "remoteJid",
+              "displayName": "remoteJid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "atendimentoHumano",
+              "displayName": "atendimentoHumano",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interacao",
+              "displayName": "ultima_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instanceName",
+              "displayName": "instanceName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "informacao_cliente",
+              "displayName": "informacao_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "numero_instancia",
+              "displayName": "numero_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contagem_followup",
+              "displayName": "contagem_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_instancia",
+              "displayName": "token_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instance_wuzapi",
+              "displayName": "instance_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_wuzapi",
+              "displayName": "token_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "erro",
+              "displayName": "erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "2cdabd38-ce5a-4037-9690-a56eb79ea8e0",
+      "name": "atualiza etapa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1840,
+        1280
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "contatos_geral"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('verifica etapa de 1d').item.json.id }}",
+            "ultima_interacao": "={{ $now.format('X') }}",
+            "etapa": "24h"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "remoteJid",
+              "displayName": "remoteJid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "atendimentoHumano",
+              "displayName": "atendimentoHumano",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interacao",
+              "displayName": "ultima_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mensagem",
+              "displayName": "mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instanceName",
+              "displayName": "instanceName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "informacao_cliente",
+              "displayName": "informacao_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "numero_instancia",
+              "displayName": "numero_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contagem_followup",
+              "displayName": "contagem_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_instancia",
+              "displayName": "token_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "instance_wuzapi",
+              "displayName": "instance_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "token_wuzapi",
+              "displayName": "token_wuzapi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "erro",
+              "displayName": "erro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "07531ca8-0721-4908-bd46-565b657872a0",
+      "name": "atuaaliza etapa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1856,
+        1472
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 99
+            }
+          ]
+        }
+      },
+      "id": "01178bf4-ccdc-4b58-8738-74f30bf15c18",
+      "name": "time programado a gosto",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "d65fcc81-8788-46d6-be7f-61206a3bed7c",
+              "leftValue": "={{ $json.telefone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5f98c0ae-1b68-4410-9eab-bc3f56dde813",
+      "name": "se e cadastrado",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        256,
+        1872
+      ],
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a3250f2-daa8-404c-aa79-d8f362a87735",
+              "leftValue": "={{ $json.body.data.key.fromMe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        1856
+      ],
+      "id": "54f258dd-05aa-4de2-89cb-817e3baa5b2f",
+      "name": "eu mandei ?"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "clientes_mentoria",
+          "mode": "list",
+          "cachedResultName": "clientes_mentoria"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('ouve-whatsapp1').item.json.body.data.key.remoteJid.split(\"@\")[0] }}_{{ $('ouve-whatsapp1').item.json.body.instance }}",
+            "data_ultima_interacao": "={{ $now.format('X') }}",
+            "telefone": "={{ $('ouve-whatsapp1').item.json.body.data.key.remoteJid }}",
+            "nome_instancia": "={{ $('ouve-whatsapp1').item.json.body.instance }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_instancia",
+              "displayName": "nome_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_whatsapp",
+              "displayName": "nome_whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nome_identificado",
+              "displayName": "nome_identificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "avatar_url",
+              "displayName": "avatar_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_grupo",
+              "displayName": "comprou_mentoria_grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_individual",
+              "displayName": "comprou_mentoria_individual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_fluxo",
+              "displayName": "comprou_fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_anual",
+              "displayName": "comprou_mentoria_anual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "data_ultima_interacao",
+              "displayName": "data_ultima_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_mensagens_trocadas",
+              "displayName": "total_mensagens_trocadas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "risco_bloqueio",
+              "displayName": "risco_bloqueio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "interacao_humana_detectada",
+              "displayName": "interacao_humana_detectada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "probabilidade_compra",
+              "displayName": "probabilidade_compra",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "temperatura_lead",
+              "displayName": "temperatura_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "historico_objecoes",
+              "displayName": "historico_objecoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "sentimento_conversa",
+              "displayName": "sentimento_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nicho_atuacao",
+              "displayName": "nicho_atuacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nivel_tecnico",
+              "displayName": "nivel_tecnico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estimativa_parceria",
+              "displayName": "estimativa_parceria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "dor_principal",
+              "displayName": "dor_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "acao_recomendada",
+              "displayName": "acao_recomendada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "motivo_perda",
+              "displayName": "motivo_perda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "df6b6d68-0d88-4c22-9bea-ddae9c042da1",
+      "name": "cadastra_usuario2",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        544,
+        1968
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "clientes_mentoria",
+          "mode": "list",
+          "cachedResultName": "clientes_mentoria"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('ouve-whatsapp1').item.json.body.data.key.remoteJid.split(\"@\")[0] }}_{{ $('ouve-whatsapp1').item.json.body.instance }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        80,
+        1872
+      ],
+      "id": "3a3a69ea-b720-4b63-a8be-1d4177e637d0",
+      "name": "busca cadastro",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "clientes_mentoria",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('ouve-whatsapp1').item.json.body.data.key.remoteJid.split(\"@\")[0] }}_{{ $('ouve-whatsapp1').item.json.body.instance }}",
+            "data_ultima_interacao": "={{ $now.format('X') }}",
+            "telefone": "={{ $('ouve-whatsapp1').item.json.body.data.key.remoteJid.split(\"@\")[0] }}",
+            "nome_instancia": "={{ $('ouve-whatsapp1').item.json.body.instance }}",
+            "nome_whatsapp": "={{ $('ouve-whatsapp1').item.json.body.data.pushName }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_instancia",
+              "displayName": "nome_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_whatsapp",
+              "displayName": "nome_whatsapp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nome_identificado",
+              "displayName": "nome_identificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "avatar_url",
+              "displayName": "avatar_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_grupo",
+              "displayName": "comprou_mentoria_grupo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_individual",
+              "displayName": "comprou_mentoria_individual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_fluxo",
+              "displayName": "comprou_fluxo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "comprou_mentoria_anual",
+              "displayName": "comprou_mentoria_anual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "data_ultima_interacao",
+              "displayName": "data_ultima_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_mensagens_trocadas",
+              "displayName": "total_mensagens_trocadas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "risco_bloqueio",
+              "displayName": "risco_bloqueio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "interacao_humana_detectada",
+              "displayName": "interacao_humana_detectada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "probabilidade_compra",
+              "displayName": "probabilidade_compra",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "temperatura_lead",
+              "displayName": "temperatura_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "historico_objecoes",
+              "displayName": "historico_objecoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "sentimento_conversa",
+              "displayName": "sentimento_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nicho_atuacao",
+              "displayName": "nicho_atuacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nivel_tecnico",
+              "displayName": "nivel_tecnico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estimativa_parceria",
+              "displayName": "estimativa_parceria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "dor_principal",
+              "displayName": "dor_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "acao_recomendada",
+              "displayName": "acao_recomendada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "motivo_perda",
+              "displayName": "motivo_perda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "734f4c94-48dc-4d9a-9649-c48c2b4f5dff",
+      "name": "cadastra_usuario1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        544,
+        1712
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cadastro-pessoal-remarketing",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        1872
+      ],
+      "id": "8cfdc4b9-15dd-45c3-90ef-1d2ae8f28149",
+      "name": "ouve-whatsapp1",
+      "webhookId": "8c6f6066-c8fd-40ee-8dbd-b4b5e63296f6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "93b7bcad-c291-4f90-8b36-cb42092dee6b",
+              "leftValue": "={{ $json.body.data.key.remoteJid }}",
+              "rightValue": "@g.us",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -128,
+        1888
+      ],
+      "id": "43426a33-8d7b-45ab-9d93-edd5bbafaedf",
+      "name": "filtra grupo"
+    },
+    {
+      "parameters": {
+        "content": "## 📨 Entrada & Triagem (Webhook)\n\n**🚀 O Radar da Operação**\nEste bloco é o ponto de entrada que \"escuta\" todos os eventos do WhatsApp em tempo real.\n\n---\n\n### 🛡️ Camada de Filtros:\n* **🚫 Anti-Grupo:** O node `filtra grupo` bloqueia interações vindas de grupos (`@g.us`), garantindo foco total no atendimento individual (X1).\n* **👤 Validação:** Garante que o evento possui um `remoteJid` válido antes de gastar recursos de processamento.",
+        "height": 386,
+        "width": 361,
+        "color": 2
+      },
+      "id": "7cebab8f-6aa9-4da4-ae0b-2e26ed3460be",
+      "name": "Doc - Entrada",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        1872
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 Cérebro & Verificação\n\n**🔍 Identificação de Lead**\nAntes de tomar qualquer ação, o sistema consulta o banco para saber com quem estamos falando.\n\n---\n\n### ⚙️ Lógica de Decisão:\n1. **🔎 Busca SQL:** Consulta a tabela `clientes_mentoria` usando um ID composto (Telefone + Instância).\n2. **🚦 Roteador (Switch):**\n   * **Novo Lead:** Se o retorno for vazio, prepara para cadastro.\n   * **Recorrente:** Se já existe, segue para atualizar a última interação.\n3. **🤖 vs 👤:** O node `eu mandei?` filtra mensagens enviadas pelo próprio bot (`fromMe: true`) para evitar loops infinitos.",
+        "height": 482,
+        "width": 508,
+        "color": 4
+      },
+      "id": "9d36e1bd-610b-475e-99fa-ce64415dc688",
+      "name": "Doc - Logica",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        2000
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🏗️ Infraestrutura (Setup)\n\n**🛠️ Definição da Tabela**\nNode de utilidade para criar a tabela SQL `contatos_geral` se ela ainda não existir.\n\n---\n\n* **📋 Schema:** Define colunas críticas (`id`, `telefone`, `etapa`, `ultima_interacao`, `atendimento_humano`, etc).\n* **⚠️ Atenção:** Este node geralmente roda apenas na instalação ou manutenção do fluxo, mas garante que o banco esteja pronto para receber dados.",
+        "height": 476,
+        "width": 320
+      },
+      "id": "68acaac4-5c2f-4eb7-8fa4-dea0f0e16d70",
+      "name": "Doc - Infra",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🚦 Checkpoint de Consentimento\n\n**❓ O que está acontecendo?**\nNeste ponto, o fluxo analisa se o comando ou resposta do usuário confirma o desejo de receber novidades.\n\n---\n\n### 🛡️ Regra de Negócio:\n* **Node `fluxo`:** Prepara as variáveis necessárias.\n* **Node `altorizado`:** Atua como um porteiro rigoroso. Ele verifica se a condição foi atendida (ex: cliente digitou 'SIM' ou clicou no botão).\n\n**💡 Importante:** Somente quem passar por este filtro ('true') seguirá para a lista de remarketing.",
+        "height": 345,
+        "width": 366,
+        "color": 6
+      },
+      "id": "77c9c0dc-09b3-41cd-bd03-680ccdad7fc4",
+      "name": "Doc - Validação",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        1808
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Registro de Opt-in (Remarketing)\n\n**💾 Ação no Banco de Dados**\nAtualiza o cadastro do cliente na tabela `contatos_geral` oficializando a permissão.\n\n---\n\n### 🎯 O que muda no Lead?\n* **🔓 Status:** Marca o cliente como 'Autorizado a receber propaganda'.\n* **🛡️ Segurança:** Isso cria sua *Whitelist*. Ao garantir que só envia para quem pediu, você reduz drasticamente o risco de bloqueio do chip por denúncia de spam.\n* **Chave:** A atualização é feita buscando pelo `remoteJid` (ID único do Whats).",
+        "height": 345,
+        "width": 325,
+        "color": 5
+      },
+      "id": "d270f0b1-cf93-41dc-a76e-8af4db9c2cfc",
+      "name": "Doc - Update",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        1808
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "contatos_geral"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "etapa",
+              "condition": "IS NULL"
+            },
+            {
+              "column": "ultima_interacao",
+              "condition": "<=",
+              "value": "={{ $now.plus(30, minutes).format('X') }}"
+            },
+            {
+              "column": "instanceName",
+              "value": "8-azul1-norm-0164"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5b727879-86ca-4186-8e15-3959d6ecf320",
+      "name": "verifica etapa de 30m ou pesquisa de satisfacao",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        832,
+        1280
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "pegar hora": {
+      "main": [
+        [
+          {
+            "node": "verifica etapa de 30m ou pesquisa de satisfacao",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "verifica etapa de 1d",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados": {
+      "main": [
+        [
+          {
+            "node": "pegar hora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fluxo": {
+      "main": [
+        [
+          {
+            "node": "altorizado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "altorizado": {
+      "main": [
+        [
+          {
+            "node": "atualiza altorizacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verifica etapa de 1d": {
+      "main": [
+        [
+          {
+            "node": "emvia msg1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "emvia msg": {
+      "main": [
+        [
+          {
+            "node": "atualiza etapa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "emvia msg1": {
+      "main": [
+        [
+          {
+            "node": "atuaaliza etapa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "time programado a gosto": {
+      "main": [
+        [
+          {
+            "node": "dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "se e cadastrado": {
+      "main": [
+        [
+          {
+            "node": "eu mandei ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "eu mandei ?": {
+      "main": [
+        [
+          {
+            "node": "cadastra_usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "cadastra_usuario2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "busca cadastro": {
+      "main": [
+        [
+          {
+            "node": "se e cadastrado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ouve-whatsapp1": {
+      "main": [
+        [
+          {
+            "node": "filtra grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filtra grupo": {
+      "main": [
+        [
+          {
+            "node": "busca cadastro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verifica etapa de 30m ou pesquisa de satisfacao": {
+      "main": [
+        [
+          {
+            "node": "emvia msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "ouve-whatsapp1": [
+      {
+        "json": {
+          "headers": {
+            "host": "interface.inovareinteligenciaartificial.com",
+            "user-agent": "axios/1.13.2",
+            "content-length": "1604",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "interface.inovareinteligenciaartificial.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "05905006ec29",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "pessoal",
+            "data": {
+              "key": {
+                "remoteJid": "120363345790803310@g.us",
+                "fromMe": false,
+                "id": "3EB0B2A36ABCDB50C7A885",
+                "participant": "150788382974074@lid",
+                "participantAlt": "5511996118569@s.whatsapp.net",
+                "addressingMode": "lid"
+              },
+              "pushName": "Joaquim",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "e deu certo",
+                "messageContextInfo": {
+                  "threadId": [],
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 36,
+                      "1": 34,
+                      "2": 244,
+                      "3": 90,
+                      "4": 157,
+                      "5": 200,
+                      "6": 84,
+                      "7": 234,
+                      "8": 144,
+                      "9": 15
+                    },
+                    "senderTimestamp": {
+                      "low": 1769452475,
+                      "high": 0,
+                      "unsigned": true
+                    },
+                    "senderAccountType": 0,
+                    "receiverAccountType": 0,
+                    "recipientKeyHash": {
+                      "0": 45,
+                      "1": 162,
+                      "2": 210,
+                      "3": 15,
+                      "4": 168,
+                      "5": 15,
+                      "6": 251,
+                      "7": 119,
+                      "8": 241,
+                      "9": 219
+                    },
+                    "recipientTimestamp": {
+                      "low": 1769457560,
+                      "high": 0,
+                      "unsigned": true
+                    }
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 196,
+                    "1": 203,
+                    "2": 193,
+                    "3": 18,
+                    "4": 121,
+                    "5": 35,
+                    "6": 159,
+                    "7": 253,
+                    "8": 68,
+                    "9": 154,
+                    "10": 56,
+                    "11": 155,
+                    "12": 136,
+                    "13": 166,
+                    "14": 214,
+                    "15": 242,
+                    "16": 203,
+                    "17": 222,
+                    "18": 183,
+                    "19": 82,
+                    "20": 237,
+                    "21": 16,
+                    "22": 253,
+                    "23": 240,
+                    "24": 56,
+                    "25": 78,
+                    "26": 54,
+                    "27": 44,
+                    "28": 40,
+                    "29": 55,
+                    "30": 165,
+                    "31": 99
+                  },
+                  "limitSharingV2": {
+                    "trigger": 0,
+                    "initiatedByMe": false
+                  }
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1769466374,
+              "instanceId": "d593dea1-e408-40bf-b67b-b38868c4fbb0",
+              "source": "web"
+            },
+            "destination": "https://interface.inovareinteligenciaartificial.com/webhook/cadastro-pessoal-remarketing",
+            "date_time": "2026-01-26T19:26:15.212Z",
+            "sender": "559184698653@s.whatsapp.net",
+            "server_url": "https://ligawhatsapp.inovareinteligenciaartificial.com",
+            "apikey": "29A6CBA349DE-4E92-97C5-6A12B7F8EEE5"
+          },
+          "webhookUrl": "https://interface.inovareinteligenciaartificial.com/webhook/cadastro-pessoal-remarketing",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "d54ae94a-dd91-4575-a028-fd75369f8910",
+  "activeVersionId": null,
+  "versionCounter": 3,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T23:51:40.909Z",
+      "createdAt": "2026-02-16T23:51:40.909Z",
+      "role": "workflow:owner",
+      "workflowId": "wmrDBbPGQT5IYuMs",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
