@@ -1,0 +1,328 @@
+{
+  "updatedAt": "2026-02-14T11:47:27.688Z",
+  "createdAt": "2026-02-13T18:44:08.736Z",
+  "id": "LqTstnWZGbYy8pHB",
+  "name": "[func] TOKEN IMPERADOR",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "url_tray",
+              "value": "www.imperadordoslustres.com.br/web_api"
+            },
+            {
+              "name": "consumer_key",
+              "value": "7275d28a8d58ccf0bfd06b5da45a4a9d9f382944605eaa47c493746333a08c0f"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "37735205a24d753fe94a61c7f7ec426b0cb8d3a82d04207032af26f785b9c8f5"
+            },
+            {
+              "name": "code",
+              "value": "07f1e0cca7a37385f87b57ebd9c4c6406b5649ef67e5eddc8fbd7f1fd22375fb"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2835e592-fea3-465a-95d8-2265a5d8d661",
+      "name": "OauthCredentials",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -496,
+        400
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "tray_token",
+        "value": "={{ $json.access_token }}",
+        "keyType": "string",
+        "expire": true,
+        "ttl": 300
+      },
+      "id": "a056f3c3-e40b-4129-af8a-5b0edcbd5ad4",
+      "name": "RegistraToken",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        128,
+        64
+      ],
+      "credentials": {
+        "redis": {
+          "id": "gBVHBc3MEoa3SWiv",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "token",
+        "key": "tray_token",
+        "keyType": "string",
+        "options": {}
+      },
+      "id": "384e2784-b4b2-497e-81be-bcfa8ef55bdb",
+      "name": "PesquisaToken",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1328,
+        480
+      ],
+      "credentials": {
+        "redis": {
+          "id": "gBVHBc3MEoa3SWiv",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.token }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "20a8ba7b-02e8-4e95-9a55-c25ca33d2424",
+      "name": "Expirou",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Gera o Token do Hotmart",
+        "height": 279.5978362458403,
+        "width": 567.7965426828636
+      },
+      "id": "5e1cf76c-69a0-4ede-964f-9bc08c7da07c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Registra Novo Token",
+        "height": 219.73514719948955,
+        "width": 383.1863109788493
+      },
+      "id": "ed18b45f-9de6-4d05-a3f1-1a7e96860c7e",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a3a69b80-bf3f-485b-9302-693fb31a284b",
+      "name": "RetornoWorkflow",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Retorno do Workflow",
+        "height": 246.08170067483098,
+        "width": 407.2908522548597
+      },
+      "id": "bfe6749b-af91-4ba4-a67e-794a7262e360",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $json.url_tray }}/auth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "consumer_key",
+              "value": "={{ $json.consumer_key }}"
+            },
+            {
+              "name": "consumer_secret",
+              "value": "={{ $json.consumer_secret }}"
+            },
+            {
+              "name": "code",
+              "value": "={{ $json.code }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "ced54346-4ce7-4d88-be4b-1bf89f63d081",
+      "name": "Token Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        400
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1536,
+        480
+      ],
+      "id": "86ed83c0-095f-48c5-9a42-f9ece7476012",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "connections": {
+    "OauthCredentials": {
+      "main": [
+        [
+          {
+            "node": "Token Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RegistraToken": {
+      "main": [
+        [
+          {
+            "node": "PesquisaToken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PesquisaToken": {
+      "main": [
+        [
+          {
+            "node": "Expirou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expirou": {
+      "main": [
+        [
+          {
+            "node": "OauthCredentials",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RetornoWorkflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Tray": {
+      "main": [
+        [
+          {
+            "node": "RegistraToken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "PesquisaToken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "57d8d3f8-0406-4edf-8e16-b0e43e805a04",
+  "activeVersionId": "57d8d3f8-0406-4edf-8e16-b0e43e805a04",
+  "versionCounter": 14,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-13T18:44:08.736Z",
+      "createdAt": "2026-02-13T18:44:08.736Z",
+      "role": "workflow:owner",
+      "workflowId": "LqTstnWZGbYy8pHB",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
