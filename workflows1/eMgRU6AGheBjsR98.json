@@ -1,0 +1,148 @@
+{
+  "updatedAt": "2026-02-19T18:12:20.257Z",
+  "createdAt": "2026-02-19T17:07:50.020Z",
+  "id": "eMgRU6AGheBjsR98",
+  "name": "Uazapi Financeiro",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/menu",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"555193732861\",\n  \"type\": \"button\",\n  \"text\": \"Olá!\\nNotamos que o pedido nº *1520* foi cancelado.\\n\\nSe quiser finalizar sua compra, é só clicar no botão abaixo, seu carrinho ainda está salvo\\nSe precisar de ajuda, estou aqui para você 😊\",\n  \"choices\": [\n    \"Checkout|https://www.imperadordoslustres.com.br/loja/pagamento.php?loja=1145224&pedido=00DF43E4E79CC9F\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        400,
+        -432
+      ],
+      "id": "776fd3ea-f8df-4cfc-bc5c-b23853da6661",
+      "name": "Botao URL"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9e47e89d-2c68-462e-a91b-0ad099540ffe",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -512
+      ],
+      "id": "b5f2c72f-bf8e-42da-8b35-c31462103dd7",
+      "name": "Webhook Financeiro",
+      "webhookId": "9e47e89d-2c68-462e-a91b-0ad099540ffe"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Ramon",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Edita Itens na Tray').all().length }} Produtos atualizados com sucesso!"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "c08cd0fb-8aa6-498e-a4d9-35c1283df12b",
+      "name": "Mensagem Termino de Tarefa1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        112,
+        -624
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c8151ded-0a38-480f-b51a-7458ff997676",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -272
+      ],
+      "id": "a43731b9-53f4-416e-9cec-e3d4dd432479",
+      "name": "Webhook Imperador",
+      "webhookId": "c8151ded-0a38-480f-b51a-7458ff997676"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "1d0108d6-c085-46e7-bd6e-fbf783fa0782",
+  "activeVersionId": "1d0108d6-c085-46e7-bd6e-fbf783fa0782",
+  "versionCounter": 21,
+  "triggerCount": 2,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-19T17:07:50.020Z",
+      "createdAt": "2026-02-19T17:07:50.020Z",
+      "role": "workflow:owner",
+      "workflowId": "eMgRU6AGheBjsR98",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
