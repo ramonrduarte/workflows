@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-18T17:57:15.371Z",
+  "updatedAt": "2026-02-19T17:02:59.404Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -218,13 +218,25 @@
             {
               "id": "f135a28f-6953-4953-8f21-1d17b6ab5f88",
               "name": "cliente_telefone",
-              "value": "={{ $json.Order.Customer.cellphone }}",
+              "value": "=55{{ $json.Order.Customer.cellphone }}",
               "type": "string"
             },
             {
               "id": "fea8ae27-0378-4773-b6b8-4c1bd34d2420",
               "name": "nr_pedido",
               "value": "={{ $('Webhook').item.json.body[0].message.body.scope_id }}",
+              "type": "string"
+            },
+            {
+              "id": "6317e997-bd56-451a-8120-81a5b75f93c7",
+              "name": "url_server",
+              "value": "https://imperadordoslustres.uazapi.com",
+              "type": "string"
+            },
+            {
+              "id": "5102fef7-e347-4582-baa6-785746602ab3",
+              "name": "token_instancia",
+              "value": "5d920acc-6080-45d3-9bfb-981e3825285a",
               "type": "string"
             }
           ]
@@ -244,6 +256,31 @@
       "parameters": {
         "rules": {
           "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "42fa49b0-de14-4f2f-a4c0-88550e58d163",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "EM MONITORAMENTO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "EM MONITORAMENTO"
+            },
             {
               "conditions": {
                 "options": {
@@ -459,7 +496,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rdmon.uazapi.com/send/text",
+        "url": "={{ $('Normaliza').item.json.url_server }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -469,7 +506,7 @@
             },
             {
               "name": "token",
-              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+              "value": "={{ $('Normaliza').item.json.token_instancia }}"
             }
           ]
         },
@@ -478,7 +515,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=5551993732861"
+              "value": "={{ $('Normaliza').item.json.cliente_telefone }}"
             },
             {
               "name": "text",
@@ -495,12 +532,13 @@
         -240
       ],
       "id": "7cc942e2-55ba-44ee-aca2-98f3b1d5fc5a",
-      "name": "MSG A ENVIAR"
+      "name": "MSG A ENVIAR",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rdmon.uazapi.com/send/text",
+        "url": "={{ $('Normaliza').item.json.url_server }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -510,7 +548,7 @@
             },
             {
               "name": "token",
-              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+              "value": "={{ $('Normaliza').item.json.token_instancia }}"
             }
           ]
         },
@@ -519,7 +557,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=5551993732861"
+              "value": "={{ $('Normaliza').item.json.cliente_telefone }}"
             },
             {
               "name": "text",
@@ -536,12 +574,13 @@
         112
       ],
       "id": "2458a66c-fdfe-4332-a84a-46302c6bd716",
-      "name": "MSG  FINALIZADO"
+      "name": "MSG  FINALIZADO",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rdmon.uazapi.com/send/text",
+        "url": "={{ $('Normaliza').item.json.url_server }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -551,7 +590,7 @@
             },
             {
               "name": "token",
-              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+              "value": "={{ $('Normaliza').item.json.token_instancia }}"
             }
           ]
         },
@@ -560,7 +599,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=5551993732861"
+              "value": "={{ $('Normaliza').item.json.cliente_telefone }}"
             },
             {
               "name": "text",
@@ -577,12 +616,13 @@
         -64
       ],
       "id": "bbadc21b-62a4-4d34-9986-de0db6447d07",
-      "name": "MSG ENVIADO"
+      "name": "MSG ENVIADO",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://rdmon.uazapi.com/send/text",
+        "url": "={{ $('Normaliza').item.json.url_server }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -592,7 +632,7 @@
             },
             {
               "name": "token",
-              "value": "e8767b5a-7af2-4462-a27e-566449e13d85"
+              "value": "={{ $('Normaliza').item.json.token_instancia }}"
             }
           ]
         },
@@ -601,7 +641,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=5551993732861"
+              "value": "={{ $('Normaliza').item.json.cliente_telefone }}"
             },
             {
               "name": "text",
@@ -618,7 +658,8 @@
         288
       ],
       "id": "31f64cd8-4989-48b4-929c-3b0f4e9dda5d",
-      "name": "MSG  CANCELADO"
+      "name": "MSG  CANCELADO",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -825,6 +866,46 @@
           "name": "Postgres token"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "msg_imperador",
+          "mode": "list",
+          "cachedResultName": "msg_imperador"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "9"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        176,
+        -528
+      ],
+      "id": "83002eb8-abfe-4475-adea-81772bd30c1d",
+      "name": "Deleta Linha",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
     }
   ],
   "connections": {
@@ -915,6 +996,13 @@
         ],
         [
           {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "MSG A ENVIAR",
             "type": "main",
             "index": 0
@@ -951,6 +1039,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -959,6 +1054,13 @@
         [
           {
             "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
             "type": "main",
             "index": 0
           }
@@ -973,6 +1075,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -981,6 +1090,13 @@
         [
           {
             "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
             "type": "main",
             "index": 0
           }
@@ -1026,6 +1142,11 @@
           }
         ]
       ]
+    },
+    "Consulta tabela": {
+      "main": [
+        []
+      ]
     }
   },
   "settings": {
@@ -1047,54 +1168,54 @@
           "headers": {
             "host": "webhooks.rdmon.com",
             "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.70.3)",
-            "content-length": "1088",
+            "content-length": "1086",
             "accept": "*/*",
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "x-forwarded-for": "54.200.197.101",
+            "x-forwarded-for": "16.145.98.249",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "54.200.197.101"
+            "x-real-ip": "16.145.98.249"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 15,
-              "read_ct": 290,
-              "enqueued_at": "2026-02-15T18:10:21.077088+00:00",
-              "vt": "2026-02-16T18:58:06.079327+00:00",
+              "msg_id": 30,
+              "read_ct": 1,
+              "enqueued_at": "2026-02-19T16:38:31.432967+00:00",
+              "vt": "2026-02-19T16:44:17.063517+00:00",
               "message": {
                 "body": {
-                  "act": "update",
-                  "scope_id": "2125",
+                  "act": "insert",
+                  "scope_id": "2143",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "9ce6c2ef524ba44b-GRU",
-                  "baggage": "sb-request-id=019c627f-0fc9-7815-bcad-26f4214ef28d",
+                  "cf-ray": "9d0731cf07b62df6-GRU",
+                  "baggage": "sb-request-id=019c76c4-5cd9-7313-920e-57de733e880c",
                   "cdn-loop": "cloudflare; loops=1; subreqs=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "019c627f-0fc9-7815-bcad-26f4214ef28d",
+                  "sb-request-id": "019c76c4-5cd9-7313-920e-57de733e880c",
                   "x-newrelic-id": "UAcHVVRaGwUFXVlSBwAHUA==",
                   "content-length": "59",
                   "accept-encoding": "gzip",
-                  "x-amzn-trace-id": "Root=1-69920c0c-77b0c29208b1225e4379f782",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.22",
+                  "x-amzn-trace-id": "Root=1-69973c82-0b600a3005ad72421a9c3521",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "x-newrelic-transaction": "PxRVUVEAWgUGBldXBAMOUF0EFB8EBw8RVU4aAAgPV1AFU1tXBFIBW1IPAkNKQQkLCVRVWlIBFTs="
+                  "x-newrelic-transaction": "PxRUBwJaCwoJBgIBUwcHUlxUFB8EBw8RVU4aAV5cDQEKXFsCUgUFUlAOUkNKQQkLCVRVWlIBFTs="
                 }
               },
               "headers": null
@@ -1102,13 +1223,16 @@
           ],
           "webhookUrl": "https://webhooks.rdmon.com/webhook/725bc4e7-f287-4860-86be-3ff94abc9b13",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "e20ac7c8-d05c-4ff4-8458-4e5368fcae98",
-  "activeVersionId": "e20ac7c8-d05c-4ff4-8458-4e5368fcae98",
-  "versionCounter": 364,
+  "versionId": "1b873f2d-732d-4c8b-ba65-a9aea8faff1c",
+  "activeVersionId": "1b873f2d-732d-4c8b-ba65-a9aea8faff1c",
+  "versionCounter": 446,
   "triggerCount": 1,
   "tags": [],
   "shared": [
