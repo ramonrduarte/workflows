@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-19T18:12:20.257Z",
+  "updatedAt": "2026-02-20T19:18:07.529Z",
   "createdAt": "2026-02-19T17:07:50.020Z",
   "id": "eMgRU6AGheBjsR98",
   "name": "Uazapi Financeiro",
@@ -32,27 +32,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        400,
-        -432
+        816,
+        -592
       ],
       "id": "776fd3ea-f8df-4cfc-bc5c-b23853da6661",
-      "name": "Botao URL"
-    },
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "9e47e89d-2c68-462e-a91b-0ad099540ffe",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -368,
-        -512
-      ],
-      "id": "b5f2c72f-bf8e-42da-8b35-c31462103dd7",
-      "name": "Webhook Financeiro",
-      "webhookId": "9e47e89d-2c68-462e-a91b-0ad099540ffe"
+      "name": "Botao URL",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -91,40 +76,350 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        112,
-        -624
+        816,
+        -880
       ]
     },
     {
       "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": 503,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6643237a-4348-4b73-be1a-8be3465918a1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DESCONECTADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9397ca82-faa6-490e-8020-83ad0ef13085",
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": "500",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SEM WHATSAPP"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        -528
+      ],
+      "id": "e0f584e5-2f90-4d2b-a324-a3e9c3adf586",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
         "httpMethod": "POST",
-        "path": "c8151ded-0a38-480f-b51a-7458ff997676",
+        "path": "489fba92-fba0-4c5e-9f71-4e188389c680",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
         -368,
-        -272
+        -464
       ],
-      "id": "a43731b9-53f4-416e-9cec-e3d4dd432479",
+      "id": "6a23309f-6544-40a8-8bd2-cd616af5ddd6",
+      "name": "Webhook Bot",
+      "webhookId": "489fba92-fba0-4c5e-9f71-4e188389c680"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "540dba54-e7ce-490a-95c4-1cddb46355fa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -896
+      ],
+      "id": "3fb3dede-088b-4ab6-a0f5-620682cbc2b8",
+      "name": "Webhook Financeiro",
+      "webhookId": "540dba54-e7ce-490a-95c4-1cddb46355fa"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "22e22970-0bec-44cd-b53f-cddbe64a0a92",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -688
+      ],
+      "id": "8748c74b-c1e8-42a0-b731-264d4090f381",
       "name": "Webhook Imperador",
-      "webhookId": "c8151ded-0a38-480f-b51a-7458ff997676"
+      "webhookId": "22e22970-0bec-44cd-b53f-cddbe64a0a92"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.EventType }}",
+                    "rightValue": "qrcode",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "cb1a1c9f-c761-44a9-bc4d-536dad636a2d"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "QRCODE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ef5ab926-d3d5-439e-b172-bd839987c5e2",
+                    "leftValue": "={{ $json.body.EventType }}",
+                    "rightValue": "connection",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CONEXAO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -464
+      ],
+      "id": "dcc017e0-8234-498a-b4db-55ec66d9d4af",
+      "name": "QRCODE x CONEXAO"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.instance.status }}",
+                    "rightValue": "connected",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6990af3a-0a06-4aae-bb8b-c642038970cf"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "conectado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cd195242-af0f-4910-96ea-e519350604c7",
+                    "leftValue": "={{ $json.body.instance.status }}",
+                    "rightValue": "disconnected",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "desconectado"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        -352
+      ],
+      "id": "c6166019-0336-4711-9f0f-bae23a9ddc7f",
+      "name": "Conectado ou Descontado"
     }
   ],
-  "connections": {},
+  "connections": {
+    "Botao URL": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Bot": {
+      "main": [
+        [
+          {
+            "node": "QRCODE x CONEXAO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QRCODE x CONEXAO": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Conectado ou Descontado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
   "meta": null,
-  "pinData": {},
-  "versionId": "1d0108d6-c085-46e7-bd6e-fbf783fa0782",
-  "activeVersionId": "1d0108d6-c085-46e7-bd6e-fbf783fa0782",
-  "versionCounter": 21,
-  "triggerCount": 2,
+  "pinData": {
+    "Webhook Bot": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "uazapiGO-Webhook/1.0",
+            "content-length": "340",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "x-forwarded-for": "187.45.178.254",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "187.45.178.254"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "BaseUrl": "https://rdmon.uazapi.com",
+            "EventType": "connection",
+            "instance": {
+              "lastDisconnect": "2026-02-20 19:13:23.112Z",
+              "lastDisconnectReason": "401: logged out from another device",
+              "name": "Imperador",
+              "status": "disconnected"
+            },
+            "instanceName": "Imperador",
+            "owner": "555180186979",
+            "token": "e8767b5a-7af2-4462-a27e-566449e13d85",
+            "type": "LoggedOut"
+          },
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/489fba92-fba0-4c5e-9f71-4e188389c680",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "8ef5529b-f748-436e-89b4-e72ed284deba",
+  "activeVersionId": "8ef5529b-f748-436e-89b4-e72ed284deba",
+  "versionCounter": 108,
+  "triggerCount": 3,
   "tags": [],
   "shared": [
     {
