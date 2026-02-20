@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-19T17:02:59.404Z",
+  "updatedAt": "2026-02-20T17:13:22.930Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -132,8 +132,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1856,
-        -528
+        1984,
+        -464
       ],
       "id": "41c8663d-fdd5-4345-9654-f8e602d31306",
       "name": "Limpa Lista"
@@ -528,8 +528,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1392,
-        -240
+        1248,
+        -96
       ],
       "id": "7cc942e2-55ba-44ee-aca2-98f3b1d5fc5a",
       "name": "MSG A ENVIAR",
@@ -570,8 +570,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1392,
-        112
+        1248,
+        256
       ],
       "id": "2458a66c-fdfe-4332-a84a-46302c6bd716",
       "name": "MSG  FINALIZADO",
@@ -612,8 +612,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1392,
-        -64
+        1248,
+        80
       ],
       "id": "bbadc21b-62a4-4d34-9986-de0db6447d07",
       "name": "MSG ENVIADO",
@@ -654,8 +654,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1392,
-        288
+        1248,
+        432
       ],
       "id": "31f64cd8-4989-48b4-929c-3b0f4e9dda5d",
       "name": "MSG  CANCELADO",
@@ -855,8 +855,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1696,
-        -16
+        1632,
+        320
       ],
       "id": "879b1a81-ad2b-4517-8a98-d36f3729982c",
       "name": "Atualiza Tabela",
@@ -906,6 +906,113 @@
           "name": "Postgres token"
         }
       }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": 503,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6643237a-4348-4b73-be1a-8be3465918a1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DESCONECTADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9397ca82-faa6-490e-8020-83ad0ef13085",
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": "500",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SEM WHATSAPP"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        -80
+      ],
+      "id": "0c4af371-694e-4db5-b542-b64b40e6974b",
+      "name": "Erros"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Ramon",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "=Telefone Imperador Desconectado"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "9ba7067a-b93d-44b3-a29c-dc8737ddaa6e",
+      "name": "Aviso desconexao",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1984,
+        48
+      ]
     }
   ],
   "connections": {
@@ -1042,7 +1149,7 @@
         ],
         [
           {
-            "node": "Limpa Lista",
+            "node": "Erros",
             "type": "main",
             "index": 0
           }
@@ -1060,7 +1167,7 @@
         ],
         [
           {
-            "node": "Limpa Lista",
+            "node": "Erros",
             "type": "main",
             "index": 0
           }
@@ -1078,7 +1185,7 @@
         ],
         [
           {
-            "node": "Limpa Lista",
+            "node": "Erros",
             "type": "main",
             "index": 0
           }
@@ -1096,7 +1203,7 @@
         ],
         [
           {
-            "node": "Limpa Lista",
+            "node": "Erros",
             "type": "main",
             "index": 0
           }
@@ -1146,6 +1253,24 @@
     "Consulta tabela": {
       "main": [
         []
+      ]
+    },
+    "Erros": {
+      "main": [
+        [
+          {
+            "node": "Aviso desconexao",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -1230,9 +1355,9 @@
       }
     ]
   },
-  "versionId": "1b873f2d-732d-4c8b-ba65-a9aea8faff1c",
-  "activeVersionId": "1b873f2d-732d-4c8b-ba65-a9aea8faff1c",
-  "versionCounter": 446,
+  "versionId": "25cbfe36-8476-480f-bb2a-2992bf30ea3d",
+  "activeVersionId": "25cbfe36-8476-480f-bb2a-2992bf30ea3d",
+  "versionCounter": 476,
   "triggerCount": 1,
   "tags": [],
   "shared": [
