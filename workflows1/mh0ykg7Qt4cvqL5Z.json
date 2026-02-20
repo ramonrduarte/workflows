@@ -1,0 +1,939 @@
+{
+  "updatedAt": "2026-02-20T18:00:07.873Z",
+  "createdAt": "2026-02-20T14:06:45.779Z",
+  "id": "mh0ykg7Qt4cvqL5Z",
+  "name": "ajuda humana+treinamento",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.data.key.remoteJid }}111111",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        576
+      ],
+      "id": "18f16540-ad77-4fee-afa3-2ebe3103ae00",
+      "name": "Memory",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "gemini-2.5-flash"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        576
+      ],
+      "id": "b080ea53-b1ca-446e-a5fa-ad7bdbc845d6",
+      "name": "gemini"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        368,
+        384
+      ],
+      "id": "d865935a-cde5-41e8-8041-d2647bc6b459",
+      "name": "Webhook",
+      "webhookId": "fc1afe3e-4395-4da7-bfb1-b9675547f5eb"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "treinamento",
+        "messageData": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Data', `adicione aqui a pergunta do cliente e a resposta do administrador`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.redisTool",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        576
+      ],
+      "id": "7e75f6f4-ddb8-477c-a677-29374d87c95e",
+      "name": "salva_respostas",
+      "credentials": {
+        "redis": {
+          "id": "gBVHBc3MEoa3SWiv",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "chame essa ferramenta: respostas_anteriores_do_admin, para buscar respostas para perguntas do cliente que voce nao tem a informacao sempre que alguem perguntar algo que voce nao sabe responder",
+        "operation": "get",
+        "key": "treinamento",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redisTool",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        576
+      ],
+      "id": "ac80023d-804c-4218-86c9-8c197cd5ee8d",
+      "name": "respostas_anteriores_do_admin",
+      "credentials": {
+        "redis": {
+          "id": "gBVHBc3MEoa3SWiv",
+          "name": "Local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation }}",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        256
+      ],
+      "id": "dc018f21-7259-40ae-95f8-e1bd50fc41cf",
+      "name": "chama bot administrativo",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "toolDescription": "sempre chame essa ferramenta: chat_administrativo, sempre que nao souber a resposta nao invente apenas chame essa ferramenta e pergunte ao administrador ",
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Webhook').item.json.body.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=559184698653@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "={{ $fromAI('parameters1_Value', `escreva aqui a dulvida do cliente com o maior quantidade de informacoes, oque o cliente perguntou, como ele perguntou, e coisas adicionais `, 'string') }} ||{{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        1520,
+        576
+      ],
+      "id": "89db9609-7b7e-492e-b060-5c7c5bc7b870",
+      "name": "chat_administrativo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Webhook').item.json.body.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Jovem IA Aprendiz').item.json.output }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "b2f57380-5d77-4357-91ab-a828ecc17db5",
+      "name": "api de sua escolha2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1552,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Webhook').item.json.body.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Jovem IA Aprendiz').item.json.output }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "c0daf267-b687-470b-8cd0-233b2b648b05",
+      "name": "api de sua escolha3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1552,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "261dea1b-218b-48ee-b0cd-92d1db4e85e2",
+              "leftValue": "={{ $json.body.data.key.remoteJid }}",
+              "rightValue": "559184698653",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        384
+      ],
+      "id": "1b37ad5a-599c-4efb-a46e-d7e25bf00592",
+      "name": "🕵️ É o Chefe ou Cliente?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "20a40779-3fe7-4201-98de-a9ea06c72753",
+              "name": "body.instance",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
+              "name": "body.data.key.remoteJid",
+              "value": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
+              "name": "body.data.message.conversation",
+              "value": "=essa e uma resposta emviada pelo administrador e voce respondera ao cliente a adulvida dele, Relembrando, a dúvida do contato foi: '{{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[0].trim() }}'. A instrução/resposta recebida foi: '{{ $('Webhook').item.json.body.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        240
+      ],
+      "id": "bb24080b-9217-4d11-852e-07b9ac2acc6f",
+      "name": "🗂️ Organizando a Bagunça"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "20a40779-3fe7-4201-98de-a9ea06c72753",
+              "name": "body.instance",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
+              "name": "body.data.key.remoteJid",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
+              "name": "body.data.message.conversation",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        400
+      ],
+      "id": "29d13473-8000-407b-88c5-dcb7aa02f59d",
+      "name": "🗂️ Organizando a Bagunça1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.data.message.conversation }}",
+        "options": {
+          "systemMessage": "=voce e um humano atendente de consultório de nutricionista\n\n\nVocê vai receber mensagens de um cliente real e pode receber mensagens do administrador também durante a conversa com orientações, mas quando for mensagem administrativa estará informado na mensagem.\n\nTools disponíveis:\n\n1. Sempre que o usuário perguntar algo que você não sabe, você deve acionar a tool: respostas_anteriores_do_admin. Isso serve para verificar se a resposta existe no banco de respostas administrativas.\n\n2. Caso a resposta não exista na tool anterior, você deve perguntar ao administrador acionando imediatamente na mesma execução a tool: chat_administrativo, enviando a dúvida do cliente para que o administrador responda o mais rápido possível. Só depois disso você informa o cliente que perguntou ao responsável e vai retornar com a resposta.\n\n3. Caso seja uma mensagem do administrador, você deve, além de responder à dúvida do cliente, acionar a tool: salva_respostas. Isso serve para armazenar as dúvidas do cliente e a resposta do administrador para que, se houver outro cliente com a mesma dúvida, você saiba o que responder.\n\nAgora: {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc, dd/MM/yyyy, HH:mm\")}}\nPeríodo: {{ $now.setZone('America/Sao_Paulo').hour < 12 ? 'Manhã' : ($now.setZone('America/Sao_Paulo').hour < 18 ? 'Tarde' : 'Noite')}}\n\n- Hoje: ({{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Amanhã: ({{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Depois de amanhã: ({{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}} (Próxima semana): {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n",
+          "passthroughBinaryImages": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        976,
+        400
+      ],
+      "id": "350b4730-ef4f-4625-8c11-dfcfb9a243fd",
+      "name": "Jovem IA Aprendiz"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "261dea1b-218b-48ee-b0cd-92d1db4e85e2",
+              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+              "rightValue": "559184698653",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        400
+      ],
+      "id": "f8af4560-04ab-4f52-9556-d5ef34bbbf48",
+      "name": "🕵️ É o Chefe ou Cliente?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "f6f791c4-e153-4a8c-98aa-bb815f4b4de4",
+              "leftValue": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "66ea2c0d-5715-4fac-9f48-77965c70e047",
+      "name": "comando ou resposta?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        688,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "f6f791c4-e153-4a8c-98aa-bb815f4b4de4",
+              "leftValue": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "529fafce-7ea7-4254-aaa2-6ff0ee2d905a",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1c0cd024-32a6-4bbd-b7db-107f93314da0",
+      "name": "comando ou resposta?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "content": "\n![Brain](https://placehold.co/350x100/3498db/ffffff?text=Cerebro+e+Tools&font=roboto)\n\n# 🧠 O Cérebro & Ferramentas\n\n* **👀 Colando da Prova (Redis GET):**\nVerifica se essa pergunta já foi respondida antes.   * **📢 GRITAR O CHEFE (HTTP):** Envia a dúvida direto pro seu WhatsApp pessoal.\n\n* **✍️ Decorando a Lição (Redis SET):**\nA mágica! Salva a resposta nova para usar no futuro.    ---💡 *Dica: O prompt do sistema define a personalidade do estagiário.*",
+        "height": 356,
+        "width": 1052,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        560
+      ],
+      "id": "c05673fc-add5-4f33-9e67-b9c42b6c2ae8",
+      "name": "Nota Cérebro"
+    },
+    {
+      "parameters": {
+        "content": "![Gatekeeper](https://placehold.co/350x100/f1c40f/000000?text=Portaria+e+Filtros&font=roboto)\n\n# 🚦 Segurança da Portaria\nAqui separamos quem é quem para não dar confusão.\n### 🕵️ Os Filtros (Nodes IF):\n1. **É o Chefe?**\nOlha o número (`remoteJid`). Se for o Admin, o fluxo segue para *Treinamento* ou *Comando*.\n\n2. **É Cliente?**\nSe não for o chefe, é cliente. O fluxo segue para o *Atendimento*.\n\n3. **Contexto:**\nVerifica se é uma mensagem solta ou uma resposta a uma pergunta anterior.",
+        "height": 604,
+        "width": 448,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -240
+      ],
+      "id": "a1cc2e5b-6719-4ecb-932b-61bd442e6b0e",
+      "name": "Nota Portaria"
+    },
+    {
+      "parameters": {
+        "content": "![Config](https://placehold.co/350x100/2ecc71/ffffff?text=Configuracoes+Finais&font=roboto)\n\n# ⚠️ CHECKLIST DE CONFIG\n\nNão esqueça de ajustar antes de rodar:\n\n1. **APIs de Envio (HTTP Nodes):**\n   * Coloque a URL da sua instância.\n   * Atualize a `apikey`.\n\n2. **Validação (Node IF):**\n   * Troque o número `5591...` pelo SEU número de Admin.\n\n3. **Bancos de Dados:**\n   * Conecte o Redis e o Postgres corretos.\n\n✅ *Nodes de teste podem ser apagados.*",
+        "height": 532,
+        "width": 492,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        256
+      ],
+      "id": "1e51f7b4-f90c-4354-99f4-a41a227f3b0b",
+      "name": "Nota Config"
+    },
+    {
+      "parameters": {
+        "content": "![Fluxo](https://placehold.co/350x120/e74c3c/ffffff?text=Jovem+IA+Aprendiz&font=roboto)\n\n# 🚀 Fluxo: Jovem IA Aprendiz\n\nEste fluxo simula uma **Jovem IA Aprendiz** que estuda enquanto trabalha.\n\n### 🤖 O Ciclo de Vida:\n1. **Recebe:** O cliente manda mensagem.\n2. **Tenta:** A IA busca na memória se já sabe responder.\n3. **Pede Socorro:** Se não souber, ela grita o **Administrador** (Você).\n4. **Aprende:** O Admin responde, a IA repassa pro cliente e **grava no cérebro**.\n5. **Evolui:** Na próxima, a Jovem IA Aprendiz já sabe!",
+        "height": 540,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        368
+      ],
+      "id": "42c0e299-5de9-4f17-bfb8-fe5e22ff9b01",
+      "name": "Nota Conceito1"
+    },
+    {
+      "parameters": {
+        "content": "![Video tutorial](https://i.postimg.cc/HkDDZSTm/promovaweb-og-1.png)",
+        "height": 480,
+        "width": 1312,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "07e3967b-d547-4eee-aee0-d7d9ab0582c7",
+      "name": "Sticky Note12"
+    }
+  ],
+  "connections": {
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "🕵️ É o Chefe ou Cliente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "salva_respostas": {
+      "ai_tool": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "respostas_anteriores_do_admin": {
+      "ai_tool": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chat_administrativo": {
+      "ai_tool": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕵️ É o Chefe ou Cliente?": {
+      "main": [
+        [
+          {
+            "node": "comando ou resposta?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🗂️ Organizando a Bagunça1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🗂️ Organizando a Bagunça": {
+      "main": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🗂️ Organizando a Bagunça1": {
+      "main": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jovem IA Aprendiz": {
+      "main": [
+        [
+          {
+            "node": "🕵️ É o Chefe ou Cliente?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕵️ É o Chefe ou Cliente?1": {
+      "main": [
+        [
+          {
+            "node": "comando ou resposta?1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "api de sua escolha3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "comando ou resposta?": {
+      "main": [
+        [
+          {
+            "node": "🗂️ Organizando a Bagunça",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "chama bot administrativo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "comando ou resposta?1": {
+      "main": [
+        [
+          {
+            "node": "api de sua escolha2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhookn8n5.inovareinteligenciaartificial.com",
+            "user-agent": "axios/1.13.2",
+            "content-length": "1917",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "209.145.60.53",
+            "x-forwarded-host": "webhookn8n5.inovareinteligenciaartificial.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "209.145.60.53"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "teste-8407",
+            "data": {
+              "key": {
+                "remoteJid": "559184698653@s.whatsapp.net",
+                "remoteJidAlt": "132250784018630@lid",
+                "fromMe": false,
+                "id": "2AE55D6F7FCE65012BAA",
+                "participant": "",
+                "addressingMode": "pn"
+              },
+              "pushName": "Emerson IA",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "threadId": [],
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 13,
+                      "1": 106,
+                      "2": 25,
+                      "3": 26,
+                      "4": 140,
+                      "5": 48,
+                      "6": 168,
+                      "7": 140,
+                      "8": 200,
+                      "9": 211
+                    },
+                    "senderTimestamp": {
+                      "low": 1770412198,
+                      "high": 0,
+                      "unsigned": true
+                    },
+                    "recipientKeyHash": {
+                      "0": 42,
+                      "1": 58,
+                      "2": 136,
+                      "3": 31,
+                      "4": 219,
+                      "5": 118,
+                      "6": 241,
+                      "7": 55,
+                      "8": 47,
+                      "9": 16
+                    },
+                    "recipientTimestamp": {
+                      "low": 1768938104,
+                      "high": 0,
+                      "unsigned": true
+                    }
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 239,
+                    "1": 128,
+                    "2": 88,
+                    "3": 15,
+                    "4": 253,
+                    "5": 141,
+                    "6": 141,
+                    "7": 220,
+                    "8": 161,
+                    "9": 244,
+                    "10": 250,
+                    "11": 72,
+                    "12": 0,
+                    "13": 140,
+                    "14": 79,
+                    "15": 72,
+                    "16": 163,
+                    "17": 23,
+                    "18": 142,
+                    "19": 148,
+                    "20": 2,
+                    "21": 159,
+                    "22": 128,
+                    "23": 197,
+                    "24": 162,
+                    "25": 162,
+                    "26": 25,
+                    "27": 2,
+                    "28": 75,
+                    "29": 77,
+                    "30": 58,
+                    "31": 221
+                  }
+                },
+                "conversation": "Tem"
+              },
+              "contextInfo": {
+                "mentionedJid": [],
+                "groupMentions": [],
+                "statusAttributions": [],
+                "stanzaId": "3EB0C96421A555B4EFB5B0",
+                "participant": "559184074247@s.whatsapp.net",
+                "quotedMessage": {
+                  "conversation": "O cliente perguntou \"Tem vaga pra hoje?\". Ele quer saber se há horários disponíveis para agendamento de consultas para hoje. Por favor, verifique a agenda e me informe sobre a disponibilidade.||559185685106@s.whatsapp.net"
+                },
+                "quotedType": 0
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1770916543,
+              "instanceId": "449d6ab2-37ea-49aa-af01-a40ebd33c764",
+              "source": "unknown"
+            },
+            "destination": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
+            "date_time": "2026-02-12T14:15:43.520Z",
+            "sender": "559184074247@s.whatsapp.net",
+            "server_url": "https://ligawhatsapp.inovareinteligenciaartificial.com",
+            "apikey": "BFEDB75FE8FD-49CF-93C1-E52BEAEF8B0C"
+          },
+          "webhookUrl": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "d2fb1d37-aac0-4d00-b9b0-9713edf644d1",
+  "activeVersionId": null,
+  "versionCounter": 101,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-20T14:06:45.779Z",
+      "createdAt": "2026-02-20T14:06:45.779Z",
+      "role": "workflow:owner",
+      "workflowId": "mh0ykg7Qt4cvqL5Z",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
