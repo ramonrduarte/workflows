@@ -1,0 +1,2910 @@
+{
+  "updatedAt": "2026-02-21T14:09:26.498Z",
+  "createdAt": "2026-02-21T13:14:15.387Z",
+  "id": "2qwMSXbm12ghQXH6",
+  "name": "[EMKT] UaZapi x Chatwoot v1.1.0-Premium",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Tratamento Inicial dos Dados",
+        "height": 464,
+        "width": 860
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "c650afed-5923-4529-80ed-873fadd8ff97",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Início do Processamento",
+        "height": 1396,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "385f77d9-8754-4440-b763-2463f2ccccd3",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Tratamento do Contato",
+        "height": 464,
+        "width": 1032
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "d78e85b1-fc4c-4d72-8f6c-b9940cf9242c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Tratamento da Conversa",
+        "height": 912,
+        "width": 860
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "e480816c-cbb7-44ac-8301-8b14e8b1f687",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Tratamento da Mensagem",
+        "height": 912,
+        "width": 1032
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "77d0ff6b-dfd0-41e9-90b6-b07f2d00724c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Final do Processamento",
+        "height": 1396,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3472,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "21a42f76-672c-486b-a982-f2a5fc1b1282",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "```\n                                                                                                                  ███       █                            ██          █   █      █████           █             █████ █          █                   █\n                                                                                                                   █       ███                                       █   █          █                         █     █         ███                 ███\n                                                                                                                   █  █ ██  █  ████ ████ █ ██ ████ ████ ████ ████    █   █ ████    █  ████ ████ █    █   █    █     ████ ████  █  █ █ █ ████ ████  █            █     █    ███    ████ ████ ████ █████ █ █  █ █████\n                                                                                                                   █  ██ █  █  █  █ █  █ ██      █ █       █ █  █    █   █    █   █      █ █  █ █     █ █     █     █  █    █  █  █ █ █ █  █ █  █  █           ██    ██    █ █    █  █ █  █ █    █ █ █ █ █  █ █ █ █\n                                                                                                                   █  █  █  █  ████ █  █ █    ████ █    ████ █  █    █   █ ████  █    ████ █  █ █      █      █     █  █ ████  █  █ █ █ █  █ █  █  █      █ █   █     █    █ █ ██ ████ ████ ███  █ █ █ █ █  █ █ █ █\n                                                                                                                   █  █  █  █  █    █  █ █    █  █ █    █  █ █  █    █   █ █  █ █     █  █ █  █ █     █ █     █     █  █ █  █  █  █ █ █ █  █ █  █  █      █ █   █     █    █ █    █    █ █  █    █ █ █ █ █  █ █ █ █\n                                                                                                                  ███ █  █  ██ ████ ████ █    ████ ████ ████ ████    █████ ████ █████ ████ ████ █    █   █    █████ █  █ ████  ██  █ █  ████ ████  ██      █   ███ █ ███ █ ███    █    █  █ ████ █ █ █ █ ████ █ █ █\n                                                                                                                                       █             █                                     █\n                                                                                                                                    ████            █                                      █\n```",
+        "height": 200,
+        "width": 3680,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "e6f92a4f-5f78-4674-bb55-a6585ee60feb",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        288
+      ],
+      "id": "bd719ed8-e85d-4415-98bf-764af99a861c",
+      "name": "groupEndProcess"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        368
+      ],
+      "id": "5da15e1c-326f-4d0b-a3c1-2b8f257629aa",
+      "name": "fromMeEndProcess"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "663ff314-a7aa-44b1-bfa8-22ae64a23870",
+              "name": "chatwoot",
+              "value": "={{ (() => {\n  const s = $('getVariables')?.item?.json;\n  return {\n    base_url:        s.chatwoot_base_url,\n    api_version:     s.chatwoot_api_version,\n    token:           s.chatwoot_token,\n    account_id:      s.chatwoot_account_id,\n    inbox_id:        s.chatwoot_inbox_id,\n    inbox_name:      s.chatwoot_inbox_name,\n    track_id:        s.chatwoot_track_id,\n    reply_messages:  s.reply_messages,\n    edit_messages:   s.edit_messages,\n    delete_messages: s.delete_messages\n  };\n})() }}",
+              "type": "object"
+            },
+            {
+              "id": "a1a2a399-dea0-4f58-a284-8d38994ea182",
+              "name": "api",
+              "value": "={{ (() => {\n  const s = $('getVariables')?.item?.json;\n  return {\n    base_url:          s.api_base_url,\n    token:             s.api_token,\n    api_instance_name: s.api_instance_name,\n  };\n})() }}",
+              "type": "object"
+            },
+            {
+              "id": "65102415-5231-44cb-b3e0-5c98dce21850",
+              "name": "integration",
+              "value": "={{ (() => {\n  const s = $('getVariables')?.item?.json ?? {};\n  return {\n    ignore_groups:        s.ignore_groups ?? false,\n    reply_messages:       s.reply_messages ?? false,\n    edit_messages:        s.edit_messages ?? false,\n    delete_messages:      s.delete_messages ?? false,\n    reopen_conversation:  s.reopen_conversation ?? false,\n    conversation_pending: s.conversation_pending ?? false,\n    import_contacts:      s.import_contacts ?? false,\n    import_messages:      s.import_messages ?? false,\n    import_days_limit:    s.import_days_limit ?? 0,\n    sign_messages:        s.sign_messages ?? false,\n    sign_delimiter:       s.sign_delimiter ?? '',\n    reject_calls:         s.reject_calls ?? false,\n    reject_msg:           s.reject_msg ?? '',\n    mark_read:            s.mark_read ?? false,\n    read_status:          s.read_status ?? false\n  };\n})() }}",
+              "type": "object"
+            },
+            {
+              "id": "45d1d87f-ee7c-4b90-ba59-b14d8874f4dc",
+              "name": "group.id",
+              "value": "={{ \n  (() => {\n    const msg = $('webhookDataUazapi')?.item?.json?.body.message\n    return msg?.isGroup ? (msg?.chatid || '') : ''\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "0d3da5a5-b975-440f-94b3-3c63531c3edf",
+              "name": "group.name",
+              "value": "={{\n  (() => {\n    const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n    return msg?.isGroup ? `[👥] ${msg?.groupName || ''}` : ''\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e1726d06-91bc-4e48-9361-dec6435db7d1",
+              "name": "group.contact",
+              "value": "={{\n  (() => {\n    const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n    if (!msg?.isGroup) return ''\n    const number = msg?.sender_pn?.split('@')?.[0] ?? ''\n    const name = (msg?.senderName ?? '')\n      .replace(/[^a-zA-ZÀ-ÿ\\s]/g, '')\n      .trim() || 'Contato'\n    return `[👤] +${number} | ${name}`\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e058c51f-71a0-43f3-8cae-448a8c1ccfb2",
+              "name": "contact.identifier",
+              "value": "={{\n(() => {\n  const base = $('webhookDataUazapi')?.item?.json?.body ?? {};\n  const id1 = base.message?.chatid ?? '';\n  const id2 = base.message?.sender_pn ?? '';\n  const id3 = base.event?.Chat ?? '';\n  const id4 = base.event?.Data?.Attrs?.caller_pn ?? '';\n  const id5 = base.event?.From ?? '';\n  const ids = [id1, id2, id3, id4, id5];\n  const whatsappId = ids.find(id => \n    id.endsWith('@s.whatsapp.net') || id.endsWith('@g.us')\n  );\n  if (whatsappId) {\n    return whatsappId;\n  }\n  const lidId = ids.find(id => id.endsWith('@lid'));\n  if (lidId) {\n    return lidId;\n  }\n  return '';\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "abf09a47-2772-48d3-b4f7-b0c6b15a69b9",
+              "name": "contact.lid",
+              "value": "={{\n(() => {\n  const msg = $('webhookDataUazapi')?.item?.json?.body;\n  const isFromMe = !!(msg?.message?.fromMe);\n  const isGroup = !!(msg?.message?.isGroup);\n  if (isFromMe || isGroup) {\n    return '';\n  }\n  return String(msg?.message?.sender_lid ?? msg?.event?.From ?? '');\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e2ce78a3-4599-483f-be1c-8e96122eeaef",
+              "name": "contact.phone_number",
+              "value": "={{\n(() => {\n  const body = $('webhookDataUazapi')?.item?.json?.body || {};\n  const chatid = body.message?.chatid || '';\n\n  if (chatid.endsWith('@g.us')) return '';\n\n  const targetId = (chatid.endsWith('@lid') || !chatid)\n    ? (body.message?.sender_pn || body.event?.Data?.Attrs?.caller_pn)\n    : chatid;\n\n  const match = (targetId || '').match(/^(\\d+)@s\\.whatsapp\\.net$/);\n\n  return match ? `+${match[1]}` : '';\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "4832617f-aafc-4cbf-8fa5-e2502deb7143",
+              "name": "contact.full_name",
+              "value": "={{\n  (() => {\n    const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n    if (msg?.fromMe) return 'Contato'\n    const raw = msg?.senderName ?? ''\n    const s = raw.normalize('NFKC')\n      .replace(/[^\\p{L}\\p{M}\\s'\\-]/gu,'')\n      .replace(/\\s+/g,' ')\n      .trim()\n    return s || 'Contato'\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "4a7df58d-d6f7-42ba-a09d-5b04910c0555",
+              "name": "contact.first_name",
+              "value": "={{ (() => { \n  const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n  if (msg?.fromMe) return 'Contato'\n  const parts = String(msg?.senderName ?? '')\n    .normalize('NFKC')\n    .replace(/[^\\p{L}\\p{M}\\s'-]/gu,'')\n    .replace(/\\s+/g,' ')\n    .trim()\n    .split(' ')\n    .filter(Boolean)\n  return parts[0] || 'Contato'\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "feb8da01-d39a-4571-a215-c93f838b1cd6",
+              "name": "contact.middle_name",
+              "value": "={{ (() => { \n  const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n  if (msg?.fromMe) return ''\n  const s = String(msg?.senderName ?? '')\n    .normalize('NFKC')\n    .replace(/[^\\p{L}\\p{M}\\s'-]/gu,'')\n    .replace(/\\s+/g,' ')\n    .trim()\n  if (!s) return ''\n  const parts = s.split(' ').filter(Boolean)\n  return parts.length > 2 ? parts.slice(1, -1).join(' ') : ''\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "13f61b17-5053-42d7-a613-ac7ab0cfabc3",
+              "name": "contact.last_name",
+              "value": "={{ (() => { \n  const msg = $('webhookDataUazapi')?.item?.json?.body?.message\n  if (msg?.fromMe) return ''\n  const s = String(msg?.senderName ?? '')\n    .normalize('NFKC')\n    .replace(/[^\\p{L}\\p{M}\\s'-]/gu,'')\n    .replace(/\\s+/g,' ')\n    .trim()\n  const parts = s.split(' ').filter(Boolean)\n  return parts.length > 1 ? parts.at(-1) : ''\n})() }}",
+              "type": "string"
+            },
+            {
+              "id": "d50b534d-b02f-43a7-a038-3f6719d47b9b",
+              "name": "contact.avatar",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.chat?.imagePreview ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "0f64c0d8-fad3-420d-999e-6e6230ac23e3",
+              "name": "data.source",
+              "value": "={{\n  (\n    $('webhookDataUazapi')?.item?.json?.body?.message?.source ??\n    ''\n  )\n  .trim()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "23e6b810-0252-4617-bf33-5ef2a8bdb715",
+              "name": "data.message_type",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.messageType ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e1b0aeeb-7b3e-46b3-a6ce-049cc9dcc58f",
+              "name": "data.message_id",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.messageid ??\n  $('webhookDataUazapi')?.item?.json?.body?.event?.CallID ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "9b436741-480b-467b-bb9b-d3c3a3d9980b",
+              "name": "data.reply_id",
+              "value": "={{\n(() => {\n  const msg = $('webhookDataUazapi')?.item?.json?.body?.message ?? {};\n  const quoted   = String(msg.quoted   ?? '').trim();\n  const reaction = String(msg.reaction ?? '').trim();\n  if (quoted)   return quoted;\n  if (reaction) return reaction;\n  return '';\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "8821e853-de4f-4009-8cab-4958f4c99868",
+              "name": "data.edited_id",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.edited ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "42eb43cf-4dfe-49b1-adf9-9096ec65a663",
+              "name": "data.deleted_id",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.event?.MessageIDs?.[0] ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "d6eb38ee-31f5-4953-bb1e-086a8dfd4e13",
+              "name": "data.message_direction",
+              "value": "={{\n  (\n    $('webhookDataUazapi')?.item?.json?.body?.message?.fromMe ??\n    false\n  ) ?\n    'outgoing' :\n    'incoming'\n}}",
+              "type": "string"
+            },
+            {
+              "id": "cfba5c5e-18cf-4f29-9840-561c1f5a2be8",
+              "name": "data.content",
+              "value": "={{\n(() => {\n  // =================================================================\n  // FUNÇÃO AUXILIAR: Conversão de Markdown (WhatsApp -> Chatwoot)\n  // =================================================================\n  const convertMarkdown = (text) => {\n    if (typeof text !== 'string' || !text) return '';\n\n    return text\n      // --- LIMPEZA DE CARACTERES ---\n      .replace(/\\t/g, ' ')\n      .replace(/\\v/g, '')\n      .replace(/\\f/g, '')\n      .replace(/\\r/g, '')\n      .replace(/\\u200B/g, '')\n      .replace(/\\uFEFF/g, '')\n      .replace(/\\u00A0/g, ' ')\n      // --- CONVERSÃO MARKDOWN ---\n      .replace(/```(.*?)```/gs, '`$1`')\n      .replace(/\\*(.*?)\\*/gs, '**$1**')\n      .replace(/_(.*?)_/gs, '*$1*')\n      .replace(/~(.*?)~/gs, '~~$1~~')\n      // --- LIMPEZA FINAL ---\n      .trim();\n  };\n\n  // =================================================================\n  // FUNÇÃO AUXILIAR: Formatação de Moeda\n  // =================================================================\n  const formatCurrency = (value, offset, currencyCode = 'BRL') => {\n    if (value === undefined || value === null) return '';\n    const divisor = offset || 1000;\n    const realValue = value / divisor;\n    if (realValue === 0) return 'Valor a ser definido';\n    try {\n      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: currencyCode }).format(realValue);\n    } catch (e) {\n      return `${currencyCode} ${realValue.toFixed(2)}`;\n    }\n  };\n\n  // =================================================================\n  // LÓGICA DE EXTRAÇÃO\n  // =================================================================\n  const body = $('webhookDataUazapi')?.item?.json?.body ?? {};\n  const msg = body?.message ?? {}; \n  const event = body?.event ?? {}; \n  const c = msg?.content ?? {};\n\n  // =================================================================\n  // FORMATTERS\n  // =================================================================\n  const formatters = {\n    \n    // 1. Chamadas\n    call: () => {\n      const callerJid = event.CallCreatorAlt || event.Data?.Attrs?.caller_pn || event.From || 'Desconhecido';\n      const callerNumber = callerJid.replace('@s.whatsapp.net', '');\n      const isVideo = (event.Data?.Content || []).some(item => item.Tag === 'video');\n      const callType = isVideo ? 'Vídeo' : 'Voz';\n      const emoji = isVideo ? '📹' : '📞';\n\n      return [\n        `${emoji} **Chamada de ${callType} Recebida**`,\n        `👤 **De:** ${callerNumber}`,\n        `🕒 **Data:** ${new Date().toLocaleString('pt-BR')}`,\n        `_Acesse o WhatsApp no celular para atender ou retornar._`\n      ].join('\\n\\n');\n    },\n\n    // 2. Template Hidratado\n    hydratedTemplate: () => {\n      const t = c.hydratedTemplate;\n      const contentText = convertMarkdown(t.hydratedContentText ?? '');\n      const footerText = convertMarkdown(t.hydratedFooterText ?? '');\n      \n      let mediaPart = '';\n      if (t.Title?.ImageMessage) {\n         // Imagem omitida\n      } else if (t.hydratedTitleText) {\n         mediaPart = `**${convertMarkdown(t.hydratedTitleText)}**`;\n      }\n\n      const buttons = (t.hydratedButtons ?? []).map(btn => {\n           const hb = btn.HydratedButton;\n           if (hb.UrlButton) return `* [${convertMarkdown(hb.UrlButton.displayText)}](${hb.UrlButton.URL}) 🔗`;\n           if (hb.CallButton) return `* ${convertMarkdown(hb.CallButton.displayText)} (${hb.CallButton.phoneNumber}) 📞`;\n           if (hb.QuickReplyButton) return `* ${convertMarkdown(hb.QuickReplyButton.displayText)}`;\n           return '* Botão';\n      }).join('\\n');\n\n      const direction = msg.fromMe ? 'Enviada' : 'Recebida';\n      const headerTitle = `🔘 _Mensagem com Botões (${direction}):_`;\n\n      return [headerTitle, '---', mediaPart, contentText, footerText, buttons].filter(Boolean).join('\\n\\n');\n    },\n\n    // 3. Botões Padrão\n    buttons: () => {\n      const templateRoot = c?.Format?.InteractiveMessageTemplate;\n      const header = convertMarkdown(c?.header?.title ?? templateRoot?.header?.title ?? '');\n      const body = convertMarkdown(c?.body?.text ?? templateRoot?.body?.text ?? '');\n      const footer = convertMarkdown(c?.footer?.text ?? templateRoot?.footer?.text ?? '');\n      \n      const buttonsArray = c?.InteractiveMessage?.NativeFlowMessage?.buttons ?? \n                           templateRoot?.InteractiveMessage?.NativeFlowMessage?.buttons ?? [];\n      \n      const options = buttonsArray.map(btn => {\n        let params = {};\n        try { params = JSON.parse(btn.buttonParamsJSON ?? '{}'); } catch (e) {}\n        const text = convertMarkdown(params.display_text ?? 'Botão');\n        \n        if (btn.name === 'cta_url' && params.url) return `* [${text}](${params.url}) 🔗`;\n        if (btn.name === 'cta_call' && params.phone_number) return `* ${text} (${params.phone_number}) 📞`;\n        return `* ${text}`;\n      }).join('\\n');\n\n      const direction = msg.fromMe ? 'Enviada' : 'Recebida';\n      const headerTitle = `🔘 _Mensagem com Botões (${direction}):_`;\n      \n      const isAllLinks = buttonsArray.length > 0 && buttonsArray.every(btn => btn.name === 'cta_url');\n      const tipFooter = (!msg.fromMe && !isAllLinks) ? `_Dica: Acesse pelo celular ou web para responder._` : '';\n\n      return [headerTitle, '---', header, body, footer, options, tipFooter].filter(Boolean).join('\\n\\n');\n    },\n\n    // 4. Listas\n    list: () => {\n      const direction = msg.fromMe ? 'Enviada' : 'Recebida';\n      const headerTitle = `📋 _Mensagem com Lista (${direction}):_`;\n      const tipFooter = !msg.fromMe ? `_Dica: Acesse pelo celular ou web para responder._` : '';\n      \n      const description = convertMarkdown(c?.description ?? 'Lista');\n      const footer = convertMarkdown(c?.footerText ?? '');\n      const button = convertMarkdown(c?.buttonText ?? '');\n      \n      const options = (c?.sections ?? []).map(section => {\n        const sectionTitle = `\\n**${convertMarkdown(section.title ?? 'Seção')}**`;\n        const rows = (section.rows ?? []).map(row => {\n          const rowTitle = convertMarkdown(row.title ?? 'Opção');\n          const rowDesc = convertMarkdown(row.description ?? '');\n          return rowDesc ? `* **${rowTitle}** - _${rowDesc}_` : `* **${rowTitle}**`;\n        }).join('\\n');\n        return `${sectionTitle}\\n${rows}`;\n      }).join('\\n');\n\n      return [\n        headerTitle, '---', \n        `**${description}**`, \n        (button ? `*Texto do Botão:* ${button}` : ''), \n        options, \n        (footer ? `_${footer}_` : ''), \n        tipFooter\n      ].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 5. Enquetes\n    poll: () => {\n      const pollData = c?.pollCreationMessageV3 ?? c?.pollCreationMessage;\n      if (!pollData) return 'Erro ao processar enquete.';\n      \n      const question = convertMarkdown(pollData.name ?? 'Enquete');\n      const options = (pollData.options ?? []).map((opt, index) => \n        `${index + 1}. ${convertMarkdown(opt.optionName ?? 'Opção')}`\n      ).join('\\n');\n      \n      const count = pollData.selectableOptionsCount ?? 0;\n      const footer = (count === 0) \n        ? `_(Permitido votar em múltiplas opções)_` \n        : `_(Permitido votar em ${count} opção${count > 1 ? 's' : ''})_`;\n\n      const direction = msg.fromMe ? 'Enviada' : 'Recebida';\n      const headerTitle = `📊 _Enquete ${direction}:_`;\n      const tipFooter = !msg.fromMe ? `_Dica: Acesse pelo celular ou web para responder._` : '';\n\n      return [headerTitle, '---', `**${question}**`, options, footer, tipFooter].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 6. Contatos\n    contacts: () => {\n      const parseVCard = (vcardString, displayName) => {\n        const getField = (f) => (vcardString.match(new RegExp(`^${f}(?:;.*)?:([^\\\\n\\\\r]+)`, 'm')) || [])[1]?.replace(/;$/, '').trim();\n        const getPhones = () => [...vcardString.matchAll(/TEL.*:([^\\n\\\\r]+)/g)].map(m => m[1].trim());\n\n        const name = convertMarkdown(displayName ?? 'Contato');\n        const org = getField('ORG');\n        const email = getField('EMAIL');\n        const url = getField('URL');\n        const phones = getPhones();\n\n        const card = [`**${name}**`];\n        if (org) card.push(`🏢 ${convertMarkdown(org)}`);\n        phones.forEach(p => card.push(`📞 ${convertMarkdown(p)}`));\n        if (email) card.push(`📧 ${convertMarkdown(email)}`);\n        if (url) card.push(`🌐 [${convertMarkdown(url)}](${url})`);\n        return card.join('\\n');\n      };\n\n      let vcards = [];\n      if (msg.messageType === 'ContactsArrayMessage') {\n        vcards = (c.contacts ?? []).map(ct => parseVCard(ct.vcard, ct.displayName));\n      } else if (msg.messageType === 'ContactMessage') {\n        vcards = [parseVCard(c.vcard ?? '', c.displayName ?? 'Contato')];\n      }\n\n      if (vcards.length === 0) return 'Erro ao processar contato.';\n      \n      const title = vcards.length > 1 ? 'Contatos' : 'Contato';\n      const headerTitle = msg.fromMe \n        ? `👤 _${title} Enviado${vcards.length > 1 ? 's' : ''}:_`\n        : `👤 _${title} Recebido${vcards.length > 1 ? 's' : ''}_ (de **${msg?.senderName ?? 'Contato'}**):`;\n\n      return [headerTitle, '---', vcards.join('\\n\\n---\\n\\n')].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 7. Evento\n    event: () => {\n      const name = convertMarkdown(c?.name ?? 'Evento');\n      const description = convertMarkdown(c?.description ?? '');\n      const location = convertMarkdown(c?.location?.name ?? '');\n      const joinLink = c?.joinLink ?? '';\n      \n      const formatTs = (ts) => {\n        if (!ts) return null;\n        return new Date(ts * 1000).toLocaleString('pt-BR', { \n          day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' \n        });\n      };\n\n      const details = [];\n      const start = formatTs(c?.startTime);\n      const end = formatTs(c?.endTime);\n\n      if (start) details.push(`📆 **Início:** ${start}`);\n      if (end) details.push(`📆 **Fim:** ${end}`);\n      if (location) details.push(`📍 **Local:** ${location}`);\n      \n      if (joinLink) {\n        if (joinLink.includes('/video/')) details.push(`📹 [Entrar na Chamada de Vídeo](${joinLink})`);\n        else if (joinLink.includes('/audio/') || joinLink.includes('/voice/')) details.push(`📞 [Entrar na Chamada de Voz](${joinLink})`);\n        else details.push(`🔗 [Link para o Evento](${joinLink})`);\n      }\n\n      const headerTitle = msg.fromMe ? `📆 _Evento Criado:_` : `📆 _Evento Recebido_ (de **${msg?.senderName ?? 'Contato'}**):`;\n      const cancelText = (c?.isCanceled === true) ? `\\n**-- EVENTO CANCELADO --**` : '';\n\n      return [headerTitle, '---', `**${name}**`, description ? `*${description}*` : '', details.join('\\n'), cancelText].filter(Boolean).join('\\n\\n');\n    },\n\n    // 8. Produtos\n    product: () => {\n      const product = c?.product;\n      if (!product) return 'Erro ao processar produto.';\n\n      const title = convertMarkdown(product.title ?? 'Produto');\n      const description = convertMarkdown(product.description ?? '');\n      const productLink = product.URL ?? '';\n      const imageURL = product.productImage?.URL ?? '';\n      const currency = product.currencyCode ?? 'BRL';\n      const price = formatCurrency(product.priceAmount1000, 1000, currency);\n      const salePrice = formatCurrency(product.salePriceAmount1000, 1000, currency);\n      \n      let priceString = (salePrice && salePrice !== 'Valor a ser definido') \n        ? `\\n**${salePrice}** (de ~~${price}~~)` \n        : (price && price !== 'Valor a ser definido' ? `\\n**${price}**` : '');\n\n      const headerTitle = msg.fromMe ? `🛒 _Produto Enviado:_` : `🛒 _Produto Recebido_ (de **${msg?.senderName ?? 'Contato'}**):`;\n\n      const cardBody = [\n        (imageURL ? `![Imagem do Produto](${imageURL})` : ''),\n        `**${title}**`,\n        (description ? `*${description}*` : ''),\n        priceString,\n        (productLink ? `\\n[Ver Produto na Loja](${productLink}) 🔗` : '')\n      ].filter(Boolean).join('\\n');\n\n      return [headerTitle, '---', cardBody].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 9. Catálogo\n    catalog: () => {\n      const title = convertMarkdown(c?.title ?? 'Catálogo');\n      const description = convertMarkdown(c?.description ?? '');\n      const text = convertMarkdown(c?.text ?? ''); \n      const headerTitle = msg.fromMe ? `🧾 _Catálogo Enviado:_` : `🧾 _Catálogo Recebido_ (de **${msg?.senderName ?? 'Contato'}**):`;\n\n      return [\n        headerTitle, '---', `**${title}**`, \n        (description ? `\\n*${description}*` : ''), \n        (text ? `\\n${text}` : '')\n      ].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 10. Pix\n    pix: (params) => { \n      const pixData = params.payment_settings?.[0]?.pix_static_code ?? {};\n      const amountData = params.total_amount ?? {};\n      const currency = params.currency ?? 'BRL';\n      \n      const merchantName = convertMarkdown(pixData.merchant_name ?? 'PIX');\n      const pixKey = convertMarkdown(pixData.key ?? 'Chave não informada');\n      const keyType = convertMarkdown(pixData.key_type ?? '');\n      const amount = formatCurrency(amountData.value, amountData.offset, currency);\n\n      const headerTitle = msg.fromMe ? `💸 _Solicitação de PIX (Enviada):_` : `💸 _Solicitação de PIX (Recebida de **${msg?.senderName ?? 'Contato'}**):_`;\n      const tip = !msg.fromMe ? `_Dica: Para pagar, copie a chave PIX e use o app do seu banco._` : '';\n\n      const body = [\n        `**Valor:** ${amount}`,\n        `\\n**Recebedor:** ${merchantName}`,\n        `**Chave PIX:** \\`${pixKey}\\` (${keyType})`\n      ].join('\\n');\n\n      return [headerTitle, '---', body, tip].filter(Boolean).join('\\n\\n');\n    },\n\n    // 11. Carrinho\n    cart: (params) => { \n      const currency = params.currency ?? 'BRL';\n      const order = params.order ?? {};\n      \n      const itemsString = (order.items ?? []).map(item => {\n        const name = convertMarkdown(item.name ?? 'Item');\n        const quantity = item.quantity ?? 1;\n        const price = formatCurrency(item.amount?.value, item.amount?.offset, currency); \n        return `* ${quantity}x ${name} (${price})`;\n      }).join('\\n');\n\n      const subtotal = formatCurrency(order.subtotal?.value, order.subtotal?.offset, currency);\n      const discount = formatCurrency(order.discount?.value, order.discount?.offset, currency);\n      const total = formatCurrency(params.total_amount?.value, params.total_amount?.offset, currency);\n\n      const pixSettings = params.payment_settings?.[0] ?? {};\n      const pixData = pixSettings.pix_static_code ?? pixSettings.pix_dynamic_code ?? {};\n      const merchantName = convertMarkdown(pixData.merchant_name ?? 'PIX');\n      const pixKey = convertMarkdown(pixData.key ?? pixData.code ?? 'Chave não informada');\n      const keyType = convertMarkdown(pixData.key_type ?? (pixSettings.type === 'pix_dynamic_code' ? 'Dinâmico' : ''));\n\n      const headerTitle = msg.fromMe ? `🛒 _Pedido Enviado:_` : `🛒 _Novo Pedido Recebido_ (de **${msg?.senderName ?? 'Contato'}**):`;\n\n      const bodyText = convertMarkdown(c?.body?.text ?? '');\n      const totals = [];\n      if (subtotal) totals.push(`**Subtotal:** ${subtotal}`);\n      if (discount && order.discount?.value > 0) totals.push(`**Desconto:** ${discount}`);\n      if (total) totals.push(`**Total:** **${total}**`);\n\n      let pixInfo = '';\n      if(pixKey !== 'Chave não informada') {\n        pixInfo = `\\n**Para Pagar (PIX):**\\n**Recebedor:** ${merchantName}\\n**Chave PIX:** \\`${pixKey}\\` (${keyType})`;\n      }\n      \n      const tip = !msg.fromMe ? `_Dica: Para pagar, copie a chave PIX e use o app do seu banco._` : '';\n\n      return [\n        headerTitle, '---', '**Resumo do Pedido:**', \n        (bodyText ? `*${bodyText}*` : ''),\n        itemsString,\n        totals.join('\\n'),\n        pixInfo,\n        tip\n      ].filter(Boolean).join('\\n\\n');\n    },\n\n    // 12. Localização\n    location: () => {\n      const lat = c?.degreesLatitude;\n      const long = c?.degreesLongitude;\n      const name = convertMarkdown(c?.name ?? '');\n      const address = convertMarkdown(c?.address ?? '');\n      const mapLink = (lat && long) ? `https://maps.google.com/?q=${lat},${long}` : '';\n\n      const headerTitle = msg.fromMe ? `📍 _Localização Enviada:_` : `📍 _Localização Recebida_ (de **${msg?.senderName ?? 'Contato'}**):`;\n\n      const body = [];\n      if (name) body.push(`**${name}**`);\n      if (address) body.push(`*${address}*`);\n      if (lat) body.push(`**Latitude:** \\`${lat}\\``);\n      if (long) body.push(`**Longitude:** \\`${long}\\``);\n      \n      const linkText = mapLink ? `[Ver Localização no Google Maps](${mapLink}) 🌐` : '';\n\n      return [headerTitle, '---', body.join('\\n'), linkText].filter(Boolean).join('\\n\\n');\n    },\n    \n    // 13. Live Location\n    liveLocation: () => {\n      const lat = c?.degreesLatitude;\n      const long = c?.degreesLongitude;\n      const comm = c?.caption;\n      const mapLink = (lat && long) ? `https://maps.google.com/?q=${lat},${long}` : '';\n      const senderName = msg?.senderName ?? 'Contato';\n      const headerTitle = msg.fromMe \n        ? `📍 _Você iniciou o compartilhamento de localização em tempo real._` \n        : `📍 _${senderName} está compartilhando a localização em tempo real._`;\n\n      const body = [];\n      if (lat) body.push(`**Latitude Inicial:** \\`${lat}\\``);\n      if (long) body.push(`**Longitude Inicial:** \\`${long}\\``);\n      if (comm) body.push(`**Comentário:** ${comm}`);\n\n      const linkText = mapLink ? `[Ver a localização inicial no Google Maps](${mapLink}) 🌐` : '';\n      const warning = `*A localização atual e em tempo real não pode ser exibida no Chatwoot.*\\n_Acesse o WhatsApp no celular ou web para acompanhar._`;\n\n      return [headerTitle, '---', body.join('\\n'), linkText, warning].filter(Boolean).join('\\n\\n');\n    },\n\n    // 14. Carrossel (AJUSTADO COM O SEPARADOR)\n    carousel: () => {\n      const cards = c?.InteractiveMessage?.CarouselMessage?.cards ?? [];\n      if (cards.length === 0) return 'Erro ao processar carrossel.';\n      const mainBody = convertMarkdown(c?.body?.text ?? '');\n\n      const formattedCards = cards.map((card, index) => {\n        const bodyText = convertMarkdown(card?.body?.text ?? '');\n        let buttonText = 'Ver opção';\n        try {\n          const btn = card?.InteractiveMessage?.NativeFlowMessage?.buttons?.[0];\n          if (btn) buttonText = convertMarkdown(JSON.parse(btn.buttonParamsJSON).display_text ?? 'Ver opção');\n        } catch (e) {}\n\n        const parts = [`**${index + 1}. ${buttonText}**`];\n        if (bodyText) parts.push(bodyText.split('\\n').map(l => `> ${l}`).join('\\n'));\n        return parts.join('\\n');\n      }).join('\\n\\n---\\n\\n');\n\n      const direction = msg.fromMe ? 'Enviada' : 'Recebida';\n      const headerTitle = `🎠 _Mensagem em Carrossel (${direction}):_`;\n      const tipFooter = !msg.fromMe ? `_Dica: Acesse pelo celular ou web para responder._` : '';\n      \n      // Adicionado o separador '---' logo após o headerTitle\n      return [\n        headerTitle, \n        '---', // ADICIONADO SEPARADOR\n        (mainBody ? `**${mainBody}**` : ''), \n        formattedCards, \n        tipFooter\n      ].filter(Boolean).join('\\n\\n');\n    }\n  };\n\n  // =================================================================\n  // ROTEAMENTO FINAL\n  // =================================================================\n  \n  if (body?.EventType === 'call') return formatters.call();\n  if (c?.hydratedTemplate) return formatters.hydratedTemplate();\n  if (c?.InteractiveMessage?.CarouselMessage) return formatters.carousel();\n\n  const nativeFlow = c?.InteractiveMessage?.NativeFlowMessage ?? c?.Format?.InteractiveMessageTemplate?.InteractiveMessage?.NativeFlowMessage;\n  if (nativeFlow) {\n    const btnName = nativeFlow.buttons?.[0]?.name;\n    if (btnName === 'payment_info') return formatters.pix(JSON.parse(nativeFlow.buttons[0].buttonParamsJSON ?? '{}'));\n    if (btnName === 'review_and_pay') return formatters.cart(JSON.parse(nativeFlow.buttons[0].buttonParamsJSON ?? '{}'));\n    return formatters.buttons();\n  }\n\n  if (c?.sections) return formatters.list();\n  if (['PollCreationMessageV3', 'PollCreationMessage'].includes(msg?.messageType)) return formatters.poll();\n  \n  if (msg?.messageType === 'PollUpdateMessage') {\n    const vote = convertMarkdown(msg?.vote ?? '');\n    if (!vote) return '';\n    return msg.fromMe ? `📤 _Voto Enviado:_\\n\\n**${vote}**` : `📥 _Voto Recebido_ (de **${msg?.senderName ?? 'Contato'}**):\\n\\n**${vote}**`;\n  }\n\n  if (msg?.buttonOrListid) {\n    const sel = convertMarkdown(String(c?.selectedDisplayText ?? c?.Response?.SelectedDisplayText ?? c?.title ?? ''));\n    if (!sel) return '';\n    return msg.fromMe ? `📤 _Seleção Enviada:_\\n\\n**${sel}**` : `📥 _Opção Selecionada_ (por **${msg?.senderName ?? 'Contato'}**):\\n\\n**${sel}**`;\n  }\n\n  if (['ContactMessage', 'ContactsArrayMessage'].includes(msg.messageType)) return formatters.contacts();\n  if (msg?.messageType === 'EventMessage') return formatters.event();\n  if (msg?.messageType === 'LocationMessage') return formatters.location();\n  if (msg?.messageType === 'ProductMessage') return formatters.product();\n  if (msg?.messageType === 'ExtendedTextMessage' && msg.mediaType === 'cataloglink') return formatters.catalog();\n  if (msg?.messageType === 'LiveLocationMessage') return formatters.liveLocation();\n  \n  if (msg?.messageType === 'ReactionMessage') return convertMarkdown(String(msg?.text ?? c?.text ?? ''));\n  if (['ImageMessage','VideoMessage','DocumentMessage'].includes(msg?.messageType)) return convertMarkdown(String(c?.caption ?? ''));\n\n  const commonText = String(msg?.text ?? '').trim() || String(msg?.content?.text ?? '').trim() || '';\n  return convertMarkdown(commonText);\n})()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "8b1480c6-16df-429a-93e5-8677bea2c2d8",
+              "name": "data.media_key",
+              "value": "={{\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.message?.mediaType ??\n    ''\n  )\n  .toLowerCase() !== 'url' ?\n  (\n    $('webhookDataUazapi').item.json.body?.message?.content?.mediaKey ??\n    ''\n  ) :\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "898be1ea-ae20-4bc2-8487-2e9055d9ad45",
+              "name": "data.direct_path",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.content?.directPath ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "e9290c7c-f979-4cdb-b67f-ea7f979ee7ed",
+              "name": "data.url",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.content?.URL ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "3921b501-9196-47f8-9ff5-01972295574a",
+              "name": "data.mimetype",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.content?.mimetype ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "3dc97213-639b-40df-98f3-ffa7e0f0bbbb",
+              "name": "data.content_type",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.mediaType ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "fa8e3c1d-be13-4e11-9c74-7eae2d07c24a",
+              "name": "data.filename",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.content?.fileName ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "1d15c75e-360d-47f0-94a1-066eff15de97",
+              "name": "data.thumbnail",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.content?.product?.productImage?.JPEGThumbnail ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "4ded2e97-4559-4597-be0e-d8a913266f32",
+              "name": "data.is_group",
+              "value": "={{\n  !!(\n    $('webhookDataUazapi')?.item?.json?.body?.message?.isGroup\n  )\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "ebd5caf1-7aec-4332-88d8-6c8ccc1f08be",
+              "name": "data.from_me",
+              "value": "={{\n  !!(\n    $('webhookDataUazapi')?.item?.json?.body?.message?.fromMe\n  )\n}}",
+              "type": "boolean"
+            },
+            {
+              "id": "47fe16df-087d-4e01-b77d-06163eff9b2f",
+              "name": "data.is_call",
+              "value": "={{\n  ($('webhookDataUazapi')?.item?.json?.body?.EventType || '') === 'call'\n}}",
+              "type": "string"
+            },
+            {
+              "id": "d89c7074-2eda-4384-b7ff-d53798c64300",
+              "name": "data.is_status_reply",
+              "value": "={{\n  ($('webhookDataUazapi')?.item?.json?.body?.message?.content?.contextInfo?.remoteJID || '') === 'status@broadcast'\n}}",
+              "type": "string"
+            },
+            {
+              "id": "2369eef3-45df-455d-b30d-cb9106295bcc",
+              "name": "data.owner",
+              "value": "={{\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.message?.owner ??\n    ''\n  )\n  .trim()\n  .replace(/^(.+)$/, '+$1')\n}}",
+              "type": "string"
+            },
+            {
+              "id": "92f40871-170f-4bc8-95e2-e136b954cfa3",
+              "name": "data.event_type",
+              "value": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.EventType ??\n  ''\n}}",
+              "type": "string"
+            },
+            {
+              "id": "6669bf98-04e0-4d3d-b0b0-9bda323cf73d",
+              "name": "data.status_message_type",
+              "value": "={{(() => {\n  const data = $('webhookDataUazapi').item.json.body?.message?.content?.contextInfo;\n  \n  // Se o campo remoteJID não existe, retorna string vazia\n  if (!data?.remoteJID) return \"\";\n  \n  // Verifica se quotedMessage contém extendedTextMessage\n  const quoted = data.quotedMessage;\n  if (quoted?.extendedTextMessage) return \"text\";\n  \n  return \"media\";\n})()}} ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "114ea681-0138-4449-aca7-cea9744867ee",
+      "name": "normalizedData",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1744,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('normalizedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('normalizedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('normalizedData')?.item?.json?.chatwoot?.account_id }}/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.token }}"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json; charset=utf-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"name\": \"{{ $('normalizedData')?.item?.json?.data?.is_group ? $('normalizedData').item?.json?.group?.name : $('normalizedData')?.item?.json?.contact?.full_name }}\",\n    \"inbox_id\": {{ $('normalizedData')?.item?.json?.chatwoot.inbox_id }},\n    \"source_id\": \"{{ $('contactVerify')?.item?.json?.identifier_new.split('@').first() }}\",\n    \"phone_number\": \"{{ $('contactVerify')?.item?.json?.phone_number_new }}\",\n    \"identifier\" : \"{{ $('contactVerify')?.item?.json?.identifier_new }}\",\n    \"additional_attributes\": {\n        \"contact_lid\": \"{{ $('contactVerify')?.item?.json?.contact_lid_new }}\"\n    }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2272,
+        368
+      ],
+      "id": "b1576d08-f792-4667-a4a1-ef283b4da744",
+      "name": "contactCreate",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9306060b-d691-4d8f-a0e2-8f89ede48960",
+              "name": "contact_id",
+              "value": "={{\n  $json?.payload?.contact?.id ??\n  $json?.contact_id ??\n  $json?.id ??\n  ''\n}}",
+              "type": "number"
+            },
+            {
+              "id": "23b01a4b-58a1-4256-b62f-373073a16840",
+              "name": "inbox_id",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.inbox_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2448,
+        448
+      ],
+      "id": "e0a8c5f8-5b17-45d2-89cc-ae8026089df8",
+      "name": "contactIdentify",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('normalizedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('normalizedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('normalizedData')?.item?.json?.chatwoot.account_id }}/contacts/{{ $('contactIdentify')?.item?.json?.contact_id }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.token }}"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json; charset=utf-8"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "012a28eb-e36d-4a7b-a69c-529da3caed31",
+      "name": "conversationFind",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        1120
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc173b4d-2b51-446a-a545-36fe4fc3f9e9",
+              "name": "chatwoot",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot }}",
+              "type": "object"
+            },
+            {
+              "id": "2119b12f-7d4d-40b5-99dc-fd0f503bfffc",
+              "name": "chatwoot.inbox_id",
+              "value": "={{ $('contactIdentify')?.item?.json?.inbox_id }}",
+              "type": "number"
+            },
+            {
+              "id": "365992ef-324c-45f6-8770-032326a3467e",
+              "name": "api",
+              "value": "={{ $('normalizedData')?.item?.json?.api }}",
+              "type": "object"
+            },
+            {
+              "id": "d0ffd39f-b950-483e-9097-48e0bac71195",
+              "name": "group",
+              "value": "={{ $('normalizedData')?.item?.json?.group ?? {} }}",
+              "type": "object"
+            },
+            {
+              "id": "cb473388-9aaf-46a8-86fe-c9c37776ed65",
+              "name": "contact",
+              "value": "={{ $('normalizedData')?.item?.json?.contact }}",
+              "type": "object"
+            },
+            {
+              "id": "d72e1e10-8311-44ca-8180-176fd44b03db",
+              "name": "contact.contact_id",
+              "value": "={{ $('contactIdentify')?.item?.json?.contact_id }}",
+              "type": "number"
+            },
+            {
+              "id": "7cef8d6a-13c6-4c6b-bcf1-81e60a5a1d37",
+              "name": "data",
+              "value": "={{ $('normalizedData')?.item?.json?.data }}",
+              "type": "object"
+            },
+            {
+              "id": "9306060b-d691-4d8f-a0e2-8f89ede48960",
+              "name": "data.conversation_id",
+              "value": "={{ $('conversationIdentify')?.item?.json?.conversation_id }}",
+              "type": "number"
+            },
+            {
+              "id": "0624c083-b4e3-480d-93ac-35d1b3c7d519",
+              "name": "data.conversation_status",
+              "value": "={{ $('conversationFind')?.item?.json?.payload?.[0]?.status ?? '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1392,
+        1120
+      ],
+      "id": "63b8edf8-77b5-4d1a-b5f7-12f472080009",
+      "name": "processedData"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('processedData')?.item?.json?.api.base_url }}/message/download",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "={{ $('processedData')?.item?.json?.api?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id\": \"{{ $('normalizedData')?.item?.json?.data?.message_id }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2272,
+        960
+      ],
+      "id": "020b7f74-46e6-4c2e-9012-a029bb4c5705",
+      "name": "messageMediaFind",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id}}/conversations/{{ $('messageVerify')?.item?.json?.conversation_id || $('processedData')?.item?.json?.data?.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "=attachments[]",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "content",
+              "value": "={{\n  (\n    ($('processedData')?.item?.json?.data?.is_group === true &&\n     $('processedData')?.item?.json?.data?.from_me === false)\n      ? '**' + ( $('processedData')?.item?.json?.group?.contact ?? '' ) + '**\\n\\n'\n      : ''\n  ) + String($('processedData')?.item?.json?.data?.content ?? '')\n}}"
+            },
+            {
+              "name": "message_type",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_direction }}"
+            },
+            {
+              "name": "source_id",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_id }}"
+            },
+            {
+              "name": "content_attributes",
+              "value": "={\n  \"in_reply_to\": {{ $('messageVerify')?.item?.json?.reply_id ?? $('messageVerify')?.item?.json?.edited_id }}\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b4d521ee-a36d-4f58-92d0-d782edd61189",
+      "name": "messageMediaSend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2800,
+        960
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id}}/conversations/{{ $('messageVerify')?.item?.json?.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{\n  (\n    ($('processedData')?.item?.json?.data?.is_group === true &&\n     $('processedData')?.item?.json?.data?.from_me === false)\n      ? '**' + ( $('processedData')?.item?.json?.group?.contact ?? '' ) + '**\\n\\n'\n      : ''\n  ) + String($('processedData')?.item?.json?.data?.content ?? '')\n}}"
+            },
+            {
+              "name": "message_type",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_direction }}"
+            },
+            {
+              "name": "source_id",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_id }}"
+            },
+            {
+              "name": "content_attributes",
+              "value": "={\n  \"in_reply_to\": {{ $('messageVerify')?.item?.json?.reply_id ?? $('messageVerify')?.item?.json?.edited_id }}\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "353ba5d6-dbaf-4890-828e-6c1f1698e813",
+      "name": "messageTextSend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2272,
+        800
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3504,
+        1120
+      ],
+      "id": "2fa4d09b-e1ae-4854-9b46-da84a6b55a5b",
+      "name": "endProcess"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Substitui apenas o campo fileName, preservando todos os outros dados originais\nconst item = $input.item;\n\nif (item.binary?.data && $('processedData')?.item?.json?.data?.filename) {\n  // Monte o nome como quiser:\n  const newfilename = $('processedData')?.item?.json?.data?.filename;\n  item.binary.data.fileName = newfilename;\n}\n\nreturn item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2624,
+        960
+      ],
+      "id": "e023ae4f-a76c-4a86-a1f7-9da8a64cd6d7",
+      "name": "messageMediaRename"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "52ae290c-5ed1-473d-a9ef-0740de74f5bc",
+              "leftValue": "={{\n  !!(\n     $('webhookDataUazapi')?.item?.json?.body?.message?.isGroup\n  )\n}}",
+              "rightValue": "@g.us",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b8dd0846-d1b6-4700-8b1e-46504df6321d",
+              "leftValue": "={{\n  !!(\n    $('getVariables')?.item?.json?.ignore_groups\n  )\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        368
+      ],
+      "id": "af8c3d14-64ab-496e-81c4-f87c018c97f9",
+      "name": "groupVerify"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "52ae290c-5ed1-473d-a9ef-0740de74f5bc",
+              "leftValue": "={{\n(() => {\n  const b = $('webhookDataUazapi')?.item?.json?.body ?? {};\n  const m = b.message ?? {};\n  const ev = b.event ?? {};\n  const toBool = v => (typeof v === 'string' ? v.toLowerCase() === 'true' : !!v);\n\n  const checkOriginal = (toBool(m.fromMe) || !toBool(m.wasSentByApi)) && !toBool(ev.IsFromMe);\n\n  const isDeleted = b.type === 'DeletedMessage';\n\n  return checkOriginal || isDeleted;\n})()\n}}",
+              "rightValue": "@g.us",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "94334143-7301-4997-8fd0-b4b903be4c6a",
+              "leftValue": "={{\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.EventType ??\n    ''\n  )\n  .toLowerCase() === 'messages_update' &&\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.type ??\n    ''\n  )\n  .toLowerCase() !== 'deletedmessage'\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "2bb252c4-28b1-4750-9b3c-d6725895f453",
+              "leftValue": "={{\n  $('webhookDataUazapi')?.item?.json?.body?.message?.track_id ??\n  ''\n}}",
+              "rightValue": "={{\n  $('getVariables')?.item?.json?.chatwoot_track_id ?\n    $('getVariables').item.json.chatwoot_track_id + \n    '-' + \n    String($('getVariables').item.json.chatwoot_account_id).padStart(4,'0') + \n    '-' + \n    String($('getVariables').item.json.chatwoot_inbox_id).padStart(4,'0') :\n  ''\n}}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        448
+      ],
+      "id": "8130e805-7c0b-4f7e-9aea-a632063f543f",
+      "name": "fromMeVerify"
+    },
+    {
+      "parameters": {
+        "content": "# 💬 Integração Premium Chatwoot 🔁 UaZapi\n### _**v1.1.0 • atualizado: 2025-12-02**_\n\n## Workflow que recebe mensagens via **webhook** da Uazapi, normaliza os dados e envia para o Chatwoot.\n---\n\n## 🧭 O que este fluxo faz\n- Recebe **Webhook (POST)** da UaZapi (`webhookDataUazapi`) e carrega **variáveis de integração** no Postgres (`getVariables`).\n- **Normaliza** dados de mensagem/contato/grupo (`normalizedData`) e propaga para o contexto (`processedData`).\n- **Localiza ou cria** o **Contato** (`contactFind` → `contactCreate`/`contactUpdate`) e identifica `contact_id`.\n- **Localiza/abre** a **Conversa** (`conversationFind` → `conversationCreate`/`conversationUpdate`) e define `conversation_id`.\n- Resolve **encadeamento** (reply/edited/deleted) consultando o Postgres (`findMessageReply`).\n- **Roteia** por tipo de entrega (`messageVerify`):\n  - `textMessage` → `messageTextSend`\n  - `mediaMessage` → `messageMediaFind` → `messageMediaDownload` → `messageMediaRename` → `messageMediaSend`\n  - `deletedMessage` → `findMessageDeleted` → `deleteMessage` → `Wait` → `messageDeletedUpdate`\n  - `editedMessage` → `findMessageEdited` → `messageEditedUpdate`\n- Atualiza **avatar do contato** (`getContactPhoto` → `sendContactPhoto`) com thumbnail da conversa ou fallback *UI Avatars*.\n- Aplica filtros de **grupo** (`groupVerify`) e **mensagens “de mim” vs API** (`fromMeVerify`) para evitar loops.\n\n---\n\n## 🛠 Requisitos\n- **Postgres (credencial):** nós `getVariables` do Manager (Vermelho) e `findMessageReply`, `findMessageEdited`, `findMessageDeleted`, `messageEditedUpdate`, `messageDeletedUpdate` do Chatwoot (Azuis).\n- **Variáveis de integração (Preenchidas no Gerenciador de Instâncias):**\n  - **Chatwoot:** `chatwoot_base_url`, `chatwoot_api_version`, `chatwoot_token`, `chatwoot_account_id`, `chatwoot_inbox_id`, `chatwoot_inbox_name`, `chatwoot_track_id`\n  - **UaZapi:** `api_base_url`, `api_token`, `api_instance_name`\n  - **Configurações:** `ignore_groups`, `reply_messages`, `edit_messages`, `delete_messages`, `reopen_conversation`, `conversation_pending`, `import_*`, `sign_*`\n- **UaZapi:** **Gere um código exclusivo para o seu webhook em** [UUID Generator](https://www.uuidgenerator.net/) e informe no campo `Path` do `webhookDataUaZapi`.\n\n---\n\n## ⚙️ Instalação & Ativação\n1. **Importe** o workflow no n8n.  \n2. Associe a **credencial Postgres** aos nós indicados.  \n3. Ajuste o **Webhook** `webhookDataUazapi` (path público) e a origem UaZapi.  \n4. Confirme que `getVariables` lê a linha correta (por `api_base_url` e `api_token`).  \n5. **Save** → **Activate**.  \n6. Envie um evento de teste pela UaZapi e verifique criação/atualização de **contato**, **conversa** e **mensagem**.\n\n---\n\n## 🔀 Regras de Roteamento (resumo)\n- **Ignorar grupos:** `groupVerify` bloqueia quando `ignore_groups = true` e o chat é `@g.us`.\n- **Evitar eco/loop:** `fromMeVerify` descarta mensagens **enviadas pela própria API** ou indevidas.\n- **Reply/Edited/Deleted:**\n  - `findMessageReply` mapeia `reply_id`/`edited_id`/`deleted_id` no Postgres.\n  - **Reply** só aplica se `reply_messages = true`.\n  - **Edited/Deleted** respeitam `edit_messages` / `delete_messages` e a política **0/NULL** do SQL.\n- **Texto vs Mídia:** `messageVerify` separa por `media_key` válido.\n- **Avatar:** usa `data.thumbnail`; fallback **UI Avatars** com nome saneado.\n\n---\n\n## 🔐 Segurança\n- **HTTPS** em Webhook e Chatwoot API.\n- **Tokens** (UaZapi/Chatwoot) mantidos no Gerenciador de Instâncias.",
+        "height": 2128,
+        "width": 768,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "275dad99-bd63-4fa8-8ea8-5e15c1dd36cd",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "53fa0d94-ec74-4f80-a4c5-1e06ea53d385",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        864,
+        368
+      ],
+      "id": "99ab6b9d-7e07-4d93-b79a-1e290634c1fd",
+      "name": "webhookDataUazapi",
+      "webhookId": "53fa0d94-ec74-4f80-a4c5-1e06ea53d385"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id }}/conversations/{{ $('processedData')?.item?.json?.data?.conversation_id }}/toggle_status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json; charset=utf-8",
+        "body": "={\n    \"status\": \"{{ $('getVariables')?.item?.json?.conversation_pending ? 'pending' : 'open' }}\"\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "91719c4d-8f27-4232-82a8-0b89af26ab9a",
+      "name": "conversationUpdate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1744,
+        1200
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json; charset=utf-8",
+        "body": "={\n    \"source_id\": \"{{ (() => { const id = $('normalizedData')?.item?.json?.contact?.identifier || ''; if (id.includes('@g.us') || id.includes('@lid')) { return id.split('@')[0]; } return $('processedData')?.item?.json?.contact?.phone_number; })() }}\",\n    \"inbox_id\": {{ $('processedData')?.item?.json?.chatwoot?.inbox_id }},\n    \"contact_id\": {{ $('processedData')?.item?.json?.contact?.contact_id }},\n    \"status\": \"{{ $('getVariables')?.item?.json?.conversation_pending ? 'pending' : 'open' }}\"\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "b8281552-a462-463c-9869-cf0f9fb9c74a",
+      "name": "conversationCreate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1744,
+        1040
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('processedData')?.item?.json?.data?.conversation_id }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "a94220d5-0750-41e6-9731-38863b5f6775"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "feb7e1d6-e636-4e5c-a4ed-afb12d66436f",
+                    "leftValue": "={{ $('processedData')?.item?.json?.data?.conversation_id > 0 && ( $('processedData')?.item?.json?.data?.conversation_status === 'open' || $('processedData')?.item?.json?.data?.conversation_status === 'pending' ) }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "openedOrPending"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "439f50b9-e41c-40e9-b9c0-b71e1f6aae8c",
+                    "leftValue": "={{ $('processedData')?.item?.json?.data?.conversation_id > 0 && $('processedData')?.item?.json?.data?.conversation_status === 'open' }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "closed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1568,
+        1104
+      ],
+      "id": "d79b95b2-4d90-4c11-8577-8257f69e53ae",
+      "name": "conversationVerify"
+    },
+    {
+      "parameters": {
+        "content": "## Tratamento da Foto do Contato",
+        "height": 912,
+        "width": 504
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2944,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "2982dc6b-6e0c-440c-9dd2-4ae253c0c7ec",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "chatwoot_uazapi",
+          "mode": "list",
+          "cachedResultName": "chatwoot_uazapi"
+        },
+        "table": {
+          "__rl": true,
+          "value": "chatwoot_uazapi_config",
+          "mode": "list",
+          "cachedResultName": "chatwoot_uazapi_config"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "api_base_url",
+              "value": "={{ $('webhookDataUazapi')?.item?.json?.body?.BaseUrl }}"
+            },
+            {
+              "column": "api_token",
+              "value": "={{ $('webhookDataUazapi')?.item?.json?.body?.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1040,
+        368
+      ],
+      "id": "f0b43362-db88-43b8-b1a2-5efc194fa467",
+      "name": "getVariables",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('processedData')?.item?.json?.contact?.avatar ??\n   ''\n}}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3152,
+        800
+      ],
+      "id": "75a0d909-945c-4667-814d-295cb8f2e033",
+      "name": "getContactPhoto"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id}}/contacts/{{ $('processedData')?.item?.json?.contact?.contact_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json; charset=utf-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "avatar",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3328,
+        800
+      ],
+      "id": "5c9070de-fde0-4845-8d8d-f8af932b07af",
+      "name": "sendContactPhoto",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  $1::integer AS conversation_id,\n  CASE\n    WHEN $2::boolean IS FALSE OR NULLIF($3, '') IS NULL\n    THEN NULL\n    ELSE (\n      SELECT id\n      FROM public.messages\n      WHERE account_id = $4::integer\n        AND inbox_id   = $5::integer\n        AND source_id  = $3\n      ORDER BY created_at DESC\n      LIMIT 1\n    )\n  END AS reply_id,\n  CASE\n    WHEN $6::boolean IS FALSE AND NULLIF($7, '') IS NOT NULL\n    THEN 0\n    WHEN NULLIF($7, '') IS NULL\n    THEN NULL\n    WHEN $6::boolean IS FALSE\n    THEN NULL\n    ELSE (\n      SELECT id\n      FROM public.messages\n      WHERE account_id = $4::integer\n        AND inbox_id   = $5::integer\n        AND source_id  = $7\n      ORDER BY created_at DESC\n      LIMIT 1\n    )\n  END AS edited_id,\n  CASE\n    WHEN $8::boolean IS FALSE AND NULLIF($9, '') IS NOT NULL\n    THEN 0\n    WHEN NULLIF($9, '') IS NULL\n    THEN NULL\n    WHEN $8::boolean IS FALSE\n    THEN NULL\n    ELSE (\n      SELECT id\n      FROM public.messages\n      WHERE account_id = $4::integer\n        AND inbox_id   = $5::integer\n        AND source_id  = $9\n      ORDER BY created_at DESC\n      LIMIT 1\n    )\n  END AS deleted_id;",
+        "options": {
+          "queryReplacement": "={{ [\n  String($json?.id ?? $json?.payload?.conversation_id ?? $json?.data?.conversation_id ?? 0),\n  String($('processedData')?.item?.json?.chatwoot?.reply_messages ?? false),\n  String($('processedData')?.item?.json?.data.reply_id ?? ''),\n  String($('processedData')?.item?.json?.chatwoot?.account_id ?? ''),\n  String($('processedData')?.item?.json?.chatwoot?.inbox_id ?? ''),\n  String($('processedData')?.item?.json?.chatwoot?.edit_messages ?? false),\n  String($('processedData')?.item?.json?.data?.edited_id ?? ''),\n  String($('processedData')?.item?.json?.chatwoot?.delete_messages ?? false),\n  String($('processedData')?.item?.json?.data?.deleted_id ?? '')\n] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1920,
+        1120
+      ],
+      "id": "45d6aa02-fc17-44f1-834f-a19da7e382ce",
+      "name": "findMessageReply",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bf9dd4b4-6f2e-4628-ab0a-29f6b8b99c03",
+              "leftValue": "={{\n  (() => {\n    const body = $('webhookDataUazapi')?.item?.json?.body;\n    const eventType = body?.EventType;\n    const callTag = body?.event?.Data?.Tag;\n\n    const isMessage = eventType === 'messages';\n\n    const isCallOffer = eventType === 'call' && callTag === 'offer';\n\n   return isMessage || isCallOffer;\n  })()\n}}",
+              "rightValue": "messages|call",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fa2f52c5-befc-445f-ab3f-1cdf5fad99b3",
+              "leftValue": "={{\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.EventType ??\n    ''\n  )\n  .toLowerCase() === 'messages_update' &&\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.type ??\n    ''\n  )\n  .toLowerCase() === 'deletedmessage'\n}}",
+              "rightValue": "messages_update",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        368
+      ],
+      "id": "cd79d72c-f598-4fef-9312-e3a66468b421",
+      "name": "messageTypeFilter"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(\n  (SELECT content\n     FROM public.messages\n    WHERE id = $1::integer\n    LIMIT 1),\n    ''\n  ) AS content;",
+        "options": {
+          "queryReplacement": "={{\n  [\n    String($('messageVerify')?.item?.json?.deleted_id ?? 0)\n  ]\n}}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2272,
+        1120
+      ],
+      "id": "933d82f4-8944-4dce-b653-8a9560fe1aef",
+      "name": "findMessageDeleted",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        1472
+      ],
+      "id": "c393852a-26f6-439e-943d-c23166ebd695",
+      "name": "messageSentEndProcess"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(\n  (SELECT content\n     FROM public.messages\n    WHERE id = $1::integer\n    LIMIT 1),\n    ''\n  ) AS content;",
+        "options": {
+          "queryReplacement": "={{\n  [\n    String($('messageVerify')?.item?.json?.edited_id ?? 0)\n  ]\n}}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2272,
+        1296
+      ],
+      "id": "e222a948-3c9c-45a6-a564-6621d9e8b70d",
+      "name": "findMessageEdited",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Mgnr",
+        "height": 176,
+        "width": 166,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "506a14ef-f98d-4d67-9af2-115c178c8d49",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        1088
+      ],
+      "typeVersion": 1,
+      "id": "fe9bbd90-8785-4e68-af26-c517b4e95dbe",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 150,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2592,
+        1088
+      ],
+      "typeVersion": 1,
+      "id": "dab5e290-e630-47fb-a994-91990a51c106",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        1088
+      ],
+      "typeVersion": 1,
+      "id": "f20a18e4-496b-4830-b92e-3b292e7f24a4",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{\n  String($('processedData')?.item?.json?.data?.media_key ?? '').trim() === '' &&\n  $('findMessageReply')?.item?.json?.deleted_id == null &&\n  $('findMessageReply')?.item?.json?.edited_id == null\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "ed4a34fc-e5c3-403c-8fdf-398a1d4cf3fd"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "textMessage"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6130e0f5-c301-4433-9fa3-974a66d05383",
+                    "leftValue": "={{\n  String($('processedData')?.item?.json?.data?.media_key ?? '').trim() !== '' &&\n  $('findMessageReply')?.item?.json?.deleted_id == null &&\n  $('findMessageReply')?.item?.json?.edited_id == null\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mediaMessage"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "07ca6767-622e-4176-913b-0ab3059c298c",
+                    "leftValue": "={{ Number($('findMessageReply')?.item?.json?.deleted_id ?? 0) > 0 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "deletedMessage"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4ef1f52b-f800-4f1d-8c4a-327a410d77f5",
+                    "leftValue": "={{ Number($('findMessageReply')?.item?.json?.edited_id ?? 0) > 0 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "editedMessage"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2096,
+        1072
+      ],
+      "id": "66a02f9f-e865-4721-8b0b-6a08f8badfbf",
+      "name": "messageVerify"
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        1264
+      ],
+      "typeVersion": 1,
+      "id": "d735985f-becd-42c9-9f36-f1bbfe4ce65e",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "# ⚖️ Aviso de Propriedade Intelectual & Suporte\n\nEste workflow e sua UI são **propriedade intelectual** da EMKT Consultoria e Tecnologia, protegidos pelas Leis **9.610/98 (Direitos Autorais)**, **9.609/98 (Software)** e pela **LGPD – 13.709/18**.\n---\n\n## Uso permitido\n- Licença de **uso interno**, não exclusiva e intransferível.\n- É vedada a **distribuição**, **revenda**, **locação**, **cessão**, **publicação** ou **exposição pública** (incl. repositórios/portais).\n\n## Proibições\n- **Cópia** total/parcial, **engenharia reversa**, **descompilação**, **circunvenção** de proteções.\n- **Modificações** não autorizadas, criação de **derivados** ou remoção de créditos/identificações.\n- **Compartilhamento** do pacote/fluxo, credenciais, URLs de webhook, telas ou prints com terceiros.\n\n## Suporte & Garantia\n- A **garantia de suporte** e atualizações está **condicionada** à manutenção do **estado original** do workflow.  \n- Qualquer **alteração não autorizada** (código, nós, credenciais, rotas, lógica ou layout) **invalida o suporte**.\n- Adequações/integrações adicionais requerem **contratação prévia** e **autorização por escrito**.\n\n---\n\n### 📞 Contato\nPrecisa de ajuda? Fale conosco pelo WhatsApp Business  \n**(41) 9 8473-9797** — [abrir conversa](https://api.whatsapp.com/message/FVXDCWKJFIM4M1)  \n**(79) 9 9977-7712** — [abrir conversa](https://api.whatsapp.com/message/2G6M66MXFH7TD1)\n\n> Dúvidas sobre uso, licença ou autorização: contate a EMKT.\n",
+        "height": 720,
+        "width": 2896,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        1632
+      ],
+      "typeVersion": 1,
+      "id": "7412d3ea-5228-402c-a5a2-2d60d68eb70f",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const normalizedData = $('normalizedData')?.first()?.json;\nconst getVariables = $('getVariables')?.first()?.json;\nconst conversationFind = $('conversationFind')?.first()?.json;\n\nconst conversations = $('conversationFind')?.item?.json?.payload;\n\nconst reopen = getVariables?.reopen_conversation;\nconst foundStatus = conversationFind?.payload?.[0]?.status;\nconst expectedStatus = reopen ? (foundStatus ?? 'open') : 'open';\nconst expectedInboxId = normalizedData?.chatwoot?.inbox_id;\n\nconst filteredConversations = conversations.filter(conv => {\n  const inboxMatch = (conv.messages?.[0]?.inbox_id || 0) == expectedInboxId;\n  const statusMatch = (conv.status ?? '') == expectedStatus;\n  return inboxMatch && statusMatch;\n});\n\nconst sortedConversations = filteredConversations.sort((a, b) => b.id - a.id);\n\nconst topConversation = sortedConversations[0];\n\nif (topConversation) {\n  return {\n    json: {\n      conversation_id: topConversation.id\n    }\n  };\n}\n\nreturn {\n  json: {\n    conversation_id: 0\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        1120
+      ],
+      "id": "8fea8401-b8b2-4978-9160-09abcc42edd9",
+      "name": "conversationIdentify"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('messageMediaFind')?.item?.json?.fileURL }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2448,
+        960
+      ],
+      "id": "a056a95c-4143-4da8-81ea-bf59f98fab8c",
+      "name": "messageMediaDownload",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "28be3d1d-14c5-452e-9527-c9ef9b096450",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH NormalizedInput AS (\n  SELECT\n    NULLIF($1, '') AS input_identifier,\n    NULLIF($2, '') AS input_lid,\n    NULLIF($3, '') AS input_full_name,\n    NULLIF($4, '') AS input_phone_number,\n    NULLIF($5, '')::integer AS input_account_id\n)\nSELECT\n  COALESCE(c.id, 0) AS contact_id,\n  COALESCE(c.identifier, '') AS identifier_old,\n  COALESCE(ni.input_identifier, '') AS identifier_new,\n  COALESCE(c.additional_attributes ->> 'contact_lid', '') AS contact_lid_old,\n  COALESCE(ni.input_lid, '') AS contact_lid_new,\n  COALESCE(c.name, '') AS name_old,\n  COALESCE(ni.input_full_name, '') AS name_new,\n  COALESCE(c.phone_number, '') AS phone_number_old,\n  COALESCE(ni.input_phone_number, '') AS phone_number_new,\n  CASE\n    WHEN c.id IS NULL THEN true\n    WHEN (\n      COALESCE(c.identifier, '') != COALESCE(ni.input_identifier, '') OR\n      COALESCE(c.additional_attributes ->> 'contact_lid', '') != COALESCE(ni.input_lid, '') OR\n      COALESCE(c.phone_number, '') != COALESCE(ni.input_phone_number, '')\n    ) THEN true\n    WHEN (\n      COALESCE(c.name, '') = 'Contato' AND\n      COALESCE(c.name, '') != COALESCE(ni.input_full_name, '')\n    ) THEN true\n    ELSE false\n  END AS update_data\nFROM NormalizedInput AS ni\nLEFT JOIN contacts AS c ON\n  (c.account_id = ni.input_account_id AND ni.input_account_id IS NOT NULL)\n  AND (\n    (c.identifier = ni.input_identifier AND ni.input_identifier IS NOT NULL) OR\n    (c.additional_attributes ->> 'contact_lid' = ni.input_lid AND ni.input_lid IS NOT NULL) OR\n    (c.phone_number = ni.input_phone_number AND ni.input_phone_number IS NOT NULL)\n  );",
+        "options": {
+          "queryReplacement": "={{\n  [\n    String($('normalizedData')?.item?.json?.contact?.identifier) || null,\n    String($('normalizedData')?.item?.json?.contact?.lid),\n    String($('normalizedData')?.item?.json?.contact?.full_name).replace(/'/g, \"''\") || null,\n    String($('normalizedData')?.item?.json?.contact?.phone_number) || null,\n    String($('normalizedData')?.item?.json?.chatwoot?.account_id) || null\n  ]\n}}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1920,
+        448
+      ],
+      "id": "c715f4bd-6f2e-4630-9372-df832b2eb013",
+      "name": "contactFind",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{\n  (\n    $('contactFind')?.item?.json ??\n    {}\n  )\n  .contact_id === 0\n}}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "e71ede49-b811-46e9-be73-fcece40f27c8"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "create"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "342366cd-05e8-4efe-b237-ccf032377806",
+                    "leftValue": "={{\n(() => {\n  const data = $('contactFind')?.item?.json ?? {};\n  const contactIdExists = (data.contact_id > 0);\n  const shouldUpdate = (data.update_data !== true);\n  return contactIdExists && shouldUpdate;\n})()\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "exists"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7bcd700f-3396-4c45-953c-8b5bcdf1bbbe",
+                    "leftValue": "={{\n(() => {\n  const data = $('contactFind')?.item?.json ?? {};\n  const contactIdExists = (data.contact_id > 0);\n  const shouldUpdate = (data.update_data === true);\n  return contactIdExists && shouldUpdate;\n})()\n}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "update"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2096,
+        432
+      ],
+      "id": "db82c245-2335-4e76-ab05-789ddc60b62d",
+      "name": "contactVerify"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contacts",
+          "mode": "list",
+          "cachedResultName": "contacts"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "identifier": "={{ $('contactVerify')?.item?.json?.identifier_new }}",
+            "id": "={{ $('contactVerify').item.json.contact_id }}",
+            "additional_attributes": "={{ ({ \"contact_lid\": $('contactVerify')?.item?.json?.contact_lid_new }) }}",
+            "name": "={{\n(() => {\n  const data = $('contactVerify')?.item?.json ?? {};\n  \n  const oldName = data.name_old ?? '';\n  const newName = data.name_new ?? '';\n  if (oldName === 'Contato') {\n    return newName;\n  }\n  return oldName;\n})()\n}}",
+            "phone_number": "={{ $('contactVerify')?.item?.json?.identifier_new.split('@').last() === 'g.us' ? $('contactVerify')?.item?.json?.phone_number_new : $('contactVerify')?.item?.json?.phone_number_old }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone_number",
+              "displayName": "phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "account_id",
+              "displayName": "account_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "additional_attributes",
+              "displayName": "additional_attributes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "custom_attributes",
+              "displayName": "custom_attributes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "last_activity_at",
+              "displayName": "last_activity_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contact_type",
+              "displayName": "contact_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "middle_name",
+              "displayName": "middle_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "last_name",
+              "displayName": "last_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "country_code",
+              "displayName": "country_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "blocked",
+              "displayName": "blocked",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "company_id",
+              "displayName": "company_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2272,
+        528
+      ],
+      "id": "138d1088-5e45-4380-8d76-4735659418ce",
+      "name": "contactUpdate",
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "bffb3e97-da41-408e-96a4-ac0f3448b98d",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// 1. Pega os dados originais dos nós anteriores\n// (Ajuste o nome do nó 'findMessageReply' se for diferente)\nconst replyData = $('findMessageReply')?.item?.json;\nconst deletedData = $('findMessageDeleted')?.item?.json;\n\nconst originalAttributes = replyData.content_attributes;\nconst originalContent = deletedData.content ?? '';\nconst prefixDelete = \"🚫 _Mensagem Excluída:_\";\n\n// =================================================================\n// 2. PREPARAÇÃO DOS ATRIBUTOS (GLOBAL)\n// Movemos para cima para garantir que o 'new_attributes' \n// seja gerado com {\"deleted\": true} para ambos os casos.\n// =================================================================\nlet parsedAttributes = {};\n\nif (typeof originalAttributes === 'string') {\n  // Caso 1: É uma string JSON\n  try {\n    parsedAttributes = JSON.parse(originalAttributes);\n  } catch (e) {\n    parsedAttributes = {};\n  }\n} else if (typeof originalAttributes === 'object' && originalAttributes !== null) {\n  // Caso 2: É um objeto JSON\n  parsedAttributes = originalAttributes;\n}\n\n// Adiciona a flag 'deleted'\nparsedAttributes.deleted = true;\n\n// Converte para string (formato final para o banco)\nconst newAttributesString = JSON.stringify(parsedAttributes);\n\n\n// =================================================================\n// 3. VERIFICAÇÃO: CONTEÚDO JÁ PROCESSADO?\n// =================================================================\n// Verifica se o conteúdo já começa com o emoji de proibido\nif (String(originalContent).trim().startsWith(\"🚫\")) {\n  \n  // Retorna imediatamente o conteúdo original (sem riscar de novo),\n  // MAS retorna o 'new_attributes' atualizado com a flag deleted.\n  return {\n    json: {\n      deleted_id: replyData.deleted_id,\n      new_content: originalContent,       // Mantém o texto igual\n      new_attributes: newAttributesString // Garante que vai como deletado no banco\n    }\n  };\n}\n\n// =================================================================\n// 4. PROCESSAMENTO NORMAL (SE AINDA NÃO FOI RISCADO)\n// =================================================================\n\n// Prepara o 'content' riscado\nconst newContent = (\n  prefixDelete + // Cabeçalho\n  \"\\n\\n\" + \"---\" + \"\\n\\n\" +\n  (\n    String(originalContent)\n      .replaceAll('~~','')\n      .replace(/([^\\r\\n]+)/g, \"~~$1~~\")\n  )\n)\n  .replaceAll('~~---~~','---');\n\n// 5. Retorno final\nreturn {\n  json: {\n    deleted_id: replyData.deleted_id,\n    new_content: newContent,\n    new_attributes: newAttributesString\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        1120
+      ],
+      "id": "6bdacfb9-67ce-4521-b694-9e742898b60d",
+      "name": "prepareMessageDeleted"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE public.messages\nSET \n  content = $1,\n  content_attributes = $2::json\nWHERE \n  id = $3::integer\nRETURNING \n  id, content, content_attributes;",
+        "options": {
+          "queryReplacement": "={{ [\n  String($('prepareMessageDeleted')?.item?.json?.new_content ?? ''),\n  String(JSON.stringify( $('prepareMessageDeleted')?.item?.json?.new_attributes ?? {} )),\n  String($('prepareMessageDeleted')?.item?.json?.deleted_id ?? 0)\n] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2624,
+        1120
+      ],
+      "id": "d0214967-ee8b-4fc5-a4a8-86e87a8c7749",
+      "name": "updateMessageDeleted",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id}}/conversations/{{ $('messageVerify')?.item?.json?.conversation_id }}/messages/{{ $('messageVerify')?.item?.json?.deleted_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1cdd7747-b250-480d-a33a-b76a9daed929",
+      "name": "patchMessageDeleted",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2800,
+        1120
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('processedData')?.item?.json?.chatwoot?.base_url }}/api/{{ $('processedData')?.item?.json?.chatwoot?.api_version }}/accounts/{{ $('processedData')?.item?.json?.chatwoot?.account_id}}/conversations/{{ $('messageVerify')?.item?.json?.conversation_id }}/messages/{{ $('messageVerify')?.item?.json?.edited_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5824dce0-f865-4662-a1e1-b0804f889ab5",
+      "name": "patchMessageEdited",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2624,
+        1296
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH updated AS (\n  UPDATE public.messages\n  SET \n    content = $1\n  WHERE id = $2::integer\n  RETURNING id, content, source_id\n)\nSELECT\n  (SELECT COUNT(*) FROM updated) AS rows_affected,\n  (SELECT content FROM updated LIMIT 1) AS content,\n  (SELECT source_id FROM updated LIMIT 1) AS source_id;",
+        "options": {
+          "queryReplacement": "={{ [\n  (\n    \"🔄 _Mensagem Editada:_\\n\\n\" +\n    (\n      String( $('findMessageEdited')?.item?.json?.content ?? '' )\n        .replaceAll('🔄 _Mensagem Editada:_\\n\\n','')\n        .replaceAll('~~','')\n        .replace(/([^\\r\\n]+)/g, \"~~$1~~\")\n    ) +\n    \"\\n\\n\" + \"---\" + \"\\n\\n\" +\n      String($('normalizedData')?.item?.json?.data?.content ?? '')\n  )\n    .replaceAll('~~---~~', '---'),\n  \n  String($('findMessageReply')?.item?.json?.edited_id ?? 0)\n] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2448,
+        1296
+      ],
+      "id": "890abdc2-6a3f-4b57-b064-6710b0613325",
+      "name": "updateMessageEdited",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "Hwa2nCsFNLchnlRz",
+          "name": "Postgres Chatwoot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Postgres Cwt",
+        "height": 176,
+        "width": 166,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2416,
+        1264
+      ],
+      "typeVersion": 1,
+      "id": "dad15aa6-d03b-4b88-9cf5-6f1633545012",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "baseUrl",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.base_url ?? '' }}"
+            },
+            {
+              "key": "accountId",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.account_id ?? ''}}"
+            },
+            {
+              "key": "inboxId",
+              "value": "={{ $('normalizedData')?.item?.json?.chatwoot?.inbox_id ?? '' }}"
+            },
+            {
+              "key": "contactId",
+              "value": "={{ $('normalizedData')?.item?.json?.contact?.contact_id ?? '' }}"
+            },
+            {
+              "key": "contactIdentifier",
+              "value": "={{ $('normalizedData')?.item?.json?.contact?.identifier ?? '' }}"
+            },
+            {
+              "key": "conversationId",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.conversation_id ?? '' }}"
+            },
+            {
+              "key": "conversationStatus",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.conversation_status ?? '' }}"
+            },
+            {
+              "key": "messageId",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.message_id ?? '' }}"
+            },
+            {
+              "key": "messageType",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.message_type ?? '' }}"
+            },
+            {
+              "key": "messageDirection",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.message_direction ?? '' }}"
+            },
+            {
+              "key": "eventType",
+              "value": "={{ $('normalizedData')?.item?.json?.data?.event_type ?? '' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1.1,
+      "position": [
+        1920,
+        288
+      ],
+      "id": "51af57df-4be0-48bb-addb-d7c8276629c9",
+      "name": "executionData1"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "baseUrl",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.base_url ?? '' }}"
+            },
+            {
+              "key": "accountId",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.account_id ?? '' }}"
+            },
+            {
+              "key": "inboxId",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.inbox_id ?? '' }}"
+            },
+            {
+              "key": "contactId",
+              "value": "={{ $('processedData')?.item?.json?.contact?.contact_id ?? '' }}"
+            },
+            {
+              "key": "contactIdentifier",
+              "value": "={{ $('processedData')?.item?.json?.contact?.identifier ?? '' }}"
+            },
+            {
+              "key": "conversationId",
+              "value": "={{ $('processedData')?.item?.json?.data?.conversation_id ?? '' }}"
+            },
+            {
+              "key": "conversationStatus",
+              "value": "={{ $('processedData')?.item?.json?.data?.conversation_status ?? '' }}"
+            },
+            {
+              "key": "messageId",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_id ?? '' }}"
+            },
+            {
+              "key": "messageType",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_type ?? '' }}"
+            },
+            {
+              "key": "messageDirection",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_direction ?? '' }}"
+            },
+            {
+              "key": "eventType",
+              "value": "={{ $('processedData')?.item?.json?.data?.event_type ?? '' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1.1,
+      "position": [
+        3504,
+        960
+      ],
+      "id": "9d4a1495-7225-47d2-9b72-19d378968bd5",
+      "name": "executionData3"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "baseUrl",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot.base_url ?? '' }}"
+            },
+            {
+              "key": "accountId",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot?.account_id ?? '' }}"
+            },
+            {
+              "key": "inboxId",
+              "value": "={{ $('processedData')?.item?.json?.chatwoot.inbox_id ?? '' }}"
+            },
+            {
+              "key": "contactId",
+              "value": "={{ $('processedData')?.item?.json?.contact?.contact_id ?? '' }}"
+            },
+            {
+              "key": "contactIdentifier",
+              "value": "={{ $('processedData')?.item?.json?.contact?.identifier ?? '' }}"
+            },
+            {
+              "key": "conversationId",
+              "value": "={{ $('processedData')?.item?.json?.data?.conversation_id ?? '' }}"
+            },
+            {
+              "key": "conversationStatus",
+              "value": "={{ $('processedData')?.item?.json?.data?.conversation_status ?? '' }}"
+            },
+            {
+              "key": "messageId",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_id ?? '' }}"
+            },
+            {
+              "key": "messageType",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_type ?? '' }}"
+            },
+            {
+              "key": "messageDirection",
+              "value": "={{ $('processedData')?.item?.json?.data?.message_direction ?? '' }}"
+            },
+            {
+              "key": "eventType",
+              "value": "={{ $('processedData')?.item?.json?.data?.event_type ?? '' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1.1,
+      "position": [
+        1392,
+        960
+      ],
+      "id": "1f97d1d9-34d8-45e0-b38b-c70dfc31d154",
+      "name": "executionData"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ecef90c3-8fe9-40e0-bc79-33b7f88b60ef",
+              "leftValue": "={{ $('processedData')?.item?.json?.contact?.avatar ??\n   ''\n}}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2976,
+        800
+      ],
+      "id": "dc86017f-e153-4926-9d1e-32d7de6c5c3e",
+      "name": "avatarVerify"
+    },
+    {
+      "parameters": {
+        "content": "## Tratamento de Recusa de Chamada",
+        "height": 464,
+        "width": 504
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2944,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "e1a1325e-cb48-4ad0-89bd-0b4176670af8",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('normalizedData')?.item?.json?.api?.base_url }}/call/reject",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "={{ $('normalizedData')?.item?.json?.api?.token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "06b3ca4a-f6a5-4e86-8a86-e8623c84d07b",
+      "name": "sendCallRejection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3152,
+        304
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3328,
+        384
+      ],
+      "id": "0cff98ff-4303-4565-95a1-edc0caa88863",
+      "name": "endCallRejection"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('normalizedData')?.item?.json?.api?.base_url }}/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "={{ $('normalizedData')?.item?.json?.api?.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('normalizedData')?.item?.json?.contact?.identifier }}\",\n  \"text\": \"{{ (() => { \n  const convertMarkdown = (text) => { \n    if (typeof text !== 'string' || !text) return ''; \n    \n    return text\n      // --- LIMPEZA DE CARACTERES ---\n      .replace(/\\t/g, ' ')\n      .replace(/\\v/g, '')\n      .replace(/\\f/g, '')\n      .replace(/\\r/g, '')\n      .replace(/\\n/g, '\\\\n')\n      .replace(/\\u200B/g, '')\n      .replace(/\\uFEFF/g, '')\n      .replace(/\\u00A0/g, ' ')\n      // --- CONVERSÃO MARKDOWN ---\n      .replace(/```(.*?)```/gs, '`$1`')\n      .replace(/\\*(.*?)\\*/gs, '**$1**')\n      .replace(/_(.*?)_/gs, '*$1*')\n      .replace(/~(.*?)~/gs, '~~$1~~')\n      // --- LIMPEZA FINAL ---\n      .trim();\n  };\n  return convertMarkdown($('normalizedData')?.item?.json?.integration?.reject_msg); \n})() }}\",\n  \"readchat\": {{ String($('normalizedData')?.item?.json?.integration?.mark_read) === 'true' }},\n  \"track_id\": \"{{\n                 `${$('getVariables')?.item?.json?.chatwoot_track_id ?? ''}` +\n                 '-' +\n                 `${String($('getVariables')?.item?.json?.chatwoot_account_id ?? '').padStart(4,'0')}` +\n                 '-' +\n                 `${String($('getVariables')?.item?.json?.chatwoot_inbox_id ?? '').padStart(4,'0')}`\n               }}\",\n  \"track_source\": \"chatwoot\"\n}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "284a0916-51a6-478e-81b8-195549ab728b",
+      "name": "messageCallReject",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3152,
+        464
+      ],
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bf9dd4b4-6f2e-4628-ab0a-29f6b8b99c03",
+              "leftValue": "={{\n  String(\n    $('webhookDataUazapi')?.item?.json?.body?.EventType ??\n    ''\n  )\n}}",
+              "rightValue": "call",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            },
+            {
+              "id": "fa2f52c5-befc-445f-ab3f-1cdf5fad99b3",
+              "leftValue": "={{\n  String($('normalizedData')?.item?.json?.integration?.reject_calls) === 'true'\n}}",
+              "rightValue": "messages_update",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        2976,
+        384
+      ],
+      "id": "97fbd6b0-9c26-4d5f-ae7c-9a5ebc3e1c5f",
+      "name": "sendCallRejectionFilter"
+    }
+  ],
+  "connections": {
+    "normalizedData": {
+      "main": [
+        [
+          {
+            "node": "executionData1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "contactFind",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "sendCallRejectionFilter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contactCreate": {
+      "main": [
+        [
+          {
+            "node": "contactIdentify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "contactFind",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contactIdentify": {
+      "main": [
+        [
+          {
+            "node": "conversationFind",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conversationFind": {
+      "main": [
+        [
+          {
+            "node": "conversationIdentify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "processedData": {
+      "main": [
+        [
+          {
+            "node": "conversationVerify",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "executionData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageMediaFind": {
+      "main": [
+        [
+          {
+            "node": "messageMediaDownload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageMediaSend": {
+      "main": [
+        [
+          {
+            "node": "avatarVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageTextSend": {
+      "main": [
+        [
+          {
+            "node": "avatarVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageMediaRename": {
+      "main": [
+        [
+          {
+            "node": "messageMediaSend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "groupVerify": {
+      "main": [
+        [
+          {
+            "node": "groupEndProcess",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "fromMeVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fromMeVerify": {
+      "main": [
+        [
+          {
+            "node": "fromMeEndProcess",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "normalizedData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhookDataUazapi": {
+      "main": [
+        [
+          {
+            "node": "getVariables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conversationUpdate": {
+      "main": [
+        [
+          {
+            "node": "findMessageReply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conversationCreate": {
+      "main": [
+        [
+          {
+            "node": "findMessageReply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conversationVerify": {
+      "main": [
+        [
+          {
+            "node": "conversationCreate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "findMessageReply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "conversationUpdate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getVariables": {
+      "main": [
+        [
+          {
+            "node": "messageTypeFilter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getContactPhoto": {
+      "main": [
+        [
+          {
+            "node": "sendContactPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendContactPhoto": {
+      "main": [
+        [
+          {
+            "node": "endProcess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "findMessageReply": {
+      "main": [
+        [
+          {
+            "node": "messageVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageTypeFilter": {
+      "main": [
+        [
+          {
+            "node": "groupVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "findMessageDeleted": {
+      "main": [
+        [
+          {
+            "node": "prepareMessageDeleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "findMessageEdited": {
+      "main": [
+        [
+          {
+            "node": "updateMessageEdited",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageVerify": {
+      "main": [
+        [
+          {
+            "node": "messageTextSend",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "messageMediaFind",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "findMessageDeleted",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "findMessageEdited",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "messageSentEndProcess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conversationIdentify": {
+      "main": [
+        [
+          {
+            "node": "processedData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageMediaDownload": {
+      "main": [
+        [
+          {
+            "node": "messageMediaRename",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contactFind": {
+      "main": [
+        [
+          {
+            "node": "contactVerify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contactVerify": {
+      "main": [
+        [
+          {
+            "node": "contactCreate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "contactIdentify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "contactUpdate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "contactUpdate": {
+      "main": [
+        [
+          {
+            "node": "contactIdentify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prepareMessageDeleted": {
+      "main": [
+        [
+          {
+            "node": "updateMessageDeleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateMessageDeleted": {
+      "main": [
+        [
+          {
+            "node": "patchMessageDeleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "patchMessageDeleted": {
+      "main": [
+        [
+          {
+            "node": "endProcess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updateMessageEdited": {
+      "main": [
+        [
+          {
+            "node": "patchMessageEdited",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "patchMessageEdited": {
+      "main": [
+        [
+          {
+            "node": "endProcess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "endProcess": {
+      "main": [
+        [
+          {
+            "node": "executionData3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "avatarVerify": {
+      "main": [
+        [
+          {
+            "node": "getContactPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "endProcess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendCallRejection": {
+      "main": [
+        [
+          {
+            "node": "endCallRejection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messageCallReject": {
+      "main": [
+        [
+          {
+            "node": "endCallRejection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendCallRejectionFilter": {
+      "main": [
+        [
+          {
+            "node": "sendCallRejection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "messageCallReject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "85fc0aa7-97b3-4ae7-b0aa-f3b4e85cca8c",
+  "activeVersionId": "85fc0aa7-97b3-4ae7-b0aa-f3b4e85cca8c",
+  "versionCounter": 20,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-21T13:14:15.387Z",
+      "createdAt": "2026-02-21T13:14:15.387Z",
+      "role": "workflow:owner",
+      "workflowId": "2qwMSXbm12ghQXH6",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
