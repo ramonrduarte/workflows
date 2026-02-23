@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-02-20T18:00:07.873Z",
+  "updatedAt": "2026-02-23T20:36:34.295Z",
   "createdAt": "2026-02-20T14:06:45.779Z",
   "id": "mh0ykg7Qt4cvqL5Z",
-  "name": "ajuda humana+treinamento",
+  "name": "ajuda humana+treinamento ERRO no FLUXO",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.body.data.key.remoteJid }}111111",
+        "sessionKey": "={{ $json.contato }}111111",
         "contextWindowLength": 50
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
@@ -32,9 +32,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gemini-2.5-flash",
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gemini-2.5-flash"
+          "cachedResultName": "gpt-4o-mini"
         },
         "responsesApiEnabled": false,
         "options": {
@@ -44,11 +44,17 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        976,
+        960,
         576
       ],
       "id": "b080ea53-b1ca-446e-a5fa-ad7bdbc845d6",
-      "name": "gemini"
+      "name": "gemini",
+      "credentials": {
+        "openAiApi": {
+          "id": "DWRfkUPh9DzeQZlA",
+          "name": "OpenAi Agente"
+        }
+      }
     },
     {
       "parameters": {
@@ -131,7 +137,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1024,
+        1056,
         256
       ],
       "id": "dc018f21-7259-40ae-95f8-e1bd50fc41cf",
@@ -142,7 +148,7 @@
       "parameters": {
         "toolDescription": "sempre chame essa ferramenta: chat_administrativo, sempre que nao souber a resposta nao invente apenas chame essa ferramenta e pergunte ao administrador ",
         "method": "POST",
-        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "url": "={{ $('Webhook').item.json.body.BaseUrl }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -151,8 +157,8 @@
               "value": "application/json, text/plain, */*"
             },
             {
-              "name": "apikey",
-              "value": "={{ $('Webhook').item.json.body.apikey }}"
+              "name": "token",
+              "value": "={{ $('Webhook').item.json.body.token }}"
             }
           ]
         },
@@ -161,11 +167,11 @@
           "parameters": [
             {
               "name": "number",
-              "value": "=559184698653@s.whatsapp.net"
+              "value": "=5551993732861"
             },
             {
               "name": "text",
-              "value": "={{ $fromAI('parameters1_Value', `escreva aqui a dulvida do cliente com o maior quantidade de informacoes, oque o cliente perguntou, como ele perguntou, e coisas adicionais `, 'string') }} ||{{ $('Webhook').item.json.body.data.key.remoteJid }}"
+              "value": "={{ $fromAI('parameters1_Value', `escreva aqui a duvida do cliente com o maior quantidade de informacoes, o que o cliente perguntou, como ele perguntou, e coisas adicionais `, 'string') }} ||{{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}"
             },
             {
               "name": "delay",
@@ -187,7 +193,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "url": "={{ $('Webhook').item.json.body.BaseUrl }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -196,8 +202,8 @@
               "value": "application/json, text/plain, */*"
             },
             {
-              "name": "apikey",
-              "value": "={{ $('Webhook').item.json.body.apikey }}"
+              "name": "token",
+              "value": "={{ $('Webhook').item.json.body.token }}"
             }
           ]
         },
@@ -206,7 +212,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}"
+              "value": "={{$('Webhook').item.json.body.message.content.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}"
             },
             {
               "name": "text",
@@ -229,14 +235,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        1552,
+        1584,
         256
-      ]
+      ],
+      "disabled": true
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Webhook').item.json.body.server_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "url": "={{ $('Webhook').item.json.body.BaseUrl }}/send/text",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -245,8 +252,8 @@
               "value": "application/json, text/plain, */*"
             },
             {
-              "name": "apikey",
-              "value": "={{ $('Webhook').item.json.body.apikey }}"
+              "name": "token",
+              "value": "={{ $('Webhook').item.json.body.token }}"
             }
           ]
         },
@@ -255,7 +262,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "={{ $('Webhook').item.json.body.data.key.remoteJid }}"
+              "value": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}"
             },
             {
               "name": "text",
@@ -280,7 +287,8 @@
       "position": [
         1552,
         416
-      ]
+      ],
+      "disabled": true
     },
     {
       "parameters": {
@@ -294,15 +302,24 @@
           "conditions": [
             {
               "id": "261dea1b-218b-48ee-b0cd-92d1db4e85e2",
-              "leftValue": "={{ $json.body.data.key.remoteJid }}",
-              "rightValue": "559184698653",
+              "leftValue": "={{ $json.body.chat.phone.replace(/\\D/g, '') }}",
+              "rightValue": "5551993732861",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "a0b97746-541a-48c5-8d6d-42baba440e28",
+              "leftValue": "={{ $json.body.chat.phone.replace(/\\D/g, '') }}",
+              "rightValue": "555193732861",
               "operator": {
                 "type": "string",
                 "operation": "contains"
               }
             }
           ],
-          "combinator": "and"
+          "combinator": "or"
         },
         "options": {}
       },
@@ -321,20 +338,20 @@
           "assignments": [
             {
               "id": "20a40779-3fe7-4201-98de-a9ea06c72753",
-              "name": "body.instance",
-              "value": "={{ $json.body.instance }}",
+              "name": "instancia",
+              "value": "={{ $('Webhook').item.json.body.instanceName }}",
               "type": "string"
             },
             {
               "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
-              "name": "body.data.key.remoteJid",
-              "value": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}",
+              "name": "contato",
+              "value": "={{$('Webhook').item.json.body.message.content.contextInfo.quotedMessage.conversation.split('||')[1].trim() }}",
               "type": "string"
             },
             {
               "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
-              "name": "body.data.message.conversation",
-              "value": "=essa e uma resposta emviada pelo administrador e voce respondera ao cliente a adulvida dele, Relembrando, a dúvida do contato foi: '{{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation.split('||')[0].trim() }}'. A instrução/resposta recebida foi: '{{ $('Webhook').item.json.body.data.message.conversation }}",
+              "name": "mensagem",
+              "value": "=essa e uma resposta enviada pelo administrador e voce respondera ao cliente a duvida dele, Relembrando, a dúvida do contato foi: '{{$('Webhook').item.json.body.message.content.contextInfo.quotedMessage.conversation.split('||')[0].trim() }}'. A instrução/resposta recebida foi: '{{ $('Webhook').item.json.body.message.text }}'",
               "type": "string"
             }
           ]
@@ -344,8 +361,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        848,
-        240
+        880,
+        224
       ],
       "id": "bb24080b-9217-4d11-852e-07b9ac2acc6f",
       "name": "🗂️ Organizando a Bagunça"
@@ -355,21 +372,21 @@
         "assignments": {
           "assignments": [
             {
-              "id": "20a40779-3fe7-4201-98de-a9ea06c72753",
-              "name": "body.instance",
-              "value": "={{ $json.body.instance }}",
+              "id": "9763314e-ed4d-42eb-b125-8e507230953d",
+              "name": "instancia",
+              "value": "={{ $('Webhook').item.json.body.instanceName }}",
               "type": "string"
             },
             {
               "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
-              "name": "body.data.key.remoteJid",
-              "value": "={{ $json.body.data.key.remoteJid }}",
+              "name": "contato",
+              "value": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}",
               "type": "string"
             },
             {
               "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
-              "name": "body.data.message.conversation",
-              "value": "={{ $json.body.data.message.conversation }}",
+              "name": "mensagem",
+              "value": "={{ $('Webhook').item.json.body.message.text }}",
               "type": "string"
             }
           ]
@@ -388,53 +405,20 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.body.data.message.conversation }}",
+        "text": "={{ $json.mensagem }}",
         "options": {
-          "systemMessage": "=voce e um humano atendente de consultório de nutricionista\n\n\nVocê vai receber mensagens de um cliente real e pode receber mensagens do administrador também durante a conversa com orientações, mas quando for mensagem administrativa estará informado na mensagem.\n\nTools disponíveis:\n\n1. Sempre que o usuário perguntar algo que você não sabe, você deve acionar a tool: respostas_anteriores_do_admin. Isso serve para verificar se a resposta existe no banco de respostas administrativas.\n\n2. Caso a resposta não exista na tool anterior, você deve perguntar ao administrador acionando imediatamente na mesma execução a tool: chat_administrativo, enviando a dúvida do cliente para que o administrador responda o mais rápido possível. Só depois disso você informa o cliente que perguntou ao responsável e vai retornar com a resposta.\n\n3. Caso seja uma mensagem do administrador, você deve, além de responder à dúvida do cliente, acionar a tool: salva_respostas. Isso serve para armazenar as dúvidas do cliente e a resposta do administrador para que, se houver outro cliente com a mesma dúvida, você saiba o que responder.\n\nAgora: {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc, dd/MM/yyyy, HH:mm\")}}\nPeríodo: {{ $now.setZone('America/Sao_Paulo').hour < 12 ? 'Manhã' : ($now.setZone('America/Sao_Paulo').hour < 18 ? 'Tarde' : 'Noite')}}\n\n- Hoje: ({{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Amanhã: ({{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Depois de amanhã: ({{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}} (Próxima semana): {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n",
+          "systemMessage": "=voce e um humano atendente de consultório de nutricionista\n\n\nVocê vai receber mensagens de um cliente real e pode receber mensagens do administrador também durante a conversa com orientações, mas quando for mensagem administrativa estará informado na mensagem.\n\nTools disponíveis:\n\n1. Sempre que o usuário perguntar algo que você não sabe, você deve acionar a tool: respostas_anteriores_do_admin. Isso serve para verificar se a resposta existe no banco de respostas administrativas.\n\n2. Caso a resposta não exista na tool anterior, você deve perguntar ao administrador acionando imediatamente na mesma execução a tool: chat_administrativo, enviando a dúvida do cliente para que o administrador responda o mais rápido possível. Só depois disso você informa o cliente que perguntou ao responsável e vai retornar com a resposta.\n\n3. Caso seja uma mensagem do administrador, você deve, além de responder à dúvida do cliente, acionar a tool: salva_respostas. Isso serve para armazenar as dúvidas do cliente e a resposta do administrador para que, se houver outro cliente com a mesma dúvida, você saiba o que responder.\n\n\n# CONTEXTO TEMPORAL E DATA ATUAL\nAgora: {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc, dd/MM/yyyy, HH:mm\")}}\nPeríodo: {{ $now.setZone('America/Sao_Paulo').hour < 12 ? 'Manhã' : ($now.setZone('America/Sao_Paulo').hour < 18 ? 'Tarde' : 'Noite')}}\n\n\nLista para converter dados como \"próxima terça\" ou \"amanhã\" em datas reais\n- Hoje: ({{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Amanhã: ({{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:1}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- Depois de amanhã: ({{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}): {{ $now.plus({days:2}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:3}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:4}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:5}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}}: {{ $now.plus({days:6}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n- {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"cccc\")}} (Próxima semana): {{ $now.plus({days:7}).setZone('America/Sao_Paulo').setLocale('pt-BR').toFormat(\"dd/MM/yyyy\")}}\n",
           "passthroughBinaryImages": false
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        976,
+        992,
         400
       ],
       "id": "350b4730-ef4f-4625-8c11-dfcfb9a243fd",
       "name": "Jovem IA Aprendiz"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "261dea1b-218b-48ee-b0cd-92d1db4e85e2",
-              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
-              "rightValue": "559184698653",
-              "operator": {
-                "type": "string",
-                "operation": "contains"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1248,
-        400
-      ],
-      "id": "f8af4560-04ab-4f52-9556-d5ef34bbbf48",
-      "name": "🕵️ É o Chefe ou Cliente?1"
     },
     {
       "parameters": {
@@ -448,7 +432,7 @@
           "conditions": [
             {
               "id": "f6f791c4-e153-4a8c-98aa-bb815f4b4de4",
-              "leftValue": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation }}",
+              "leftValue": "={{ $('Webhook').item.json.body.message.content.contextInfo.quotedMessage.conversation }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -467,7 +451,7 @@
       "typeVersion": 2,
       "position": [
         688,
-        256
+        240
       ]
     },
     {
@@ -482,22 +466,12 @@
           "conditions": [
             {
               "id": "f6f791c4-e153-4a8c-98aa-bb815f4b4de4",
-              "leftValue": "={{ $('Webhook').item.json.body.data.contextInfo.quotedMessage.conversation }}",
+              "leftValue": "={{ $('Webhook').item.json.body.message.content.contextInfo.quotedMessage.conversation }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
                 "operation": "exists",
                 "singleValue": true
-              }
-            },
-            {
-              "id": "529fafce-7ea7-4254-aaa2-6ff0ee2d905a",
-              "leftValue": "",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
               }
             }
           ],
@@ -593,6 +567,48 @@
       "typeVersion": 1,
       "id": "07e3967b-d547-4eee-aee0-d7d9ab0582c7",
       "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "261dea1b-218b-48ee-b0cd-92d1db4e85e2",
+              "leftValue": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}",
+              "rightValue": "5551993732861",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "a0b97746-541a-48c5-8d6d-42baba440e28",
+              "leftValue": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}",
+              "rightValue": "555193732861",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        400
+      ],
+      "id": "a9bc53e0-4f57-436b-bb1f-36ea1999c610",
+      "name": "🕵️ É o Chefe ou Cliente?1"
     }
   ],
   "connections": {
@@ -713,24 +729,6 @@
         ]
       ]
     },
-    "🕵️ É o Chefe ou Cliente?1": {
-      "main": [
-        [
-          {
-            "node": "comando ou resposta?1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "api de sua escolha3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "comando ou resposta?": {
       "main": [
         [
@@ -759,151 +757,175 @@
           }
         ]
       ]
+    },
+    "🕵️ É o Chefe ou Cliente?1": {
+      "main": [
+        [
+          {
+            "node": "comando ou resposta?1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "api de sua escolha3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "pinData": {
     "Webhook": [
       {
         "json": {
           "headers": {
-            "host": "webhookn8n5.inovareinteligenciaartificial.com",
-            "user-agent": "axios/1.13.2",
-            "content-length": "1917",
-            "accept": "application/json, text/plain, */*",
-            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "webhooks.rdmon.com",
+            "user-agent": "uazapiGO-Webhook/1.0",
+            "content-length": "2916",
+            "accept-encoding": "gzip",
             "content-type": "application/json",
-            "x-forwarded-for": "209.145.60.53",
-            "x-forwarded-host": "webhookn8n5.inovareinteligenciaartificial.com",
+            "x-forwarded-for": "187.45.178.254",
+            "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "209.145.60.53"
+            "x-real-ip": "187.45.178.254"
           },
           "params": {},
           "query": {},
           "body": {
-            "event": "messages.upsert",
-            "instance": "teste-8407",
-            "data": {
-              "key": {
-                "remoteJid": "559184698653@s.whatsapp.net",
-                "remoteJidAlt": "132250784018630@lid",
-                "fromMe": false,
-                "id": "2AE55D6F7FCE65012BAA",
-                "participant": "",
-                "addressingMode": "pn"
-              },
-              "pushName": "Emerson IA",
-              "status": "DELIVERY_ACK",
-              "message": {
-                "messageContextInfo": {
-                  "threadId": [],
-                  "deviceListMetadata": {
-                    "senderKeyIndexes": [],
-                    "recipientKeyIndexes": [],
-                    "senderKeyHash": {
-                      "0": 13,
-                      "1": 106,
-                      "2": 25,
-                      "3": 26,
-                      "4": 140,
-                      "5": 48,
-                      "6": 168,
-                      "7": 140,
-                      "8": 200,
-                      "9": 211
-                    },
-                    "senderTimestamp": {
-                      "low": 1770412198,
-                      "high": 0,
-                      "unsigned": true
-                    },
-                    "recipientKeyHash": {
-                      "0": 42,
-                      "1": 58,
-                      "2": 136,
-                      "3": 31,
-                      "4": 219,
-                      "5": 118,
-                      "6": 241,
-                      "7": 55,
-                      "8": 47,
-                      "9": 16
-                    },
-                    "recipientTimestamp": {
-                      "low": 1768938104,
-                      "high": 0,
-                      "unsigned": true
-                    }
+            "BaseUrl": "https://rdmon.uazapi.com",
+            "EventType": "messages",
+            "chat": {
+              "chatbot_agentResetMemoryAt": 0,
+              "chatbot_disableUntil": 0,
+              "chatbot_lastTriggerAt": 0,
+              "chatbot_lastTrigger_id": "",
+              "id": "r07c6315f679b0e",
+              "image": "",
+              "imagePreview": "https://pps.whatsapp.net/v/t61.24694-24/55929206_398224760960187_7667312631123804160_n.jpg?stp=dst-jpg_s96x96_tt6&ccb=11-4&oh=01_Q5Aa3wHlec3muHvZtTVpsfOauUGsi05PY782cJvQ6BUslBaDIw&oe=69A5C6E1&_nc_sid=5e03e0&_nc_cat=103",
+              "lead_assignedAttendant_id": "",
+              "lead_email": "",
+              "lead_field01": "",
+              "lead_field02": "",
+              "lead_field03": "",
+              "lead_field04": "",
+              "lead_field05": "",
+              "lead_field06": "",
+              "lead_field07": "",
+              "lead_field08": "",
+              "lead_field09": "",
+              "lead_field10": "",
+              "lead_field11": "",
+              "lead_field12": "",
+              "lead_field13": "",
+              "lead_field14": "",
+              "lead_field15": "",
+              "lead_field16": "",
+              "lead_field17": "",
+              "lead_field18": "",
+              "lead_field19": "",
+              "lead_field20": "",
+              "lead_fullName": "",
+              "lead_isTicketOpen": false,
+              "lead_kanbanOrder": 0,
+              "lead_name": "",
+              "lead_notes": "",
+              "lead_personalid": "",
+              "lead_status": "",
+              "lead_tags": [],
+              "name": "Ramon",
+              "owner": "555180186979",
+              "phone": "+55 51 9373-2861",
+              "wa_archived": false,
+              "wa_chatid": "555193732861@s.whatsapp.net",
+              "wa_chatlid": "218218849374352@lid",
+              "wa_contactName": "Ramon",
+              "wa_ephemeralExpiration": 0,
+              "wa_fastid": "555180186979:555193732861",
+              "wa_isBlocked": false,
+              "wa_isGroup": false,
+              "wa_isGroup_admin": false,
+              "wa_isGroup_announce": false,
+              "wa_isGroup_community": false,
+              "wa_isGroup_member": false,
+              "wa_isPinned": false,
+              "wa_label": [],
+              "wa_lastMessageSender": "555193732861@s.whatsapp.net",
+              "wa_lastMessageTextVote": "o valor é 200 reais",
+              "wa_lastMessageType": "ExtendedTextMessage",
+              "wa_lastMsgTimestamp": 1771878008000,
+              "wa_muteEndTime": 0,
+              "wa_name": "Ramon",
+              "wa_unreadCount": 6
+            },
+            "chatSource": "updated",
+            "instanceName": "Imperador",
+            "message": {
+              "buttonOrListid": "",
+              "chatid": "555193732861@s.whatsapp.net",
+              "chatlid": "",
+              "content": {
+                "text": "o valor é 200 reais",
+                "contextInfo": {
+                  "stanzaID": "3EB02F86FBC366DFF69765",
+                  "participant": "555180186979@s.whatsapp.net",
+                  "quotedMessage": {
+                    "conversation": "O cliente questionou sobre o valor do combo mais completo disponível no consultório de nutrição. Precisamos dessa informação. ||555199692364",
+                    "messageContextInfo": {}
                   },
-                  "deviceListMetadataVersion": 2,
-                  "messageSecret": {
-                    "0": 239,
-                    "1": 128,
-                    "2": 88,
-                    "3": 15,
-                    "4": 253,
-                    "5": 141,
-                    "6": 141,
-                    "7": 220,
-                    "8": 161,
-                    "9": 244,
-                    "10": 250,
-                    "11": 72,
-                    "12": 0,
-                    "13": 140,
-                    "14": 79,
-                    "15": 72,
-                    "16": 163,
-                    "17": 23,
-                    "18": 142,
-                    "19": 148,
-                    "20": 2,
-                    "21": 159,
-                    "22": 128,
-                    "23": 197,
-                    "24": 162,
-                    "25": 162,
-                    "26": 25,
-                    "27": 2,
-                    "28": 75,
-                    "29": 77,
-                    "30": 58,
-                    "31": 221
+                  "disappearingMode": {
+                    "initiator": 0,
+                    "trigger": 1
                   }
                 },
-                "conversation": "Tem"
+                "inviteLinkGroupTypeV2": 0
               },
-              "contextInfo": {
-                "mentionedJid": [],
-                "groupMentions": [],
-                "statusAttributions": [],
-                "stanzaId": "3EB0C96421A555B4EFB5B0",
-                "participant": "559184074247@s.whatsapp.net",
-                "quotedMessage": {
-                  "conversation": "O cliente perguntou \"Tem vaga pra hoje?\". Ele quer saber se há horários disponíveis para agendamento de consultas para hoje. Por favor, verifique a agenda e me informe sobre a disponibilidade.||559185685106@s.whatsapp.net"
-                },
-                "quotedType": 0
-              },
-              "messageType": "conversation",
-              "messageTimestamp": 1770916543,
-              "instanceId": "449d6ab2-37ea-49aa-af01-a40ebd33c764",
-              "source": "unknown"
+              "convertOptions": "",
+              "edited": "",
+              "fromMe": false,
+              "groupName": "Unknown",
+              "id": "555180186979:3EB004F63BB082BA2E6E08",
+              "isGroup": false,
+              "mediaType": "",
+              "messageTimestamp": 1771878008000,
+              "messageType": "ExtendedTextMessage",
+              "messageid": "3EB004F63BB082BA2E6E08",
+              "owner": "555180186979",
+              "quoted": "3EB02F86FBC366DFF69765",
+              "reaction": "",
+              "sender": "555193732861@s.whatsapp.net",
+              "senderName": "Ramon",
+              "sender_lid": "218218849374352@lid",
+              "sender_pn": "555193732861@s.whatsapp.net",
+              "source": "web",
+              "status": "",
+              "text": "o valor é 200 reais",
+              "track_id": "",
+              "track_source": "",
+              "type": "text",
+              "vote": "",
+              "wasSentByApi": false
             },
-            "destination": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
-            "date_time": "2026-02-12T14:15:43.520Z",
-            "sender": "559184074247@s.whatsapp.net",
-            "server_url": "https://ligawhatsapp.inovareinteligenciaartificial.com",
-            "apikey": "BFEDB75FE8FD-49CF-93C1-E52BEAEF8B0C"
+            "owner": "555180186979",
+            "token": "e8767b5a-7af2-4462-a27e-566449e13d85"
           },
-          "webhookUrl": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
           "executionMode": "production"
         },
         "pairedItem": {
@@ -912,10 +934,10 @@
       }
     ]
   },
-  "versionId": "d2fb1d37-aac0-4d00-b9b0-9713edf644d1",
-  "activeVersionId": null,
-  "versionCounter": 101,
-  "triggerCount": 0,
+  "versionId": "80c9c5b6-af4c-410a-869c-dfbfb864077b",
+  "activeVersionId": "80c9c5b6-af4c-410a-869c-dfbfb864077b",
+  "versionCounter": 306,
+  "triggerCount": 1,
   "tags": [],
   "shared": [
     {
