@@ -1,0 +1,81 @@
+{
+  "updatedAt": "2026-02-23T17:07:13.893Z",
+  "createdAt": "2026-02-23T13:53:10.332Z",
+  "id": "eGnB5QEDPYBmBcNZ",
+  "name": "MERCADO LIVRE",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "b26ab7ad-1913-4eb8-bdc7-7c47e27621ae",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -704,
+        -352
+      ],
+      "id": "6c4bfb22-d29f-4c0e-9daa-f94193d3d5e1",
+      "name": "Redirect",
+      "webhookId": "b26ab7ad-1913-4eb8-bdc7-7c47e27621ae"
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "dd91b662-374d-492e-88d6-954ad59e1dfc",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -704,
+        -96
+      ],
+      "id": "ca848e38-8b51-45a2-848a-d1d1266f8b43",
+      "name": "Notificacao",
+      "webhookId": "dd91b662-374d-492e-88d6-954ad59e1dfc"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "d9b7bc82-a5b9-48a4-b32c-12d10d3e0f83",
+  "activeVersionId": "3ab740f2-31f2-40d9-9f24-b45a4bfd25e6",
+  "versionCounter": 22,
+  "triggerCount": 2,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-23T13:53:10.332Z",
+      "createdAt": "2026-02-23T13:53:10.332Z",
+      "role": "workflow:owner",
+      "workflowId": "eGnB5QEDPYBmBcNZ",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
