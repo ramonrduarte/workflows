@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-20T17:13:22.930Z",
+  "updatedAt": "2026-02-25T18:59:47.796Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -561,7 +561,7 @@
             },
             {
               "name": "text",
-              "value": "=Olá! ✨\nVimos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue!\n\nEsperamos que tenha gostado da sua compra 💛\nSe puder, nos envie um feedback sua opinião é muito importante.\n\nTire uma foto do produto e nos marque no Instagram @imperadordoslustres. Vamos adorar compartilhar! 📸"
+              "value": "=Olá! Tudo bem?\n\nConfirmamos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue.\nGostaríamos de saber como foi sua experiência. Seu feedback é essencial para melhorarmos cada vez mais.\n\nNos envie uma foto do produto instalado, vamos adorar ver como ficou! ✨\nE não deixe de nos acompanhar no Instagram @imperadordoslustres para novidades e inspirações!\n\nAgradecemos pela confiança 💛"
             }
           ]
         },
@@ -1280,7 +1280,8 @@
     "availableInMCP": false,
     "timeSavedMode": "fixed",
     "saveDataSuccessExecution": "all",
-    "callerPolicy": "workflowsFromSameOwner"
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "QNXmnXzk3oSzrk7q"
   },
   "staticData": null,
   "meta": {
@@ -1355,9 +1356,9 @@
       }
     ]
   },
-  "versionId": "25cbfe36-8476-480f-bb2a-2992bf30ea3d",
-  "activeVersionId": "25cbfe36-8476-480f-bb2a-2992bf30ea3d",
-  "versionCounter": 476,
+  "versionId": "39d17133-ac1e-4563-bc3f-c9e7c39d723a",
+  "activeVersionId": "39d17133-ac1e-4563-bc3f-c9e7c39d723a",
+  "versionCounter": 493,
   "triggerCount": 1,
   "tags": [],
   "shared": [
