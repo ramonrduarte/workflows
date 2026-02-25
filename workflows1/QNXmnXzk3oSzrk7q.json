@@ -1,0 +1,155 @@
+{
+  "updatedAt": "2026-02-25T12:43:06.611Z",
+  "createdAt": "2026-02-25T12:42:42.772Z",
+  "id": "QNXmnXzk3oSzrk7q",
+  "name": "ERRO",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -64
+      ],
+      "id": "c622d4a8-0772-4101-adf5-e7c3153ccb22",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "458da1b3-8b15-4c29-a7d3-8f01afa5838a",
+              "name": "execution.url",
+              "value": "={{ $json.execution.url }}",
+              "type": "string"
+            },
+            {
+              "id": "70f38ce5-a796-48a9-8fd9-b1c7bdbb213d",
+              "name": "execution.error.node.name",
+              "value": "={{ $json.execution.error.node.name }}",
+              "type": "string"
+            },
+            {
+              "id": "1eeb3a1b-a558-4fea-8762-39923a8e1393",
+              "name": "workflow.name",
+              "value": "={{ $json.workflow.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        -64
+      ],
+      "id": "b028604a-1d14-4d77-b5b6-c14d9633367d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "token",
+              "value": "771bee68-2ff0-46ff-9a6f-4bc82e2e58f0"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "=5551993732861"
+            },
+            {
+              "name": "text",
+              "value": "=Erro no fluxo *{{ $json.workflow.name }}*, node *{{ $json.execution.error.node.name }}*.\n{{ $json.execution.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        96,
+        -64
+      ],
+      "id": "86c7a479-e270-46e2-a712-1fdd5aa91b27",
+      "name": "Aviso Uazapi",
+      "retryOnFail": true
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aviso Uazapi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "e590273e-8acd-43f5-9a59-4d437fe82191",
+  "activeVersionId": "e590273e-8acd-43f5-9a59-4d437fe82191",
+  "versionCounter": 5,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-25T12:42:42.772Z",
+      "createdAt": "2026-02-25T12:42:42.772Z",
+      "role": "workflow:owner",
+      "workflowId": "QNXmnXzk3oSzrk7q",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
