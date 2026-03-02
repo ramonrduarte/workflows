@@ -1,0 +1,751 @@
+{
+  "updatedAt": "2026-03-02T20:44:47.809Z",
+  "createdAt": "2026-03-02T19:28:38.685Z",
+  "id": "ighD4Nwigre7QFer",
+  "name": "Consulta IMAGEM",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9afb899a-324d-4748-83cb-6c526d59ee69",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        -144
+      ],
+      "id": "254b7c04-26fe-4614-82a0-a4207cad6139",
+      "name": "Webhook",
+      "webhookId": "9afb899a-324d-4748-83cb-6c526d59ee69"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bbde6e0b-362d-40b8-a38c-b8147e833483",
+              "leftValue": "={{$json.body.message.fromMe}}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "61810ab3-d827-41ca-b165-42386f487bef",
+              "leftValue": "={{$json.body.message.wasSentByApi}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        -144
+      ],
+      "id": "357cabdb-f12e-431c-a307-9d7d911afda6",
+      "name": "FromMe"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mensagem }}",
+        "options": {
+          "systemMessage": "=Você é um assistente virtual de vendedor.\nSeu trabalho é buscar um produto pela referência/código e enviar as fotos do produto.\n\nFluxo obrigatório:\n\nIdentifique a referência/código na mensagem do usuário.\n\nChame a tool buscar_produto enviando ref (ou query) com o código extraído.\n\nQuando receber o resultado:\n\nSe found=false, peça para confirmar a referência.\n\nSe found=true:\n\nSe houver images (lista):\n\nVocê deve responder com um JSON de instrução para o workflow no formato:\n\n{\n  \"action\": \"send_product_images\",\n  \"ref\": \"...\",\n  \"name\": \"...\",\n  \"url\": \"...\",\n  \"images\": [\"...\",\"...\"]\n}\n\nNunca envie as imagens “todas no texto”. Apenas devolva a lista em images.\n\nSe não houver imagens, responda com:\n\n{\"action\":\"send_text\",\"text\":\"Não encontrei imagens para essa referência. ...\"}\n\nRegras:\n\nNão invente dados.\n\nSe o usuário pedir “todas as fotos”, envie até 5 imagens.\n\nSe o usuário pedir “só a primeira”, envie apenas 1.\n\nSe a referência estiver ambígua (mais de uma), pergunte qual usar.",
+          "returnIntermediateSteps": true,
+          "passthroughBinaryImages": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "b53feb95-f9d8-4863-be05-bbe675f922b3",
+      "name": "Jovem IA Aprendiz"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9763314e-ed4d-42eb-b125-8e507230953d",
+              "name": "instancia",
+              "value": "={{ $('Webhook').item.json.body.instanceName }}",
+              "type": "string"
+            },
+            {
+              "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
+              "name": "contato",
+              "value": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
+              "name": "mensagem",
+              "value": "={{ $('Webhook').item.json.body.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -144
+      ],
+      "id": "fd3dbb79-06cc-45a6-88ee-a73ac04084ba",
+      "name": "Normaliza"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.contato }}111111",
+        "tableName": "n8n_chat_historico",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        80
+      ],
+      "id": "e2b880e7-a249-4321-bb4a-a3ed5b120aad",
+      "name": "Memory",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Use essa tool para buscar dados do item pelo código ou referencia informada.",
+        "workflowId": {
+          "__rl": true,
+          "value": "NnhrExOoOz8eqHZN",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NnhrExOoOz8eqHZN",
+          "cachedResultName": "CONSULTA ITEM TRAY IMPERADOR"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "codigo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('codigo', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "codigo"
+          ],
+          "schema": [
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        80
+      ],
+      "id": "2e20f546-ff6d-41e5-b38c-69882d9e78e7",
+      "name": "buscar_produto"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        80
+      ],
+      "id": "449e1c78-a441-44d2-8129-ff8c34c41f86",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "98adK6ohtHnPw3hN",
+          "name": "Gemini N8N"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega o texto do agente\nconst raw = $json.output ?? \"\";\n\n// Remove cercas de markdown ```json ... ```\nconst cleaned = raw\n  .replace(/```json/gi, \"\")\n  .replace(/```/g, \"\")\n  .trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (e) {\n  // Se falhar, retorna como texto simples pra você tratar depois\n  return [{\n    json: {\n      action: \"send_text\",\n      text: raw,\n      parseError: true\n    }\n  }];\n}\n\n// Se deu certo, devolve o JSON já “pronto”\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        -144
+      ],
+      "id": "26df6858-4d43-4e44-b065-8c1f6c52958b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "send_product_images",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5ca81627-271a-418c-be37-1685020bc097"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagens"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1cd167f3-8b79-4f74-aa1f-f5c34f432061",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "send_text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        -144
+      ],
+      "id": "7a0954a1-7eb6-4418-a45f-35586c9eefa3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        928,
+        -304
+      ],
+      "id": "42e7a96c-c288-4b99-a561-f1f973e3a0df",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "images",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -304
+      ],
+      "id": "39d73e38-e86e-43f1-b632-0430b83ca8c7",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -304
+      ],
+      "id": "18d80d9c-8eb3-45e3-9be5-0e51d43266c4",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.BaseUrl }}/send/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "token",
+              "value": "={{ $('Webhook').item.json.body.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            },
+            {
+              "name": "type",
+              "value": "image"
+            },
+            {
+              "name": "=file",
+              "value": "={{ $json.images }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "b509210c-30b8-49c3-9d77-8f331b5e4d9f",
+      "name": "Envia Imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1200,
+        -288
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.BaseUrl }}/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "token",
+              "value": "={{ $('Webhook').item.json.body.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.chat.phone.replace(/\\D/g, '') }}"
+            },
+            {
+              "name": "text",
+              "value": "={{$json.text}}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "2f1b3bf5-05a5-48a9-a182-fe7fff45f123",
+      "name": "Envia texto",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        656,
+        32
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "FromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FromMe": {
+      "main": [
+        [
+          {
+            "node": "Normaliza",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normaliza": {
+      "main": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_produto": {
+      "ai_tool": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Jovem IA Aprendiz",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jovem IA Aprendiz": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Envia Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia Imagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "uazapiGO-Webhook/1.0",
+            "content-length": "2549",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "x-forwarded-for": "187.45.178.254",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "187.45.178.254"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "BaseUrl": "https://rdmon.uazapi.com",
+            "EventType": "messages",
+            "chat": {
+              "chatbot_agentResetMemoryAt": 0,
+              "chatbot_disableUntil": 0,
+              "chatbot_lastTriggerAt": 0,
+              "chatbot_lastTrigger_id": "",
+              "id": "rec5dba154c37c9",
+              "image": "",
+              "imagePreview": "https://pps.whatsapp.net/v/t61.24694-24/463096976_2571100583083127_6392568888550825196_n.jpg?stp=dst-jpg_s96x96_tt6&ccb=11-4&oh=01_Q5Aa3wHVAHFCiS9n1LdGZzt4ZZrqTGXL-H2Y4qrDpxcs3WbbTw&oe=69A98B6F&_nc_sid=5e03e0&_nc_cat=110",
+              "lead_assignedAttendant_id": "",
+              "lead_email": "",
+              "lead_field01": "",
+              "lead_field02": "",
+              "lead_field03": "",
+              "lead_field04": "",
+              "lead_field05": "",
+              "lead_field06": "",
+              "lead_field07": "",
+              "lead_field08": "",
+              "lead_field09": "",
+              "lead_field10": "",
+              "lead_field11": "",
+              "lead_field12": "",
+              "lead_field13": "",
+              "lead_field14": "",
+              "lead_field15": "",
+              "lead_field16": "",
+              "lead_field17": "",
+              "lead_field18": "",
+              "lead_field19": "",
+              "lead_field20": "",
+              "lead_fullName": "",
+              "lead_isTicketOpen": false,
+              "lead_kanbanOrder": 0,
+              "lead_name": "",
+              "lead_notes": "",
+              "lead_personalid": "",
+              "lead_status": "",
+              "lead_tags": [],
+              "name": "Bot Mon",
+              "owner": "555180186979",
+              "phone": "+55 51 8018-6979",
+              "wa_archived": false,
+              "wa_chatid": "555180186979@s.whatsapp.net",
+              "wa_chatlid": "143641406357743@lid",
+              "wa_contactName": "",
+              "wa_ephemeralExpiration": 0,
+              "wa_fastid": "555180186979:555180186979",
+              "wa_isBlocked": false,
+              "wa_isGroup": false,
+              "wa_isGroup_admin": false,
+              "wa_isGroup_announce": false,
+              "wa_isGroup_community": false,
+              "wa_isGroup_member": false,
+              "wa_isPinned": false,
+              "wa_label": [],
+              "wa_lastMessageSender": "143641406357743@lid",
+              "wa_lastMessageTextVote": "Manda imagens do item 2510na",
+              "wa_lastMessageType": "Conversation",
+              "wa_lastMsgTimestamp": 1772483507000,
+              "wa_muteEndTime": 0,
+              "wa_name": "Bot Mon",
+              "wa_unreadCount": 0
+            },
+            "chatSource": "updated",
+            "instanceName": "Imperador",
+            "message": {
+              "buttonOrListid": "",
+              "chatid": "555180186979@s.whatsapp.net",
+              "chatlid": "143641406357743@lid",
+              "content": "Manda imagens do item 2510na",
+              "convertOptions": "",
+              "edited": "",
+              "fromMe": true,
+              "groupName": "Unknown",
+              "id": "555180186979:AC7B5F63B61297AA7849DAE35EC6924B",
+              "isGroup": false,
+              "mediaType": "",
+              "messageTimestamp": 1772483507000,
+              "messageType": "Conversation",
+              "messageid": "AC7B5F63B61297AA7849DAE35EC6924B",
+              "owner": "555180186979",
+              "quoted": "",
+              "reaction": "",
+              "sender": "143641406357743@lid",
+              "senderName": "Bot Mon",
+              "sender_lid": "143641406357743@lid",
+              "sender_pn": "555180186979@s.whatsapp.net",
+              "source": "android",
+              "status": "",
+              "text": "Manda imagens do item 2510na",
+              "track_id": "",
+              "track_source": "",
+              "type": "text",
+              "vote": "",
+              "wasSentByApi": false
+            },
+            "owner": "555180186979",
+            "token": "e8767b5a-7af2-4462-a27e-566449e13d85"
+          },
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/9afb899a-324d-4748-83cb-6c526d59ee69",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "b20c3b95-af7d-467c-8a28-c308dfabc014",
+  "activeVersionId": "b20c3b95-af7d-467c-8a28-c308dfabc014",
+  "versionCounter": 142,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-03-02T19:28:38.685Z",
+      "createdAt": "2026-03-02T19:28:38.685Z",
+      "role": "workflow:owner",
+      "workflowId": "ighD4Nwigre7QFer",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
