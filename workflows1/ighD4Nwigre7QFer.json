@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-03T11:27:25.095Z",
+  "updatedAt": "2026-03-05T20:54:23.343Z",
   "createdAt": "2026-03-02T19:28:38.685Z",
   "id": "ighD4Nwigre7QFer",
   "name": "Consulta IMAGEM",
@@ -607,7 +607,6 @@
     "binaryMode": "separate",
     "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "saveDataSuccessExecution": "all",
     "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
@@ -746,7 +745,7 @@
   },
   "versionId": "eed68016-1845-41d2-b2fc-19367f4573f6",
   "activeVersionId": "eed68016-1845-41d2-b2fc-19367f4573f6",
-  "versionCounter": 178,
+  "versionCounter": 181,
   "triggerCount": 1,
   "tags": [],
   "shared": [
