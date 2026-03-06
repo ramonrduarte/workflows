@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T20:54:23.343Z",
+  "updatedAt": "2026-03-06T17:21:15.729Z",
   "createdAt": "2026-03-02T19:28:38.685Z",
   "id": "ighD4Nwigre7QFer",
   "name": "Consulta IMAGEM",
@@ -210,8 +210,8 @@
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "98adK6ohtHnPw3hN",
-          "name": "Gemini N8N"
+          "id": "imGtWcdg3cA3HyPb",
+          "name": "Token Imperador"
         }
       }
     },
@@ -357,7 +357,7 @@
             },
             {
               "name": "=file",
-              "value": "={{ $json.images }}"
+              "value": "={{ $json.images_last3 }}"
             }
           ]
         },
@@ -607,7 +607,8 @@
     "binaryMode": "separate",
     "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner"
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "QNXmnXzk3oSzrk7q"
   },
   "staticData": null,
   "meta": {
@@ -743,9 +744,9 @@
       }
     ]
   },
-  "versionId": "eed68016-1845-41d2-b2fc-19367f4573f6",
-  "activeVersionId": "eed68016-1845-41d2-b2fc-19367f4573f6",
-  "versionCounter": 181,
+  "versionId": "9c7536ec-39c3-4380-a9fd-d42212421b78",
+  "activeVersionId": "9c7536ec-39c3-4380-a9fd-d42212421b78",
+  "versionCounter": 194,
   "triggerCount": 1,
   "tags": [],
   "shared": [
