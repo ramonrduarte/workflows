@@ -1,0 +1,1198 @@
+{
+  "updatedAt": "2026-03-10T19:20:19.797Z",
+  "createdAt": "2026-03-10T19:20:19.797Z",
+  "id": "bnVSh7IDaVRZXK9W",
+  "name": "secretaria",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "gemini-2.5-flash"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        448
+      ],
+      "id": "18236d20-c685-4bed-b58a-3321f35a970c",
+      "name": "gemini"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory:{{ $json.body.data.key.remoteJid }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        448
+      ],
+      "id": "ed1dedc7-2501-4e19-9f2e-d77d29e6dd89",
+      "name": "Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "gemini-2.5-flash"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        432
+      ],
+      "id": "fc02e748-4047-4560-a7c5-f1d303bb5208",
+      "name": "gemini1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.data.message.conversation }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "Você é o assistente virtual de atendimento da Promova Web Solar, uma empresa especializada em projetos de energia solar. Seu tom de voz é profissional, consultivo, empático e prestativo.\n\nSeu objetivo principal é entender a necessidade do cliente (separando entre VENDAS e SUPORTE) e conduzir a conversa para coletar informações essenciais para a nossa equipe, fazendo no máximo uma ou duas perguntas por vez para manter o diálogo natural.\n\n## REGRAS DE COMPORTAMENTO\n1. Nunca faça um interrogatório longo. Insira as perguntas naturalmente no meio da conversa.\n2. Identifique logo no início se o cliente quer um ORÇAMENTO (Vendas) ou se já é cliente precisando de AJUDA (Suporte).\n3. Adapte suas perguntas com base no fluxo identificado.\n\n## FLUXO DE VENDAS (Orçamentos e Novos Projetos)\nSe o cliente quer saber sobre energia solar, tente descobrir as seguintes informações ao longo da conversa:\n- Nome completo e cidade/estado.\n- Qual o valor médio da conta de luz atual (em Reais).\n- Qual a concessionária de energia da região dele.\n- O tipo de telhado onde os painéis seriam instalados (cerâmica, metálico, laje, solo).\n- Se a conta de luz está no nome dele ou de outra pessoa.\n- O nível de interesse (se ele quer para agora ou está só pesquisando).\n- Tente entender possíveis objeções (ex: acha caro, tem dúvidas se funciona).\n- Ao final, tente agendar uma reunião ou ligação com um de nossos engenheiros/consultores (confirmação de data e hora).\n\n## FLUXO DE SUPORTE (Clientes que já instalaram)\nSe o cliente já tem nosso sistema instalado e relata um problema, demonstre urgência e empatia. Colete as seguintes informações:\n- Confirme se ele já é cliente com instalação concluída.\n- Qual o problema exato que ele está enfrentando (ex: conta de luz alta, inversor não liga).\n- Qual o status atual do Inversor (se está online no aplicativo, offline ou com luz de erro).\n- Verifique a urgência (se o sistema está totalmente parado ou apenas com dúvidas menores).\n- O nome e CPF para localizarmos o cadastro.\n\n## INSTRUÇÕES FINAIS\nMantenha respostas curtas e objetivas. Lembre-se que você é a linha de frente: atenda, acolha, tire dúvidas básicas sobre energia solar e colete esses dados estratégicos durante o bate-papo para que nossos especialistas possam assumir o caso com todas as informações na mão."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        272,
+        288
+      ],
+      "id": "11f6431e-308f-49f0-b611-d2b1d2fe3e33",
+      "name": "promova solar"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c4d0c338-f42a-4849-af62-003e73cf1c87",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        288
+      ],
+      "id": "506621ee-3541-481f-aaf7-68f4d38c9acf",
+      "name": "Webhook",
+      "webhookId": "c4d0c338-f42a-4849-af62-003e73cf1c87"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Webhook').item.json.body.json.server_url }}/message/sendText/{{ $('Webhook').item.json.body.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Webhook').item.json.body.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Webhook').item.json.body.json.data.key.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 1200 }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "80d05707-521b-44f6-9bcc-6bdca6383381",
+      "name": "api de sua escolha",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        512,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Esses são os dados cadastrados atuais para atualização:{{ JSON.stringify($('🕵️ Puxando a Capivara').item.json) }}\n\nEsse é o histórico de conversa atual:{{ JSON.stringify($json.messages) }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=Você é uma assistente de extração de dados invisível operando nos bastidores de uma empresa de energia solar (Promova Web Solar).\nSua única função é ler o histórico da conversa entre o cliente e o assistente virtual de atendimento e extrair as informações relevantes para um formato JSON estrito.\n\nREGRAS DE EXTRAÇÃO E DADOS VAZIOS:\n1. Retorne APENAS um objeto JSON válido.\n2. Não adicione nenhuma formatação Markdown (como ```json ou ```). O output deve começar com { e terminar com }.\n3. REGRA DE OURO: Se a informação não foi dita, inferida com clareza ou confirmada no histórico atual, o valor DEVE SER null.\n4. NUNCA invente, presuma ou adivinhe dados (exemplo: não deduza a concessionária só porque o cliente falou o estado, a menos que seja a única opção possível e óbvia). Baseie-se APENAS no que está na conversa.\n5. A cada nova mensagem, analise o contexto geral e atualize os dados. Se um dado novo surgiu, preencha-o.\n6. Seja analítica: atualize o \"sentimento_conversa\", a \"etapa_atendimento\" e preencha o \"historico_infos_relevantes\" com um resumo útil e conciso. \ncaso haja dados parciais como apenas o primeiro nome use ele no campo sempre garanyta que tem o maximo de informaçoes possveis preemchidas\n\nESTRUTURA JSON OBRIGATÓRIA (Use null para o que não souber):\n{\n  \"nome_completo\": null,\n  \"nome_real\": null,\n  \"cpf_cnpj\": null,\n  \"telefone\": null,\n  \"email\": null,\n  \"cep\": null,\n  \"cidade_estado\": null,\n  \"endereco_completo\": null,\n  \"valor_medio_conta_luz\": null,\n  \"consumo_mensal_kwh\": null,\n  \"concessionaria_energia\": null,\n  \"tipo_telhado\": null,\n  \"fase_da_rede\": null,\n  \"titular_conta_luz_diferente\": null,\n  \"canal_aquisicao\": null,\n  \"etapa_atendimento\": null,\n  \"nivel_interesse_compra\": null,\n  \"sentimento_conversa\": \"Neutro\",\n  \"objecoes\": null,\n  \"recebeu_ligacao\": null,\n  \"reuniao_confirmada\": null,\n  \"data_hora_reuniao\": null,\n  \"forma_pagamento_desejada\": null,\n  \"status_financiamento\": null,\n  \"historico_infos_relevantes\": null,\n  \"cliente_ja_instalou\": null,\n  \"problema_suporte_relatado\": null,\n  \"urgencia_suporte\": null,\n  \"status_inversor\": null,\n  \"csat\": null\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1056,
+        288
+      ],
+      "id": "e1696da9-b5f8-46ff-8c7b-e8c1255263f0",
+      "name": "secretaria do amado "
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "20a40779-3fe7-4201-98de-a9ea06c72753",
+              "name": "body.instance",
+              "value": "={{ $json.body.json.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "d699627b-a4c0-420c-9f49-cae4be5c2d66",
+              "name": "body.data.key.remoteJid",
+              "value": "={{ $json.body.json.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "f2f168e1-2aaf-4655-b2b9-60a955876f2d",
+              "name": "body.data.message.conversation",
+              "value": "={{ $json.body.json.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        288
+      ],
+      "id": "ccf5385f-b634-46a5-a4d4-b453acdf7372",
+      "name": "🗂️ Organizando a Bagunça"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        288
+      ],
+      "id": "ec74c6b5-3abf-4aa4-bb30-fd8404cfd9bb",
+      "name": "☕ Fofoqueiro do Histórico"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "promova_web_solar",
+          "mode": "list",
+          "cachedResultName": "promova_web_solar"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('🗂️ Organizando a Bagunça').item.json.body.data.key.remoteJid }}_{{ $('🗂️ Organizando a Bagunça').item.json.body.instance }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        672,
+        288
+      ],
+      "id": "f828bb17-a688-4d48-a58d-0e938121615a",
+      "name": "🕵️ Puxando a Capivara",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "promova_web_solar",
+          "mode": "list",
+          "cachedResultName": "promova_web_solar"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fup_counter": 0,
+            "csat": "={{ $json.csat }}",
+            "ts_ultima_mensagem": "={{ $now.format('X') }}",
+            "remote_jid": "={{ $('🗂️ Organizando a Bagunça').item.json.body.data.key.remoteJid }}_{{ $('🗂️ Organizando a Bagunça').item.json.body.instance }}",
+            "nome_da_instancia": "={{ $('🗂️ Organizando a Bagunça').item.json.body.instance }}",
+            "nome_real": "={{ $json.nome_real }}",
+            "canal_aquisicao": "={{ $json.canal_aquisicao }}",
+            "etapa_atendimento": "={{ $json.etapa_atendimento }}",
+            "nivel_interesse_compra": "={{ $json.nivel_interesse_compra }}",
+            "objecoes": "={{ $json.objecoes }}",
+            "sentimento_conversa": "={{ $json.sentimento_conversa }}",
+            "historico_infos_relevantes": "={{ $json.historico_infos_relevantes }}",
+            "nome_completo": "={{ $json.nome_completo }}",
+            "email": "={{ $json.email }}",
+            "id": "={{ $('🗂️ Organizando a Bagunça').item.json.body.data.key.remoteJid }}_{{ $('🗂️ Organizando a Bagunça').item.json.body.instance }}",
+            "cpf_cnpj": "={{ $json.cpf_cnpj }}",
+            "telefone": "={{ $json.telefone }}",
+            "cep": "={{ $json.cep }}",
+            "cidade_estado": "={{ $json.cidade_estado }}",
+            "endereco_completo": "={{ $json.endereco_completo }}",
+            "tipo_telhado": "={{ $json.tipo_telhado }}",
+            "concessionaria_energia": "={{ $json.concessionaria_energia }}",
+            "fase_da_rede": "={{ $json.fase_da_rede }}",
+            "titular_conta_luz_diferente": "={{ $json.titular_conta_luz_diferente }}",
+            "data_hora_reuniao": "={{ $json.data_hora_reuniao }}",
+            "reuniao_confirmada": "={{ $json.reuniao_confirmada }}",
+            "recebeu_ligacao": "={{ $json.recebeu_ligacao }}",
+            "forma_pagamento_desejada": "={{ $json.forma_pagamento_desejada }}",
+            "status_financiamento": "={{ $json.status_financiamento }}",
+            "cliente_ja_instalou": "={{ $json.cliente_ja_instalou }}",
+            "status_inversor": "={{ $json.status_inversor }}",
+            "urgencia_suporte": "={{ $json.urgencia_suporte }}",
+            "problema_suporte_relatado": "={{ $json.problema_suporte_relatado }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "remote_jid",
+              "displayName": "remote_jid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "nome_completo",
+              "displayName": "nome_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "nome_real",
+              "displayName": "nome_real",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "cpf_cnpj",
+              "displayName": "cpf_cnpj",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "cep",
+              "displayName": "cep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "cidade_estado",
+              "displayName": "cidade_estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "endereco_completo",
+              "displayName": "endereco_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "valor_medio_conta_luz",
+              "displayName": "valor_medio_conta_luz",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "consumo_mensal_kwh",
+              "displayName": "consumo_mensal_kwh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "concessionaria_energia",
+              "displayName": "concessionaria_energia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "tipo_telhado",
+              "displayName": "tipo_telhado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "fase_da_rede",
+              "displayName": "fase_da_rede",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "titular_conta_luz_diferente",
+              "displayName": "titular_conta_luz_diferente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "canal_aquisicao",
+              "displayName": "canal_aquisicao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "etapa_atendimento",
+              "displayName": "etapa_atendimento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "nivel_interesse_compra",
+              "displayName": "nivel_interesse_compra",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "sentimento_conversa",
+              "displayName": "sentimento_conversa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "objecoes",
+              "displayName": "objecoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "recebeu_ligacao",
+              "displayName": "recebeu_ligacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "reuniao_confirmada",
+              "displayName": "reuniao_confirmada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "data_hora_reuniao",
+              "displayName": "data_hora_reuniao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "forma_pagamento_desejada",
+              "displayName": "forma_pagamento_desejada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "status_financiamento",
+              "displayName": "status_financiamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "historico_infos_relevantes",
+              "displayName": "historico_infos_relevantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "cliente_ja_instalou",
+              "displayName": "cliente_ja_instalou",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "problema_suporte_relatado",
+              "displayName": "problema_suporte_relatado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "urgencia_suporte",
+              "displayName": "urgencia_suporte",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "status_inversor",
+              "displayName": "status_inversor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "csat",
+              "displayName": "csat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "fup_counter",
+              "displayName": "fup_counter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "ts_ultima_mensagem",
+              "displayName": "ts_ultima_mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "account_id",
+              "displayName": "account_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "nome_da_instancia",
+              "displayName": "nome_da_instancia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1488,
+        288
+      ],
+      "id": "a612828d-1b43-4caa-9c8e-645ae7bb7a4b",
+      "name": "📝 Anotando no Caderninho"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Percorre todos os itens que chegaram no node\nreturn $input.all().map(item => {\n  // Pega a string que está dentro de \"output\"\n  const jsonString = item.json.output;\n\n  // Transforma o texto em um Objeto JSON real\n  const objetoLimpo = JSON.parse(jsonString);\n\n  // Retorna o objeto limpo como o novo item\n  return {\n    json: objetoLimpo\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        288
+      ],
+      "id": "d176bb2c-62d3-425a-a75a-baf2508ae738",
+      "name": "🍍 Descascador de Abacaxi JSON"
+    },
+    {
+      "parameters": {
+        "content": "## 🚪 1. A Porta de Entrada\n\n![Energia Solar](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Photovoltaik_Dachanlage_Hannover_-_Schwarze_Module.jpg/400px-Photovoltaik_Dachanlage_Hannover_-_Schwarze_Module.jpg)\n\nA mágica começa aqui! O fluxo recebe os dados brutos e **Organiza a Bagunça**.\n\n**Variáveis Chave:**\n* `id`: Chave única (Telefone + Instância)\n* `remote_jid`: O número limpinho do cliente",
+        "height": 274,
+        "width": 320,
+        "color": 6
+      },
+      "id": "0ae10924-334f-49f7-ba8c-422baa5dc5f1",
+      "name": "Sticky_1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🗣️ 2. Atendimento Inteligente\n\n![Robô Atendente](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Pepper_Robot.jpg/400px-Pepper_Robot.jpg)\n\nO cérebro conversacional! O **Agente Promova** entende a dor do cliente, consulta as fofocas no **Baú de Lembranças** e dispara a resposta via Zap.",
+        "height": 258,
+        "width": 320,
+        "color": 4
+      },
+      "id": "255fee79-1029-48ce-949a-1c0cfb89006b",
+      "name": "Sticky_2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        384,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🕵️‍♀️ 3. Secretária Invisível\n\n![Secretária Anotando](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Laptop_computer.jpg/400px-Laptop_computer.jpg)\n\nTrabalha nos bastidores sem ninguém ver. Lê todo o histórico e atualiza inteligentemente os dados do cliente (Sentimento, Etapa do Funil, Objeções).",
+        "height": 242,
+        "width": 320,
+        "color": 3
+      },
+      "id": "652703d7-1f59-4f30-b3c4-4b6ae4a83de0",
+      "name": "Sticky_3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        752,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 💾 4. Banco de Dados\n\n![Servidores e Banco](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Wikimedia_Foundation_Servers-8055_35.jpg/400px-Wikimedia_Foundation_Servers-8055_35.jpg)\n\nO destino final! Descasca o Abacaxi do JSON gerado pela IA e faz o \"Upsert\" (Anota e Atualiza) tudo estruturado na tabela do **Postgres**.",
+        "height": 226,
+        "width": 320,
+        "color": 5
+      },
+      "id": "6b84890f-880e-43a9-9ea0-cada18a9b6ec",
+      "name": "Sticky_4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html_final }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "name": "Retornar HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        496,
+        576
+      ],
+      "id": "5bbf3652-f05c-429c-8ec0-59d20f238d79"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $input.all().map(item => {\n    const raw = item.json;\n    // Extração Real do Telefone a partir do ID ou Remote JID\n    const phoneMatch = (raw.id || raw.remote_jid || \"\").match(/\\d+/);\n    const cleanPhone = phoneMatch ? phoneMatch[0] : (raw.telefone || \"\");\n    \n    return {\n        ...raw,\n        telefone_limpo: cleanPhone,\n        valor_num: parseFloat(raw.valor_medio_conta_luz) || 0,\n        consumo_num: parseInt(raw.consumo_mensal_kwh) || 0\n    };\n});\n\nconst jsonData = JSON.stringify(leads).replace(/</g, '\\\\u003c');\n\nlet html = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Promova Solar - Ultra Intelligence CRM</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/chart.js\"></script>\n    <style>\n        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');\n        :root { --primary: #3b82f6; --bg: #020617; --surface: #0f172a; --border: #1e293b; }\n        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: #f1f5f9; overflow: hidden; }\n        .sidebar { width: 380px; background: rgba(15, 23, 42, 0.95); border-right: 1px solid var(--border); backdrop-filter: blur(20px); }\n        .main-view { flex: 1; display: flex; flex-direction: column; height: 100vh; }\n        .glass-card { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); border-radius: 24px; }\n        .data-table-container { flex: 1; overflow: auto; padding: 0 40px 40px 40px; }\n        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }\n        th { padding: 16px; text-align: left; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; sticky top: 0; background: var(--bg); z-index: 20; cursor: pointer; }\n        th:hover { color: var(--primary); }\n        td { padding: 12px 16px; background: var(--surface); font-size: 13px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }\n        td:first-child { border-left: 1px solid var(--border); border-top-left-radius: 12px; border-bottom-left-radius: 12px; }\n        td:last-child { border-right: 1px solid var(--border); border-top-right-radius: 12px; border-bottom-right-radius: 12px; }\n        .badge { padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; }\n        .critical-glow { box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); border-left: 4px solid #ef4444 !important; }\n        .drawer { position: fixed; right: 0; top: 0; width: 650px; height: 100%; background: #0b0f1a; border-left: 1px solid var(--border); transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; box-shadow: -20px 0 60px rgba(0,0,0,0.8); }\n        .drawer.active { transform: translateX(0); }\n        .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }\n        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }\n        input, select { background: #020617 !important; border: 1px solid #1e293b !important; color: white !important; }\n    </style>\n</head>\n<body class=\"flex h-screen\">\n\n    <aside class=\"sidebar flex flex-col z-50\">\n        <div class=\"p-10 border-b border-slate-800\">\n            <div class=\"flex items-center gap-4\">\n                <div class=\"w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-blue-500/30 shadow-2xl\">P</div>\n                <div><h1 class=\"font-black text-2xl tracking-tighter uppercase leading-none\">Promova<span class=\"text-blue-500\">Solar</span></h1><p class=\"text-[9px] font-bold text-slate-500 tracking-[0.2em] mt-1\">INDUSTRIAL CRM</p></div>\n            </div>\n        </div>\n\n        <div class=\"flex-1 overflow-y-auto custom-scroll p-8 space-y-8\">\n            <section>\n                <label class=\"text-[10px] font-black text-slate-500 uppercase tracking-widest\">Busca de Inteligência</label>\n                <input type=\"text\" id=\"uiSearch\" oninput=\"engine()\" placeholder=\"Nome, Telefone, Cidade ou ID...\" class=\"w-full mt-2 rounded-xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all\">\n            </section>\n\n            <section class=\"grid grid-cols-2 gap-4\">\n                <div class=\"col-span-2\"><label class=\"text-[10px] font-black text-slate-500 uppercase\">Status de Interesse</label><select id=\"uiInt\" onchange=\"engine()\" class=\"w-full mt-2 p-3 text-xs rounded-xl\"><option value=\"all\">Todos os Níveis</option><option value=\"alto\">Alto Interesse</option><option value=\"medio\">Médio Interesse</option><option value=\"baixo\">Baixo Interesse</option></select></div>\n                <div><label class=\"text-[10px] font-black text-slate-500 uppercase\">Telhado</label><select id=\"uiTel\" onchange=\"engine()\" class=\"w-full mt-2 p-3 text-xs rounded-xl\"><option value=\"all\">Todos</option><option value=\"cerâmica\">Cerâmica</option><option value=\"metálico\">Metálico</option><option value=\"laje\">Laje</option><option value=\"solo\">Solo</option></select></div>\n                <div><label class=\"text-[10px] font-black text-slate-500 uppercase\">Sentimento</label><select id=\"uiSen\" onchange=\"engine()\" class=\"w-full mt-2 p-3 text-xs rounded-xl\"><option value=\"all\">Todos</option><option value=\"positivo\">Positivo</option><option value=\"neutro\">Neutro</option><option value=\"negativo\">Negativo</option></select></div>\n                <div><label class=\"text-[10px] font-black text-slate-500 uppercase\">Etapa</label><select id=\"uiEta\" onchange=\"engine()\" class=\"w-full mt-2 p-3 text-xs rounded-xl\"><option value=\"all\">Todas</option><option value=\"inicio\">Início</option><option value=\"qualificação\">Qualificação</option><option value=\"reuniao\">Reunião</option></select></div>\n                <div><label class=\"text-[10px] font-black text-slate-500 uppercase\">Canal</label><select id=\"uiCan\" onchange=\"engine()\" class=\"w-full mt-2 p-3 text-xs rounded-xl\"><option value=\"all\">Todos</option><option value=\"instagram\">Instagram</option><option value=\"google\">Google</option><option value=\"indicação\">Indicação</option></select></div>\n            </section>\n\n            <section class=\"pt-6 border-t border-slate-800 space-y-4\">\n                <div class=\"flex justify-between items-center bg-red-500/5 p-4 rounded-2xl border border-red-500/10\"><span class=\"text-xs font-black text-red-500 uppercase\">Suporte Crítico</span><input type=\"checkbox\" id=\"uiSup\" onchange=\"engine()\" class=\"w-5 h-5 accent-red-500\"></div>\n                <div class=\"flex justify-between items-center bg-blue-500/5 p-4 rounded-2xl border border-blue-500/10\"><span class=\"text-xs font-black text-blue-500 uppercase\">Reunião Ok</span><input type=\"checkbox\" id=\"uiReu\" onchange=\"engine()\" class=\"w-5 h-5 accent-blue-500\"></div>\n                <div class=\"flex justify-between items-center bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/10\"><span class=\"text-xs font-black text-emerald-500 uppercase\">Já Instalou</span><input type=\"checkbox\" id=\"uiIns\" onchange=\"engine()\" class=\"w-5 h-5 accent-emerald-500\"></div>\n            </section>\n        </div>\n\n        <div class=\"p-8 border-t border-slate-800\"><button onclick=\"exportCSV()\" class=\"w-full py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-blue-600/20\">Gerar Relatório CSV</button></div>\n    </aside>\n\n    <main class=\"main-view\">\n        <header class=\"h-28 bg-[#020617]/80 backdrop-blur-md px-12 flex items-center justify-between border-b border-slate-800 shadow-2xl z-20\">\n            <div class=\"flex gap-12\" id=\"kpiArea\"></div>\n            <div class=\"flex gap-4\">\n                <button onclick=\"setView('table')\" id=\"btnTable\" class=\"px-8 py-3 bg-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest\">Tabela Densa</button>\n                <button onclick=\"setView('charts')\" id=\"btnCharts\" class=\"px-8 py-3 bg-slate-800 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500\">Analytics</button>\n            </div>\n        </header>\n\n        <div id=\"viewCharts\" class=\"hidden flex-1 overflow-y-auto p-12 custom-scroll grid grid-cols-2 gap-8\">\n            <div class=\"glass-card p-10\"><h3 class=\"text-xs font-black text-slate-500 uppercase mb-8\">Saúde do Funil (Interesse)</h3><canvas id=\"cInterest\"></canvas></div>\n            <div class=\"glass-card p-10\"><h3 class=\"text-xs font-black text-slate-500 uppercase mb-8\">Oportunidades por Telhado</h3><canvas id=\"cRoof\"></canvas></div>\n            <div class=\"glass-card p-10 col-span-2\"><h3 class=\"text-xs font-black text-slate-500 uppercase mb-8\">Densidade Regional (Cidades)</h3><canvas id=\"cCity\" height=\"100\"></canvas></div>\n        </div>\n\n        <div id=\"viewTable\" class=\"data-table-container custom-scroll pt-10\">\n            <table>\n                <thead>\n                    <tr>\n                        <th onclick=\"setSort('nome_real')\">Cliente ↕</th>\n                        <th onclick=\"setSort('telefone_limpo')\">WhatsApp ↕</th>\n                        <th onclick=\"setSort('cidade_estado')\">Localidade ↕</th>\n                        <th onclick=\"setSort('nivel_interesse_compra')\">Interesse ↕</th>\n                        <th onclick=\"setSort('valor_num')\">Conta Luz ↕</th>\n                        <th onclick=\"setSort('consumo_num')\">Consumo ↕</th>\n                        <th onclick=\"setSort('etapa_atendimento')\">Etapa ↕</th>\n                        <th onclick=\"setSort('sentimento_conversa')\">Sentimento ↕</th>\n                        <th class=\"text-right\">Ação</th>\n                    </tr>\n                </thead>\n                <tbody id=\"mainBody\"></tbody>\n            </table>\n            <div id=\"noData\" class=\"hidden p-24 text-center text-slate-600 font-black uppercase text-2xl opacity-20\">Nenhum registro encontrado</div>\n        </div>\n    </main>\n\n    <div id=\"drawer\" class=\"fixed inset-0 bg-black/90 z-[100] hidden justify-end\">\n        <div id=\"drawerPanel\" class=\"drawer\">\n            <div class=\"p-12 h-full flex flex-col\">\n                <div class=\"flex justify-between items-center mb-12\">\n                    <h2 class=\"text-3xl font-black italic\">DADOS DO PROJETO</h2>\n                    <button onclick=\"closeDrawer()\" class=\"text-5xl font-light opacity-20 hover:opacity-100\">&times;</button>\n                </div>\n                <div id=\"drawerBody\" class=\"flex-1 space-y-6 overflow-y-auto custom-scroll pr-4\"></div>\n                <div class=\"mt-10 pt-10 border-t border-slate-800 flex gap-4\">\n                    <button id=\"waBtn\" class=\"flex-1 py-5 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-black uppercase text-xs tracking-widest transition-all\">WhatsApp Direto</button>\n                    <button onclick=\"closeDrawer()\" class=\"px-10 py-5 border border-slate-700 rounded-2xl font-black uppercase text-xs hover:bg-slate-800\">Fechar</button>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <script>\n        const data = ${jsonData};\n        let filtered = [...data];\n        let sortK = 'id', sortD = 'desc';\n        let charts = { interest: null, roof: null, city: null };\n\n        function engine() {\n            const s = document.getElementById('uiSearch').value.toLowerCase();\n            const i = document.getElementById('uiInt').value;\n            const t = document.getElementById('uiTel').value;\n            const n = document.getElementById('uiSen').value;\n            const e = document.getElementById('uiEta').value;\n            const c = document.getElementById('uiCan').value;\n            const sup = document.getElementById('uiSup').checked;\n            const reu = document.getElementById('uiReu').checked;\n            const ins = document.getElementById('uiIns').checked;\n\n            filtered = data.filter(d => {\n                const searchStr = (d.nome_real + ' ' + d.nome_completo + ' ' + d.telefone_limpo + ' ' + d.cidade_estado + ' ' + d.id).toLowerCase();\n                const mS = searchStr.includes(s);\n                const mI = i === 'all' || (d.nivel_interesse_compra||'').toLowerCase().includes(i);\n                const mT = t === 'all' || (d.tipo_telhado||'').toLowerCase().includes(t);\n                const mN = n === 'all' || (d.sentimento_conversa||'').toLowerCase().includes(n);\n                const mE = e === 'all' || (d.etapa_atendimento||'').toLowerCase().includes(e);\n                const mC = c === 'all' || (d.canal_aquisicao||'').toLowerCase().includes(c);\n                const mSup = !sup || !!d.problema_suporte_relatado;\n                const mReu = !reu || !!d.reuniao_confirmada;\n                const mIns = !ins || !!d.cliente_ja_instalou;\n                return mS && mI && mT && mN && mE && mC && mSup && mReu && mIns;\n            });\n\n            sorter(); render(); updateKPIs(); if(!document.getElementById('viewCharts').classList.contains('hidden')) updateCharts();\n        }\n\n        function sorter() {\n            filtered.sort((a,b) => {\n                let vA = a[sortK] || ''; let vB = b[sortK] || '';\n                if(typeof vA === 'string') { vA = vA.toLowerCase(); vB = vB.toLowerCase(); }\n                return sortD === 'asc' ? (vA > vB ? 1 : -1) : (vA < vB ? 1 : -1);\n            });\n        }\n\n        function setSort(k) { if(sortK === k) sortD = sortD === 'asc' ? 'desc' : 'asc'; else { sortK = k; sortD = 'asc'; } engine(); }\n\n        function render() {\n            const body = document.getElementById('mainBody'); body.innerHTML = '';\n            document.getElementById('noData').classList.toggle('hidden', filtered.length > 0);\n            filtered.forEach(d => {\n                const tr = document.createElement('tr');\n                tr.className = 'data-row ' + (d.problema_suporte_relatado ? 'critical-glow' : '');\n                const intClass = (d.nivel_interesse_compra||'').toLowerCase().includes('alto') ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-800 text-slate-400';\n                const sentColor = (d.sentimento_conversa||'').toLowerCase() === 'positivo' ? 'text-emerald-400' : (d.sentimento_conversa||'').toLowerCase() === 'negativo' ? 'text-rose-400' : 'text-slate-400';\n                \n                tr.innerHTML = \\`<td class='p-6'><div class='font-bold text-white'>\\${d.nome_real || d.nome_completo || 'N/A'}</div><div class='text-[9px] font-mono text-slate-500 uppercase mt-1'>ID: \\${d.id}</div></td>\\` +\n                               \\`<td class='p-6 font-mono text-blue-400'>\\${d.telefone_limpo || '-'}</td>\\` +\n                               \\`<td class='p-6 text-slate-400'>\\${d.cidade_estado || '-'}</td>\\` +\n                               \\`<td class='p-6'><span class='badge \\${intClass}'>\\${d.nivel_interesse_compra || 'N/A'}</span></td>\\` +\n                               \\`<td class='p-6 font-bold text-emerald-400'>R$ \\${parseFloat(d.valor_medio_conta_luz||0).toFixed(2)}</td>\\` +\n                               \\`<td class='p-6 font-bold'>\\${d.consumo_mensal_kwh || 0} kWh</td>\\` +\n                               \\`<td class='p-6 font-bold text-blue-500 uppercase text-[10px]'>\\${d.etapa_atendimento || '-'}</td>\\` +\n                               \\`<td class='p-6 font-bold \\${sentColor} uppercase text-[10px]'>\\${d.sentimento_conversa || '-'}</td>\\` +\n                               \\`<td class='p-6 text-right'><button onclick='openDrawer(\"\\${d.id}\")' class='px-5 py-2 bg-slate-800 rounded-xl font-black text-[9px] hover:bg-blue-600 transition-all'>DETALHES</button></td>\\`;\n                body.appendChild(tr);\n            });\n        }\n\n        function updateKPIs() {\n            const totalVal = filtered.reduce((acc, i) => acc + (parseFloat(i.valor_medio_conta_luz)||0), 0);\n            const ticket = totalVal / (filtered.length || 1);\n            const kpi = document.getElementById('kpiArea');\n            const box = (l, v, c) => \\`<div><p class='text-[10px] font-black text-slate-500 uppercase tracking-widest'>\\${l}</p><h3 class='text-2xl font-black \\${c} mt-1'>\\${v}</h3></div>\\`;\n            kpi.innerHTML = box('Leads', filtered.length, 'text-white') + box('Ticket Médio', 'R$ ' + ticket.toFixed(0), 'text-blue-500') + box('Potencial Total', 'R$ ' + totalVal.toLocaleString(), 'text-emerald-400');\n        }\n\n        function openDrawer(id) {\n            const d = data.find(x => x.id === id); if(!d) return;\n            const b = document.getElementById('drawerBody');\n            const item = (l, v) => \\`<div class='p-5 bg-slate-900 rounded-2xl border border-slate-800'><label class='text-[9px] font-black text-blue-500 uppercase block mb-1 tracking-tighter'>\\${l}</label><div class='text-sm font-bold text-slate-200'>\\${v || 'Não Informado'}</div></div>\\`;\n            b.innerHTML = \\`<div class='grid grid-cols-2 gap-4'>\\` +\n                item('Nome Real', d.nome_real) + item('Telefone Original', d.telefone) +\n                item('Cidade / Estado', d.cidade_estado) + item('Email', d.email) +\n                item('Valor Conta Luz', 'R$ ' + d.valor_medio_conta_luz) + item('Consumo Mensal', d.consumo_mensal_kwh + ' kWh') +\n                item('Telhado / Fase', d.tipo_telhado + ' / ' + d.fase_da_rede) + item('Concessionária', d.concessionaria_energia) +\n                \\`<div class='col-span-2 text-[10px] font-black text-slate-500 uppercase mt-4 mb-2'>Inteligência & Atendimento</div>\\` +\n                item('Sentimento', d.sentimento_conversa) + item('Etapa Atual', d.etapa_atendimento) +\n                item('Forma de Pgto', d.forma_pagamento_desejada) + item('Financiamento', d.status_financiamento) +\n                \\`<div class='col-span-2'>\\` + item('Histórico Relevante', d.historico_infos_relevantes) + \\`</div>\\` +\n                \\`<div class='col-span-2'>\\` + item('Objeções', d.objecoes) + \\`</div>\\` +\n                \\`<div class='col-span-2 border-l-4 border-rose-500'>\\` + item('Problema Suporte', d.problema_suporte_relatado) + \\`</div></div>\\`;\n            \n            document.getElementById('waBtn').onclick = () => window.open(\\`https://wa.me/\\${d.telefone_limpo}\\`);\n            document.getElementById('drawer').classList.replace('hidden', 'flex');\n            setTimeout(() => document.getElementById('drawerPanel').classList.add('active'), 10);\n        }\n\n        function closeDrawer() { document.getElementById('drawerPanel').classList.remove('active'); setTimeout(() => document.getElementById('drawer').classList.replace('flex', 'hidden'), 400); }\n\n        function setView(v) {\n            document.getElementById('viewTable').classList.toggle('hidden', v === 'charts');\n            document.getElementById('viewCharts').classList.toggle('hidden', v === 'table');\n            document.getElementById('btnTable').className = v === 'table' ? 'px-8 py-3 bg-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest' : 'px-8 py-3 bg-slate-800 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500';\n            document.getElementById('btnCharts').className = v === 'charts' ? 'px-8 py-3 bg-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest' : 'px-8 py-3 bg-slate-800 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500';\n            if(v === 'charts') initCharts();\n        }\n\n        function initCharts() {\n            const ctxI = document.getElementById('cInterest').getContext('2d');\n            const ctxR = document.getElementById('cRoof').getContext('2d');\n            const ctxC = document.getElementById('cCity').getContext('2d');\n            Chart.defaults.color = '#64748b'; Chart.defaults.font.family = 'Plus Jakarta Sans';\n            \n            charts.interest = new Chart(ctxI, { type: 'doughnut', data: { labels: ['Alto', 'Outros'], datasets: [{ data: [0, 0], backgroundColor: ['#10b981', '#1e293b'], borderWidth: 0 }] }, options: { cutout: '85%' } });\n            charts.roof = new Chart(ctxR, { type: 'bar', data: { labels: [], datasets: [{ data: [], backgroundColor: '#3b82f6', borderRadius: 8 }] }, options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } } } } });\n            charts.city = new Chart(ctxC, { type: 'line', data: { labels: [], datasets: [{ data: [], borderColor: '#3b82f6', tension: 0.4, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.1)' }] }, options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } } } } });\n            updateCharts();\n        }\n\n        function updateCharts() {\n            const alto = filtered.filter(x => (x.nivel_interesse_compra||'').toLowerCase().includes('alto')).length;\n            charts.interest.data.datasets[0].data = [alto, filtered.length - alto]; charts.interest.update();\n            \n            const roofs = {}; filtered.forEach(x => { const r = x.tipo_telhado || 'N/D'; roofs[r] = (roofs[r] || 0) + 1; });\n            charts.roof.data.labels = Object.keys(roofs); charts.roof.data.datasets[0].data = Object.values(roofs); charts.roof.update();\n\n            const cities = {}; filtered.forEach(x => { const c = x.cidade_estado || 'N/D'; cities[c] = (cities[c] || 0) + 1; });\n            const sortedCities = Object.entries(cities).sort((a,b) => b[1] - a[1]).slice(0, 10);\n            charts.city.data.labels = sortedCities.map(x => x[0]); charts.city.data.datasets[0].data = sortedCities.map(x => x[1]); charts.city.update();\n        }\n\n        function exportCSV() {\n            let csv = 'ID;Nome;Telefone;Cidade;Interesse;Valor;Consumo;Etapa;Sentimento\\\\n';\n            filtered.forEach(r => { csv += \\`\\${r.id};\\${r.nome_real};\\${r.telefone_limpo};\\${r.cidade_estado};\\${r.nivel_interesse_compra};\\${r.valor_medio_conta_luz};\\${r.consumo_mensal_kwh};\\${r.etapa_atendimento};\\${r.sentimento_conversa}\\\\n\\`; });\n            const blob = new Blob(['\\\\ufeff' + csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'crm_promova.csv'; a.click();\n        }\n\n        window.onload = () => engine();\n    </script>\n</body>\n</html>\n`;\n\nreturn [{ json: { html_final: html } }];"
+      },
+      "name": "Gerador de painel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        576
+      ],
+      "id": "9f5265fa-b59d-4521-9114-b79113a5423f"
+    },
+    {
+      "parameters": {
+        "path": "painel-promovadd",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        32,
+        576
+      ],
+      "id": "cf1f40c4-e8d4-451e-893c-882c4caf35a6",
+      "webhookId": "34d8cfc1-a0e5-465b-9be8-b41d38cc4c83"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM public.promova_web_solar ORDER BY created_at DESC;",
+        "additionalFields": {}
+      },
+      "name": "🕵️ Puxando a Capivara1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        176,
+        576
+      ],
+      "id": "1000041e-b0f7-48f9-9884-01744ed63c0c",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        720,
+        592
+      ],
+      "id": "fb1174cb-be6f-4efb-bb1b-71a210d1e41f",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "content": "### 🚀 Trigger & Data\nInício do fluxo via Webhook e consulta direta no banco de dados Postgres para buscar os leads mais recentes.",
+        "color": 6
+      },
+      "id": "dae3f29c-309a-4e2c-8d89-79e841870243",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 🧠 Engine de UI\nAqui acontece a mágica: Transformamos SQL em um Dashboard interativo com Tailwind CSS e Chart.js.",
+        "color": 4
+      },
+      "id": "fa2c30a2-a5f8-45ab-8117-f10c17a73046",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        288,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 🖥️ Entrega\nEnvia o HTML processado de volta para o navegador do usuário."
+      },
+      "id": "1bd328bb-9c5b-4210-8805-87886625455e",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory:{{ $('🗂️ Organizando a Bagunça').item.json.body.data.key.remoteJid }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        448
+      ],
+      "id": "09d5b76f-83e3-49db-9233-5651c2232700",
+      "name": "Memory2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Primeiro limpamos a tabela antiga para garantir os novos tipos\nDROP TABLE IF EXISTS public.promova_web_solar;\n\nCREATE TABLE public.promova_web_solar (\n    id VARCHAR(255) PRIMARY KEY, -- Agora aceita o ID com texto e número\n    remote_jid VARCHAR(100),\n    nome_completo VARCHAR(255),\n    nome_real VARCHAR(255),\n    cpf_cnpj VARCHAR(50),\n    telefone VARCHAR(50),\n    email VARCHAR(255),\n    cep VARCHAR(20),\n    cidade_estado VARCHAR(255),\n    endereco_completo TEXT,\n    valor_medio_conta_luz NUMERIC(10, 2),\n    consumo_mensal_kwh NUMERIC(10, 2), -- Mudado para numeric para evitar erros de ponto\n    concessionaria_energia VARCHAR(100),\n    tipo_telhado VARCHAR(255),\n    fase_da_rede VARCHAR(100),\n    titular_conta_luz_diferente BOOLEAN,\n    canal_aquisicao VARCHAR(100),\n    etapa_atendimento VARCHAR(100),\n    nivel_interesse_compra VARCHAR(100),\n    sentimento_conversa VARCHAR(100),\n    objecoes TEXT,\n    recebeu_ligacao BOOLEAN,\n    reuniao_confirmada BOOLEAN,\n    data_hora_reuniao VARCHAR(255), -- Mudado para VARCHAR para aceitar \"05 de março, tarde\"\n    forma_pagamento_desejada VARCHAR(100),\n    status_financiamento VARCHAR(100),\n    historico_infos_relevantes TEXT,\n    cliente_ja_instalou BOOLEAN,\n    problema_suporte_relatado TEXT,\n    urgencia_suporte VARCHAR(100),\n    status_inversor VARCHAR(100),\n    csat INTEGER,\n    fup_counter INTEGER DEFAULT 0,\n    ts_ultima_mensagem BIGINT,\n    account_id VARCHAR(100),\n    nome_da_instancia VARCHAR(100),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1024,
+        720
+      ],
+      "id": "10640986-0b00-438a-930b-5dfc601ea180",
+      "name": "criacao de banco"
+    }
+  ],
+  "connections": {
+    "gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "promova solar",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "promova solar",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gemini1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "secretaria do amado ",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "🗂️ Organizando a Bagunça",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "api de sua escolha": {
+      "main": [
+        [
+          {
+            "node": "🕵️ Puxando a Capivara",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "promova solar": {
+      "main": [
+        [
+          {
+            "node": "api de sua escolha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "secretaria do amado ": {
+      "main": [
+        [
+          {
+            "node": "🍍 Descascador de Abacaxi JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🗂️ Organizando a Bagunça": {
+      "main": [
+        [
+          {
+            "node": "promova solar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "☕ Fofoqueiro do Histórico": {
+      "main": [
+        [
+          {
+            "node": "secretaria do amado ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕵️ Puxando a Capivara": {
+      "main": [
+        [
+          {
+            "node": "☕ Fofoqueiro do Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🍍 Descascador de Abacaxi JSON": {
+      "main": [
+        [
+          {
+            "node": "📝 Anotando no Caderninho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerador de painel": {
+      "main": [
+        [
+          {
+            "node": "Retornar HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "🕵️ Puxando a Capivara1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🕵️ Puxando a Capivara1": {
+      "main": [
+        [
+          {
+            "node": "Gerador de painel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "promova solar",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "secretaria do amado ",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "☕ Fofoqueiro do Histórico",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhookn8n5.inovareinteligenciaartificial.com",
+            "user-agent": "axios/1.12.0",
+            "content-length": "807",
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "185.72.240.63",
+            "x-forwarded-host": "webhookn8n5.inovareinteligenciaartificial.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "185.72.240.63"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "json": {
+              "event": "messages.upsert",
+              "instance": "teste-8407",
+              "data": {
+                "key": {
+                  "remoteJid": "5515997631731@s.whatsapp.net",
+                  "remoteJidAlt": "5515997631731@s.whatsapp.net",
+                  "fromMe": true,
+                  "id": "AC192191A264306DACE541FF1C70F028",
+                  "participant": "",
+                  "addressingMode": "lid"
+                },
+                "pushName": "Emerson IA",
+                "status": "SERVER_ACK",
+                "message": {
+                  "conversation": "Manda bala que preciso de dados"
+                },
+                "messageType": "conversation",
+                "messageTimestamp": 1772220129,
+                "instanceId": "449d6ab2-37ea-49aa-af01-a40ebd33c764",
+                "source": "android"
+              },
+              "destination": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/fc1afe3e-4395-4da7-bfb1-b9675547f5eb",
+              "date_time": "2026-02-27T16:22:09.683Z",
+              "sender": "559184074247@s.whatsapp.net",
+              "server_url": "https://ligawhatsapp.inovareinteligenciaartificial.com",
+              "apikey": "BFEDB75FE8FD-49CF-93C1-E52BEAEF8B0C"
+            }
+          },
+          "webhookUrl": "https://webhookn8n5.inovareinteligenciaartificial.com/webhook/c4d0c338-f42a-4849-af62-003e73cf1c87",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "f373d2f0-ec28-485b-bf27-dcabfc6fafc4",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-03-10T19:20:19.797Z",
+      "createdAt": "2026-03-10T19:20:19.797Z",
+      "role": "workflow:owner",
+      "workflowId": "bnVSh7IDaVRZXK9W",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
