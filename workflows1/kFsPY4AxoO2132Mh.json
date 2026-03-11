@@ -1,0 +1,61 @@
+{
+  "updatedAt": "2026-03-11T18:13:50.527Z",
+  "createdAt": "2026-03-11T18:13:50.527Z",
+  "id": "kFsPY4AxoO2132Mh",
+  "name": "My workflow 2",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "account_review_update"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "095735c9-a13c-48e8-91f5-bfe0eb901dbe",
+      "name": "WhatsApp Trigger",
+      "webhookId": "34e14f45-467b-4dbc-96aa-0ab535a629e6"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6bbe6734-9dc9-4eb4-a7bc-502811ed3470",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-03-11T18:13:50.527Z",
+      "createdAt": "2026-03-11T18:13:50.527Z",
+      "role": "workflow:owner",
+      "workflowId": "kFsPY4AxoO2132Mh",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
