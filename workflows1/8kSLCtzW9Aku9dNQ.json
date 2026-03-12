@@ -1,0 +1,550 @@
+{
+  "updatedAt": "2026-03-12T20:59:22.896Z",
+  "createdAt": "2026-03-12T18:41:18.746Z",
+  "id": "8kSLCtzW9Aku9dNQ",
+  "name": "MERCADO LIVRE BAIXAS",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Baixa Mercado Livre",
+        "formDescription": "Baixa planilha ML",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Enviar planilha",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -512,
+        -400
+      ],
+      "id": "8665010e-f2ce-426d-bd4b-634b2d2b3e83",
+      "name": "On form submission",
+      "webhookId": "e93f8644-6646-47ac-9617-82344162aa08",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "Enviar_planilha",
+        "options": {
+          "delimiter": ";"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -352,
+        -400
+      ],
+      "id": "bdfa6d43-2135-4e20-9273-8f865d6b6557",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23fd497b-c831-47fc-aedd-1c36b0a2495a",
+              "name": "data",
+              "value": "={{ $json.DATE.toDateTime().format('dd-LL-yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "b1b13698-f2bb-499b-a709-05ff189baa68",
+              "name": "id_venda",
+              "value": "={{ $json.ORDER_ID }}",
+              "type": "string"
+            },
+            {
+              "id": "ef50d0e5-4c7c-462c-8247-ccc2693925eb",
+              "name": "total_venda",
+              "value": "={{ $json.GROSS_AMOUNT }}",
+              "type": "number"
+            },
+            {
+              "id": "f662b3ad-0dee-4ca3-b82d-f988b9dd0374",
+              "name": "valor_liquido",
+              "value": "={{ $json.NET_CREDIT_AMOUNT }}",
+              "type": "number"
+            },
+            {
+              "id": "6275fef6-8455-44d7-80c5-b13e9024cb9d",
+              "name": "SOURCE_ID",
+              "value": "={{ $json.SOURCE_ID }}",
+              "type": "string"
+            },
+            {
+              "id": "880e7674-6cb6-4fb7-ae0a-29ebfed2d3a5",
+              "name": "descontos",
+              "value": "={{ \n(\n  Number($json.MP_FEE_AMOUNT || 0) + \n  Number($json.SHIPPING_FEE_AMOUNT || 0) + \n  Number($json.FINANCING_FEE_AMOUNT || 0)\n).toFixed(2)\n}}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        -400
+      ],
+      "id": "dd953e4e-29da-499c-9708-b13e601f6b43",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4ed477e2-7451-4d2b-9168-1f4a90c17520",
+              "leftValue": "={{ $json.DESCRIPTION }}",
+              "rightValue": "payment",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -192,
+        -400
+      ],
+      "id": "c08a8390-142d-40eb-bcdb-e713bfd5692f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM AReceber\nWHERE DsObservacao LIKE '%2000015191461900%'"
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        112
+      ],
+      "id": "fe599050-2884-429f-8f00-0d58eb6417d4",
+      "name": "Microsoft SQL"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9be41467-f603-4a2a-9918-b85d44a276e5",
+              "leftValue": "={{ $json.ORDER_ID }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -16,
+        -400
+      ],
+      "id": "8d211c49-2a02-443b-b273-1e2426d1bc3f",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Baixa Mercado Livre",
+        "formDescription": "Baixa planilha ML",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Enviar planilha",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -512,
+        -176
+      ],
+      "id": "943b6cb4-aeac-4980-88c8-687a40d6f624",
+      "name": "On form submission1",
+      "webhookId": "ecb811ec-cda3-444c-a25f-4aee3826e530"
+    },
+    {
+      "parameters": {
+        "operation": "xls",
+        "binaryPropertyName": "Enviar_planilha",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -336,
+        -176
+      ],
+      "id": "5d0bf37e-cc66-488f-83c5-a060be9466cc",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23fd497b-c831-47fc-aedd-1c36b0a2495a",
+              "name": "data",
+              "value": "={{ $json.data.toDateTime().format('dd-LL-yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "b1b13698-f2bb-499b-a709-05ff189baa68",
+              "name": "id_venda",
+              "value": "={{ $json.id_pedido }}",
+              "type": "string"
+            },
+            {
+              "id": "ef50d0e5-4c7c-462c-8247-ccc2693925eb",
+              "name": "total_venda",
+              "value": "={{ $json.valor_total }}",
+              "type": "number"
+            },
+            {
+              "id": "f662b3ad-0dee-4ca3-b82d-f988b9dd0374",
+              "name": "valor_liquido",
+              "value": "={{ $json.valor_liquido }}",
+              "type": "number"
+            },
+            {
+              "id": "6275fef6-8455-44d7-80c5-b13e9024cb9d",
+              "name": "SOURCE_ID",
+              "value": "={{ $json.id_operacao }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        -176
+      ],
+      "id": "ec9a45c6-319d-4b63-a84f-776b41b2399c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "072cdcb4-c993-4fcf-a989-1b558d42eeb0",
+              "name": "data",
+              "value": "={{ $json['DATA DE LIBERAÇÃO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3b3092cb-a4a8-4d77-a80c-141fefcb033c",
+              "name": "id_operacao",
+              "value": "={{ $json['ID DA OPERAÇÃO NO MERCADO PAGO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ca1bcac7-b150-484a-a241-eab1cd9cd4f3",
+              "name": "descricao",
+              "value": "={{ $json['DESCRIÇÃO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a4204bd6-919d-4070-874a-90f8bcba9c0f",
+              "name": "valor_liquido",
+              "value": "={{ $json['VALOR LÍQUIDO CREDITADO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a4eabcf2-8883-4a82-a8bb-19829691c3e6",
+              "name": "valor_total",
+              "value": "={{ $json['VALOR BRUTO DA OPERAÇÃO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ca4dd5d5-0956-4482-ab4e-839d984c073b",
+              "name": "tarifa_ml",
+              "value": "={{ $json['TARIFA DO MERCADO PAGO OU DO MERCADO LIVRE'] }}",
+              "type": "string"
+            },
+            {
+              "id": "08a9515d-befc-437b-a0b9-869df6ea3028",
+              "name": "tarifa_parcelamento",
+              "value": "={{ $json['TARIFA POR OFERECER PARCELAMENTO SEM JUROS'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1b7bb8a8-24b6-4d16-94e9-a40e79b7c0f3",
+              "name": "tarifa_envio",
+              "value": "={{ $json['CUSTO DE ENVIO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "695c2ac4-3661-4f0b-bf43-ba260423de0d",
+              "name": "id_pedido",
+              "value": "={{ $json['ID DO PEDIDO'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        -176
+      ],
+      "id": "0ee71fa7-9b1d-4818-a09a-3f92be44ecaf",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4ed477e2-7451-4d2b-9168-1f4a90c17520",
+              "leftValue": "={{ $json.descricao }}",
+              "rightValue": "Pagamento",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        80,
+        -176
+      ],
+      "id": "96c8daf9-338b-43a4-b4b6-9ab03ef9cb5c",
+      "name": "Pagamento ???"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9be41467-f603-4a2a-9918-b85d44a276e5",
+              "leftValue": "={{ $json.id_pedido }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        -176
+      ],
+      "id": "a79be539-090a-4c75-a221-9848946e6d84",
+      "name": "Possui ID Pedido"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Pagamento ???",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pagamento ???": {
+      "main": [
+        [
+          {
+            "node": "Possui ID Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Possui ID Pedido": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "e47134b4-4435-4928-a7ce-c8cc926a28ad",
+  "activeVersionId": null,
+  "versionCounter": 179,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-03-12T18:41:18.746Z",
+      "createdAt": "2026-03-12T18:41:18.746Z",
+      "role": "workflow:owner",
+      "workflowId": "8kSLCtzW9Aku9dNQ",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
