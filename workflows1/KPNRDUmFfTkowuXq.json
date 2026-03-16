@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-25T18:59:47.796Z",
+  "updatedAt": "2026-03-15T23:31:21.025Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -947,11 +947,10 @@
                   {
                     "id": "9397ca82-faa6-490e-8020-83ad0ef13085",
                     "leftValue": "={{ $json.error.status }}",
-                    "rightValue": "500",
+                    "rightValue": 500,
                     "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
+                      "type": "number",
+                      "operation": "equals"
                     }
                   }
                 ],
@@ -1293,55 +1292,56 @@
         "json": {
           "headers": {
             "host": "webhooks.rdmon.com",
-            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.70.3)",
-            "content-length": "1086",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.71.1)",
+            "content-length": "1088",
             "accept": "*/*",
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "x-forwarded-for": "16.145.98.249",
+            "traceparent": "00-525004194e10cc98aa092da09c4f746a-1de7a8f0b8eddc61-01",
+            "x-forwarded-for": "35.90.203.234",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "16.145.98.249"
+            "x-real-ip": "35.90.203.234"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 30,
-              "read_ct": 1,
-              "enqueued_at": "2026-02-19T16:38:31.432967+00:00",
-              "vt": "2026-02-19T16:44:17.063517+00:00",
+              "msg_id": 160,
+              "read_ct": 10,
+              "enqueued_at": "2026-03-15T22:41:39.70162+00:00",
+              "vt": "2026-03-15T23:33:36.884536+00:00",
               "message": {
                 "body": {
-                  "act": "insert",
-                  "scope_id": "2143",
+                  "act": "update",
+                  "scope_id": "2177",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "9d0731cf07b62df6-GRU",
-                  "baggage": "sb-request-id=019c76c4-5cd9-7313-920e-57de733e880c",
+                  "cf-ray": "9dcf06d9a755535f-GRU",
+                  "baggage": "sb-request-id=019cf3a9-8371-75e5-a25d-64676a12efc9",
                   "cdn-loop": "cloudflare; loops=1; subreqs=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "019c76c4-5cd9-7313-920e-57de733e880c",
+                  "sb-request-id": "019cf3a9-8371-75e5-a25d-64676a12efc9",
                   "x-newrelic-id": "UAcHVVRaGwUFXVlSBwAHUA==",
                   "content-length": "59",
                   "accept-encoding": "gzip",
-                  "x-amzn-trace-id": "Root=1-69973c82-0b600a3005ad72421a9c3521",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
+                  "x-amzn-trace-id": "Root=1-69b735a2-3c467a054a78889f4cfbe842",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.138",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "x-newrelic-transaction": "PxRUBwJaCwoJBgIBUwcHUlxUFB8EBw8RVU4aAV5cDQEKXFsCUgUFUlAOUkNKQQkLCVRVWlIBFTs="
+                  "x-newrelic-transaction": "PxRVUV5RDVZSVQdWAlVWUFABFB8EBw8RVU4aAAgABgdWBwgHBVRXA1ICB0NKQQkLCVRVWlIBFTs="
                 }
               },
               "headers": null
@@ -1356,9 +1356,9 @@
       }
     ]
   },
-  "versionId": "39d17133-ac1e-4563-bc3f-c9e7c39d723a",
-  "activeVersionId": "39d17133-ac1e-4563-bc3f-c9e7c39d723a",
-  "versionCounter": 493,
+  "versionId": "55700b0d-3120-4cc6-83d4-37449672191b",
+  "activeVersionId": "55700b0d-3120-4cc6-83d4-37449672191b",
+  "versionCounter": 498,
   "triggerCount": 1,
   "tags": [],
   "shared": [
