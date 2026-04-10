@@ -1,0 +1,296 @@
+{
+  "updatedAt": "2026-04-10T13:48:57.988Z",
+  "createdAt": "2026-04-10T13:39:25.077Z",
+  "id": "GmyiGLbsLQ6WHdNR",
+  "name": "My workflow 4",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tray-supabase",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8bb72b06-1ca3-43b7-86ba-68b32be6a8cb",
+      "name": "Webhook Supabase",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        128
+      ],
+      "webhookId": "tray-supabase-status"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.first().json;\nconst bodyArray = payload.body;\n\nif (!bodyArray || !Array.isArray(bodyArray) || bodyArray.length === 0) {\n  throw new Error('Payload inválido: body ausente ou vazio');\n}\n\nconst results = [];\n\nfor (const item of bodyArray) {\n  const msgBody = item?.message?.body;\n  if (!msgBody) continue;\n\n  // Só processa escopo de pedido\n  if (msgBody.scope_name !== 'order') continue;\n\n  results.push({\n    msg_id: item.msg_id,\n    numero_pedido: msgBody.scope_id,\n    acao: msgBody.act,\n    escopo: msgBody.scope_name,\n    seller_id: msgBody.seller_id\n  });\n}\n\nif (results.length === 0) {\n  throw new Error('Nenhum item de pedido encontrado no payload');\n}\n\nreturn results;"
+      },
+      "id": "89d69db1-d896-4b3c-bc22-8b872342cadb",
+      "name": "Parser - Extrai Campos Tray",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.adrofecha.com.br/web_api/orders/{{ $json.numero_pedido }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "as51651das515da1s5d1as5d1a6s"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "01254e3a-605c-4fe0-b045-17b5ab68b566",
+      "name": "HTTP - Buscar Pedido Tray",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -720,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const orderData = $input.first().json;\nconst pedidoInfo = $('Parser - Extrai Campos Tray').item.json;\n\n// Tray retorna o pedido dentro de Order[]\nconst order = orderData.Order?.[0]?.Order || orderData.Order || orderData;\n\nif (!order) {\n  throw new Error(`Pedido #${pedidoInfo.numero_pedido}: resposta inválida da Tray`);\n}\n\nconst status = parseInt(order.status_id || order.status || 0);\nconst customer = order.Customer || {};\nconst firstName = (customer.name || 'Cliente').split(' ')[0];\nconst orderId = order.id || order.number || pedidoInfo.numero_pedido;\n\n// Formata telefone para WhatsApp (formato: 55DDNUMERO)\nlet phone = (customer.mobile_phone || customer.telephone || '').replace(/\\D/g, '');\nif (phone.length === 11) phone = '55' + phone;\nelse if (phone.length === 10) phone = '55' + phone;\n\n// Rastreio para pedidos enviados\nconst tracking = order.Delivery?.tracking_number\n  || order.OrderProduct?.[0]?.Product?.tracking_number\n  || '';\n\n// Mapeamento status → mensagem\nconst mensagens = {\n  2:  `Olá ${firstName}! 🎉 Seu pedido *#${orderId}* foi *aprovado* e já está sendo preparado. Em breve você receberá mais novidades!`,\n  4:  `Olá ${firstName}! Seu pedido *#${orderId}* foi *cancelado*. Caso tenha dúvidas, entre em contato com nossa equipe.`,\n  6:  `Olá ${firstName}! 📦 Seu pedido *#${orderId}* foi *despachado*!${tracking ? `\\nCódigo de rastreio: *${tracking}*\\nAcompanhe em: correios.com.br` : ''}`,\n  7:  `Olá ${firstName}! ✅ Seu pedido *#${orderId}* foi *entregue*! Esperamos que goste da compra. Qualquer dúvida, estamos aqui! 😊`\n};\n\nconst message = mensagens[status];\n\nreturn [{\n  json: {\n    skip: !message,\n    phone,\n    message: message || '',\n    status,\n    orderId,\n    customerName: customer.name || '',\n    reason: !message ? `status ${status} não mapeado` : null\n  }\n}];"
+      },
+      "id": "e1e7cddd-0fd8-4209-b79e-1ecb93543114",
+      "name": "Code - Preparar Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-skip",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "efdf4225-d8bc-4d09-86c9-a22e98d760d5",
+      "name": "IF - Status Mapeado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://rdmon.uazapi.com/send/text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "4bc82e2e58f0"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $json.phone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "instance",
+              "value": "adrofecha"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "91380f53-cde0-4a0e-b937-17e6c81c3e7f",
+      "name": "HTTP - Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"ok\", \"pedido\": $('Code - Preparar Mensagem').item.json.orderId, \"whatsapp\": \"enviado\", \"para\": $('Code - Preparar Mensagem').item.json.phone } }}",
+        "options": {}
+      },
+      "id": "87591c78-18a0-472c-be07-a61bbebb49e8",
+      "name": "Respond - Mensagem Enviada",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"ignored\", \"pedido\": $json.orderId, \"motivo\": $json.reason } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "503b1486-2766-4b30-bf7f-2b4c0e8e2dbc",
+      "name": "Respond - Status Ignorado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Supabase": {
+      "main": [
+        [
+          {
+            "node": "Parser - Extrai Campos Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser - Extrai Campos Tray": {
+      "main": [
+        [
+          {
+            "node": "HTTP - Buscar Pedido Tray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP - Buscar Pedido Tray": {
+      "main": [
+        [
+          {
+            "node": "Code - Preparar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Preparar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "IF - Status Mapeado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Status Mapeado?": {
+      "main": [
+        [
+          {
+            "node": "HTTP - Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond - Status Ignorado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP - Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Respond - Mensagem Enviada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "911cd32b-37d9-4821-8538-59ac8f18acb9",
+  "activeVersionId": null,
+  "versionCounter": 3,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-04-10T13:39:25.077Z",
+      "createdAt": "2026-04-10T13:39:25.077Z",
+      "role": "workflow:owner",
+      "workflowId": "GmyiGLbsLQ6WHdNR",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
