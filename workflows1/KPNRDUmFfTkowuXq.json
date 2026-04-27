@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-30T11:10:22.816Z",
+  "updatedAt": "2026-04-27T11:45:56.811Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -1292,56 +1292,60 @@
         "json": {
           "headers": {
             "host": "webhooks.rdmon.com",
-            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.71.1)",
-            "content-length": "1088",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.73.15)",
+            "content-length": "1282",
             "accept": "*/*",
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "traceparent": "00-525004194e10cc98aa092da09c4f746a-1de7a8f0b8eddc61-01",
-            "x-forwarded-for": "35.90.203.234",
+            "traceparent": "00-e0ad9bc4fbbcc6a455e73b31d5e2cb1b-bffa7860e2490120-01",
+            "x-forwarded-for": "35.89.198.160",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "35.90.203.234"
+            "x-real-ip": "35.89.198.160"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 160,
-              "read_ct": 10,
-              "enqueued_at": "2026-03-15T22:41:39.70162+00:00",
-              "vt": "2026-03-15T23:33:36.884536+00:00",
+              "msg_id": 312,
+              "read_ct": 289,
+              "enqueued_at": "2026-04-26T10:55:15.094159+00:00",
+              "vt": "2026-04-27T11:27:13.933944+00:00",
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2177",
+                  "scope_id": "2211",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "9dcf06d9a755535f-GRU",
-                  "baggage": "sb-request-id=019cf3a9-8371-75e5-a25d-64676a12efc9",
-                  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+                  "cf-ray": "9f250dd2aa48f28c-GRU",
+                  "baggage": "sb-request-id=019dc96d-dfa3-7fde-b317-3000079c36b7",
+                  "cdn-loop": "cloudflare; loops=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
+                  "tracestate": "es=s:1.0",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
+                  "traceparent": "00-88ea5cf122d3f2859940c96460e8a91c-af71ab229b7891f8-01",
+                  "cf-ipcountry": "BR",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "019cf3a9-8371-75e5-a25d-64676a12efc9",
+                  "sb-request-id": "019dc96d-dfa3-7fde-b317-3000079c36b7",
                   "x-newrelic-id": "UAcHVVRaGwUFXVlSBwAHUA==",
                   "content-length": "59",
-                  "accept-encoding": "gzip",
-                  "x-amzn-trace-id": "Root=1-69b735a2-3c467a054a78889f4cfbe842",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.138",
+                  "accept-encoding": "gzip, br",
+                  "x-amzn-trace-id": "Root=1-69edef12-757b98630a989ee853e38269",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "x-newrelic-transaction": "PxRVUV5RDVZSVQdWAlVWUFABFB8EBw8RVU4aAAgABgdWBwgHBVRXA1ICB0NKQQkLCVRVWlIBFTs="
+                  "x-newrelic-transaction": "PxRVUFJbXlIGVlgBUQEEXlACFB8EBw8RVU4aAAkMDFRSUwtYUgcDUVwCBENKQQkLCVRVWlIBFTs=",
+                  "elastic-apm-traceparent": "00-88ea5cf122d3f2859940c96460e8a91c-af71ab229b7891f8-01"
                 }
               },
               "headers": null
@@ -1358,7 +1362,7 @@
   },
   "versionId": "55700b0d-3120-4cc6-83d4-37449672191b",
   "activeVersionId": "55700b0d-3120-4cc6-83d4-37449672191b",
-  "versionCounter": 504,
+  "versionCounter": 505,
   "triggerCount": 1,
   "tags": [],
   "shared": [
