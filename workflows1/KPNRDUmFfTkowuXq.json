@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-27T11:45:56.811Z",
+  "updatedAt": "2026-04-30T12:59:20.806Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -330,6 +330,31 @@
               },
               "renameOutput": true,
               "outputKey": "AGUARDANDO ENVIO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6e0004a6-168c-4f7b-a54d-5fe5322f09b6",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO DEVOLUÇÃO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO DEVOLUÇÃO"
             },
             {
               "conditions": {
@@ -1109,6 +1134,13 @@
         ],
         [
           {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "MSG A ENVIAR",
             "type": "main",
             "index": 0
@@ -1293,59 +1325,59 @@
           "headers": {
             "host": "webhooks.rdmon.com",
             "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.73.15)",
-            "content-length": "1282",
+            "content-length": "1284",
             "accept": "*/*",
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "traceparent": "00-e0ad9bc4fbbcc6a455e73b31d5e2cb1b-bffa7860e2490120-01",
-            "x-forwarded-for": "35.89.198.160",
+            "traceparent": "00-915ce6a3fae33bfe3444c34781e588ba-9e51e0b93bf821a3-01",
+            "x-forwarded-for": "44.255.72.136",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "35.89.198.160"
+            "x-real-ip": "44.255.72.136"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 312,
-              "read_ct": 289,
-              "enqueued_at": "2026-04-26T10:55:15.094159+00:00",
-              "vt": "2026-04-27T11:27:13.933944+00:00",
+              "msg_id": 311,
+              "read_ct": 1161,
+              "enqueued_at": "2026-04-26T10:55:02.959921+00:00",
+              "vt": "2026-04-30T12:53:03.152635+00:00",
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2211",
+                  "scope_id": "2209",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "9f250dd2aa48f28c-GRU",
-                  "baggage": "sb-request-id=019dc96d-dfa3-7fde-b317-3000079c36b7",
+                  "cf-ray": "9f250d85a9f69097-GRU",
+                  "baggage": "sb-request-id=019dc96d-aef6-74db-9e63-4ac9d43e5337",
                   "cdn-loop": "cloudflare; loops=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
                   "tracestate": "es=s:1.0",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
-                  "traceparent": "00-88ea5cf122d3f2859940c96460e8a91c-af71ab229b7891f8-01",
+                  "traceparent": "00-cb88c44db71f8a05331c08691465064f-84635e92fe3a55b1-01",
                   "cf-ipcountry": "BR",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "019dc96d-dfa3-7fde-b317-3000079c36b7",
+                  "sb-request-id": "019dc96d-aef6-74db-9e63-4ac9d43e5337",
                   "x-newrelic-id": "UAcHVVRaGwUFXVlSBwAHUA==",
                   "content-length": "59",
                   "accept-encoding": "gzip, br",
-                  "x-amzn-trace-id": "Root=1-69edef12-757b98630a989ee853e38269",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
+                  "x-amzn-trace-id": "Root=1-69edef06-59b47f0f19777b4b31816025",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.137",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "x-newrelic-transaction": "PxRVUFJbXlIGVlgBUQEEXlACFB8EBw8RVU4aAAkMDFRSUwtYUgcDUVwCBENKQQkLCVRVWlIBFTs=",
-                  "elastic-apm-traceparent": "00-88ea5cf122d3f2859940c96460e8a91c-af71ab229b7891f8-01"
+                  "x-newrelic-transaction": "PxQABVRQXlUIXAMHVldRVwUFFB8EBw8RVU4aVVwKB1RVXQEDVABVBFVXA0NKQQkLCVRVWlIBFTs=",
+                  "elastic-apm-traceparent": "00-cb88c44db71f8a05331c08691465064f-84635e92fe3a55b1-01"
                 }
               },
               "headers": null
@@ -1360,9 +1392,9 @@
       }
     ]
   },
-  "versionId": "55700b0d-3120-4cc6-83d4-37449672191b",
-  "activeVersionId": "55700b0d-3120-4cc6-83d4-37449672191b",
-  "versionCounter": 505,
+  "versionId": "7f3cfdc5-0d8a-4d21-a4fc-5926e52ff0a3",
+  "activeVersionId": "7f3cfdc5-0d8a-4d21-a4fc-5926e52ff0a3",
+  "versionCounter": 516,
   "triggerCount": 1,
   "tags": [],
   "shared": [
