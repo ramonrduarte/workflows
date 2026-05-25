@@ -1,0 +1,755 @@
+{
+  "updatedAt": "2026-05-25T20:16:54.958Z",
+  "createdAt": "2026-05-25T12:33:15.377Z",
+  "id": "qsi39Bsq3HKyA6to",
+  "name": "Teste Telegram",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "callback_query",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        -272
+      ],
+      "id": "2403e229-c94f-4084-ba4c-975f4d096930",
+      "name": "Telegram Trigger",
+      "webhookId": "c8d8d179-0cda-43e1-98bf-fab651562361",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1430489383",
+        "text": "Você respondeu tudo",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -512
+      ],
+      "id": "8a0b458a-5a3b-433f-9c23-e48f9406bac3",
+      "name": "Send a text message1",
+      "webhookId": "e3b09408-491d-44da-8ce7-c484dd888cb4",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.callback_query.data }}",
+                    "rightValue": "Tudo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "74d22b2f-c6c3-4fcc-971e-c0ffbea13858"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "124b7907-4726-4fc7-92d4-b68a7f4b1dbc",
+                    "leftValue": "={{ $json.callback_query.data }}",
+                    "rightValue": "Nada",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        -288
+      ],
+      "id": "b8064abd-eef4-4e00-a4a1-02b07dbba80b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "1430489383",
+        "text": "Você responde nada",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -320
+      ],
+      "id": "c1da8ced-9963-46f6-9e7c-db3c3d4386df",
+      "name": "Send a text message2",
+      "webhookId": "e3b09408-491d-44da-8ce7-c484dd888cb4",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "50ca87cc-ef2f-46df-b819-a7c405cf5f03",
+              "leftValue": "={{ !!$json.message }}",
+              "rightValue": "message",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -96,
+        -272
+      ],
+      "id": "ba629653-dad5-4311-82b2-15183a716db9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo_mensagem }}",
+                    "rightValue": "texto",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "77400638-3914-4013-bc88-4ccfd7486232"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "278ab46a-da96-410e-bcc1-2cbe705871e3",
+                    "leftValue": "={{ $json.tipo_mensagem }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "637cfd03-e946-46cb-a618-5be3f6a26745",
+                    "leftValue": "={{ $json.tipo_mensagem }}",
+                    "rightValue": "imagem",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9e19f6d7-b4ce-424b-991f-2111fbb6c757",
+                    "leftValue": "={{ $json.tipo_mensagem }}",
+                    "rightValue": "documento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "documento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f466ef42-3a68-49cf-a0e8-54955857a23f",
+                    "leftValue": "={{ $json.tipo_mensagem }}",
+                    "rightValue": "outro",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outro"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        -16
+      ],
+      "id": "35ea0ef7-743d-4582-9421-50752d5ff07c",
+      "name": "Tipo de mensagem"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"tipo_mensagem\": \"{{ $json.message.text ? 'texto' : $json.message.voice ? 'audio' : $json.message.photo ? 'imagem' : $json.message.document ? 'documento' : 'outro' }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        32
+      ],
+      "id": "539f1d51-aebf-4aba-a33c-eaaaf532fc6d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "chatId": "1430489383",
+        "text": "o que quer fazer ?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Tudo",
+                    "additionalFields": {
+                      "callback_data": "Tudo"
+                    }
+                  },
+                  {
+                    "text": "Nada",
+                    "additionalFields": {
+                      "callback_data": "Nada"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "botao grande",
+                    "additionalFields": {
+                      "callback_data": "grande"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -144
+      ],
+      "id": "a29c8045-3030-4d79-8e77-3af5df733378",
+      "name": "Envia texto",
+      "webhookId": "e3b09408-491d-44da-8ce7-c484dd888cb4",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('If').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        16
+      ],
+      "id": "9bcd0dba-7f3b-4a9a-b426-cdf339e2f8a7",
+      "name": "Busca Audio",
+      "webhookId": "44ccf420-c5d7-4f79-8580-9fe745b4feb6",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.photo[$('Telegram Trigger').item.json.message.photo.length - 1].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        192
+      ],
+      "id": "45720eae-cf3b-49ff-bd2f-554c539efc44",
+      "name": "Busca Imagem",
+      "webhookId": "44ccf420-c5d7-4f79-8580-9fe745b4feb6",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.document.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        352
+      ],
+      "id": "bffedbb9-0d14-4d2d-865d-3f0f4f294e8c",
+      "name": "Busca Documento",
+      "webhookId": "44ccf420-c5d7-4f79-8580-9fe745b4feb6",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        816,
+        16
+      ],
+      "id": "1db8e5c7-7a0d-4053-97db-41049c3ca4ee",
+      "name": "Transcreve audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "DWRfkUPh9DzeQZlA",
+          "name": "OpenAi Agente"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "=Extraia somente as informações visíveis no comprovante.\n\nRetorne em JSON com estes campos:\n{\n  \"pagador\": \"\",\n  \"valor\": \"\",\n  \"data\": \"\"\n}\n\nNão invente dados. Se algum campo não estiver visível, retorne null.\nSe houver nome visível do pagador, retorne exatamente como aparece no documento.\nPreencha data no formato dd/mm/yyyy.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        192
+      ],
+      "id": "26e26bfb-a3d3-4055-8b4a-4044c1bef887",
+      "name": "Descreve imagem",
+      "credentials": {
+        "openAiApi": {
+          "id": "DWRfkUPh9DzeQZlA",
+          "name": "OpenAi Agente"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@kukhta_stepan/n8n-nodes-pdf-to-images.pdfToImagesPdfJs",
+      "typeVersion": 23,
+      "position": [
+        848,
+        352
+      ],
+      "id": "bc13b370-4114-4f8f-baa4-ee7a567359eb",
+      "name": "PDF to Images"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Tipo de mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de mensagem": {
+      "main": [
+        [
+          {
+            "node": "Envia texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Busca Audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Busca Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Busca Documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Audio": {
+      "main": [
+        [
+          {
+            "node": "Transcreve audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Imagem": {
+      "main": [
+        [
+          {
+            "node": "Descreve imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Documento": {
+      "main": [
+        [
+          {
+            "node": "PDF to Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF to Images": {
+      "main": [
+        [
+          {
+            "node": "Descreve imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 234536561,
+          "message": {
+            "message_id": 43,
+            "from": {
+              "id": 1430489383,
+              "is_bot": false,
+              "first_name": "Ramon",
+              "last_name": "Duarte",
+              "username": "Ramon_rduarte",
+              "language_code": "pt-br"
+            },
+            "chat": {
+              "id": 1430489383,
+              "first_name": "Ramon",
+              "last_name": "Duarte",
+              "username": "Ramon_rduarte",
+              "type": "private"
+            },
+            "date": 1779739426,
+            "photo": [
+              {
+                "file_id": "AgACAgEAAxkBAAMrahSrIqidx8TVcOeykOtQDrqsQ7kAAqMMaxvWPqhEXCalpA1Em-YBAAMCAANzAAM7BA",
+                "file_unique_id": "AQADowxrG9Y-qER4",
+                "file_size": 586,
+                "width": 23,
+                "height": 90
+              },
+              {
+                "file_id": "AgACAgEAAxkBAAMrahSrIqidx8TVcOeykOtQDrqsQ7kAAqMMaxvWPqhEXCalpA1Em-YBAAMCAANtAAM7BA",
+                "file_unique_id": "AQADowxrG9Y-qERy",
+                "file_size": 6355,
+                "width": 83,
+                "height": 320
+              },
+              {
+                "file_id": "AgACAgEAAxkBAAMrahSrIqidx8TVcOeykOtQDrqsQ7kAAqMMaxvWPqhEXCalpA1Em-YBAAMCAAN4AAM7BA",
+                "file_unique_id": "AQADowxrG9Y-qER9",
+                "file_size": 25805,
+                "width": 207,
+                "height": 800
+              },
+              {
+                "file_id": "AgACAgEAAxkBAAMrahSrIqidx8TVcOeykOtQDrqsQ7kAAqMMaxvWPqhEXCalpA1Em-YBAAMCAAN5AAM7BA",
+                "file_unique_id": "AQADowxrG9Y-qER-",
+                "file_size": 45508,
+                "width": 332,
+                "height": 1280
+              }
+            ]
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "2ce0b9dc-651c-484d-9564-300afd19ecd8",
+  "activeVersionId": "2ce0b9dc-651c-484d-9564-300afd19ecd8",
+  "versionCounter": 390,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-05-25T12:33:15.377Z",
+      "createdAt": "2026-05-25T12:33:15.377Z",
+      "role": "workflow:owner",
+      "workflowId": "qsi39Bsq3HKyA6to",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
