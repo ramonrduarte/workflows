@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-25T20:16:54.958Z",
+  "updatedAt": "2026-05-26T13:18:52.387Z",
   "createdAt": "2026-05-25T12:33:15.377Z",
   "id": "qsi39Bsq3HKyA6to",
   "name": "Teste Telegram",
@@ -111,8 +111,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        336,
-        -288
+        224,
+        -432
       ],
       "id": "b8064abd-eef4-4e00-a4a1-02b07dbba80b",
       "name": "Switch"
@@ -308,8 +308,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        32,
-        -16
+        224,
+        16
       ],
       "id": "35ea0ef7-743d-4582-9421-50752d5ff07c",
       "name": "Tipo de mensagem"
@@ -323,8 +323,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -160,
-        32
+        -96,
+        64
       ],
       "id": "539f1d51-aebf-4aba-a33c-eaaaf532fc6d",
       "name": "Edit Fields"
@@ -728,9 +728,9 @@
       }
     ]
   },
-  "versionId": "2ce0b9dc-651c-484d-9564-300afd19ecd8",
-  "activeVersionId": "2ce0b9dc-651c-484d-9564-300afd19ecd8",
-  "versionCounter": 390,
+  "versionId": "fbcbec10-04f8-4075-b70d-2079d2c6c946",
+  "activeVersionId": "cb548274-718e-4767-b768-1cb32afd99f9",
+  "versionCounter": 397,
   "triggerCount": 1,
   "tags": [],
   "shared": [
