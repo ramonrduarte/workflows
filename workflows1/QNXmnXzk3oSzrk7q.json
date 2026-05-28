@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-25T12:43:06.611Z",
+  "updatedAt": "2026-05-28T19:36:43.221Z",
   "createdAt": "2026-02-25T12:42:42.772Z",
   "id": "QNXmnXzk3oSzrk7q",
   "name": "ERRO",
@@ -88,12 +88,34 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        96,
-        -64
+        128,
+        -176
       ],
       "id": "86c7a479-e270-46e2-a712-1fdd5aa91b27",
       "name": "Aviso Uazapi",
       "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "chatId": "1430489383",
+        "text": "=Erro no fluxo *{{ $json.workflow.name }}*, node *{{ $json.execution.error.node.name }}*.\n{{ $json.execution.url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        32
+      ],
+      "id": "c41a3a6f-e243-4637-ab7b-6deccde53fac",
+      "name": "Send a text message",
+      "webhookId": "8e240fd2-da02-4652-baad-77adf54cc9a6",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
     }
   ],
   "connections": {
@@ -112,11 +134,16 @@
       "main": [
         [
           {
-            "node": "Aviso Uazapi",
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "Aviso Uazapi": {
+      "main": [
+        []
       ]
     }
   },
@@ -126,11 +153,134 @@
     "availableInMCP": false
   },
   "staticData": null,
-  "meta": null,
-  "pinData": {},
-  "versionId": "e590273e-8acd-43f5-9a59-4d437fe82191",
-  "activeVersionId": "e590273e-8acd-43f5-9a59-4d437fe82191",
-  "versionCounter": 5,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Error Trigger": [
+      {
+        "json": {
+          "execution": {
+            "id": "28486",
+            "url": "https://webhooks.rdmon.com/workflow/KPNRDUmFfTkowuXq/executions/28486",
+            "error": {
+              "level": "warning",
+              "tags": {},
+              "description": "Internal Server Error",
+              "timestamp": 1779975556433,
+              "context": {
+                "itemIndex": 0,
+                "request": {
+                  "body": {
+                    "number": "5551993732861@s.whatsapp.net",
+                    "text": "Telefone Imperador Desconectado"
+                  },
+                  "headers": {
+                    "apikey": "WoXyfUvtW2asBKfwfg9J",
+                    "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
+                  },
+                  "method": "POST",
+                  "uri": "https://wsapi.rdmon.com/message/sendText/Ramon",
+                  "gzip": true,
+                  "rejectUnauthorized": true,
+                  "followRedirect": true,
+                  "resolveWithFullResponse": true,
+                  "sendCredentialsOnCrossOriginRedirect": true,
+                  "followAllRedirects": true,
+                  "maxRedirects": 21,
+                  "timeout": 300000,
+                  "encoding": null,
+                  "json": false,
+                  "useStream": true
+                }
+              },
+              "functionality": "regular",
+              "name": "NodeApiError",
+              "node": {
+                "parameters": {
+                  "curlImport": "",
+                  "method": "POST",
+                  "url": "https://wsapi.rdmon.com/message/sendText/Ramon",
+                  "authentication": "none",
+                  "provideSslCertificates": false,
+                  "sendQuery": false,
+                  "sendHeaders": true,
+                  "specifyHeaders": "keypair",
+                  "headerParameters": {
+                    "parameters": [
+                      {
+                        "name": "apikey",
+                        "value": "WoXyfUvtW2asBKfwfg9J"
+                      }
+                    ]
+                  },
+                  "sendBody": true,
+                  "contentType": "json",
+                  "specifyBody": "keypair",
+                  "bodyParameters": {
+                    "parameters": [
+                      {
+                        "name": "number",
+                        "value": "5551993732861@s.whatsapp.net"
+                      },
+                      {
+                        "name": "text",
+                        "value": "=Telefone Imperador Desconectado"
+                      }
+                    ]
+                  },
+                  "options": {
+                    "redirect": {
+                      "redirect": {
+                        "followRedirects": true,
+                        "maxRedirects": 21
+                      }
+                    }
+                  },
+                  "infoMessage": ""
+                },
+                "id": "9ba7067a-b93d-44b3-a29c-dc8737ddaa6e",
+                "name": "Aviso desconexao",
+                "type": "n8n-nodes-base.httpRequest",
+                "typeVersion": 4.2,
+                "position": [
+                  1984,
+                  48
+                ]
+              },
+              "messages": [
+                "500 - \"{\\\"status\\\":500,\\\"error\\\":\\\"Internal Server Error\\\",\\\"response\\\":{\\\"message\\\":\\\"Connection Closed\\\"}}\""
+              ],
+              "httpCode": "500",
+              "message": "The service was not able to process your request",
+              "stack": "NodeApiError: The service was not able to process your request\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:864:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_4dbefa9881a7c57a9e05a20ce4387c10/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1039:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_4dbefa9881a7c57a9e05a20ce4387c10/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1218:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_4dbefa9881a7c57a9e05a20ce4387c10/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1655:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_4dbefa9881a7c57a9e05a20ce4387c10/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2298:11"
+            },
+            "lastNodeExecuted": "Aviso desconexao",
+            "mode": "webhook",
+            "executionContext": {
+              "version": 1,
+              "establishedAt": 1779975553364,
+              "source": "webhook",
+              "triggerNode": {
+                "name": "Webhook",
+                "type": "n8n-nodes-base.webhook"
+              }
+            }
+          },
+          "workflow": {
+            "id": "KPNRDUmFfTkowuXq",
+            "name": "Webhook Tray Imperador"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "58ab7bdb-e503-43f3-8ba0-24ef32b3c8b7",
+  "activeVersionId": "58ab7bdb-e503-43f3-8ba0-24ef32b3c8b7",
+  "versionCounter": 22,
   "triggerCount": 0,
   "tags": [],
   "shared": [
