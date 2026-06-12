@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-30T12:59:20.806Z",
+  "updatedAt": "2026-06-12T14:13:33.661Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -1311,8 +1311,7 @@
     "availableInMCP": false,
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner",
-    "errorWorkflow": "QNXmnXzk3oSzrk7q",
-    "saveDataSuccessExecution": "all"
+    "errorWorkflow": "QNXmnXzk3oSzrk7q"
   },
   "staticData": null,
   "meta": {
@@ -1394,7 +1393,7 @@
   },
   "versionId": "7f3cfdc5-0d8a-4d21-a4fc-5926e52ff0a3",
   "activeVersionId": "7f3cfdc5-0d8a-4d21-a4fc-5926e52ff0a3",
-  "versionCounter": 516,
+  "versionCounter": 519,
   "triggerCount": 1,
   "tags": [],
   "shared": [
