@@ -1,0 +1,89 @@
+{
+  "updatedAt": "2026-07-21T13:26:37.786Z",
+  "createdAt": "2026-07-21T12:49:03.479Z",
+  "id": "WdQTLwCZYmW0FDnX",
+  "name": "Me mercado livre",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -64
+      ],
+      "id": "c5c18477-6e41-49f2-a68f-7ee9fdcd5a9c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://api.mercadolibre.com/users/me",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -128,
+        -64
+      ],
+      "id": "f88149a7-0f88-4edb-a9a2-cffa5ef2201a",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "FJsYjMaSLykMhttc",
+          "name": "Credencial Adrofecha"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "d65ce6cd-c436-4712-a986-4ddee4d09852",
+  "activeVersionId": null,
+  "versionCounter": 9,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T12:49:03.479Z",
+      "createdAt": "2026-07-21T12:49:03.479Z",
+      "role": "workflow:owner",
+      "workflowId": "WdQTLwCZYmW0FDnX",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
