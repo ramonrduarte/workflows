@@ -1,0 +1,60 @@
+{
+  "updatedAt": "2026-07-21T13:25:25.001Z",
+  "createdAt": "2026-07-21T13:18:30.574Z",
+  "id": "k0LkvGwRWq3oVxRP",
+  "name": "My workflow 6",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "path": "74842d03-fd02-4767-9019-e94548303230",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "87db0361-0c42-4d2c-b671-4310f9a4d667",
+      "name": "Webhook",
+      "webhookId": "74842d03-fd02-4767-9019-e94548303230"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ef5f519c-2a38-4012-85e9-d45e8a4f7f72",
+  "activeVersionId": null,
+  "versionCounter": 3,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T13:18:30.574Z",
+      "createdAt": "2026-07-21T13:18:30.574Z",
+      "role": "workflow:owner",
+      "workflowId": "k0LkvGwRWq3oVxRP",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
