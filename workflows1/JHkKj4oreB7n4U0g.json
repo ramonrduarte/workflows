@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-21T13:29:15.383Z",
+  "updatedAt": "2026-07-23T19:05:58.864Z",
   "createdAt": "2026-07-21T13:23:13.112Z",
   "id": "JHkKj4oreB7n4U0g",
   "name": "MERCADO LIVRE ADROFECHA",
@@ -38,25 +38,163 @@
       "id": "87c914c4-4fab-4348-be3e-7241ba2bfbab",
       "name": "Notificacao",
       "webhookId": "9be0fe0b-15c2-494b-bd05-aa9361194f8f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "01a86fad-92f8-4454-8ff8-7269e59587c3",
+              "leftValue": "={{ $json.body.topic }}",
+              "rightValue": "orders_v2",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -496,
+        0
+      ],
+      "id": "7c0768ec-30f6-441a-8806-0652f05cc5af",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "1430489383",
+        "text": "={{ String($json.body.topic).replace(/_/g, '\\\\_') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        16
+      ],
+      "id": "6aa37b51-a982-43ba-bdc8-064f5b41c6c9",
+      "name": "Envia Mensagem",
+      "webhookId": "64f1abc4-8803-4f0a-92c7-a95e19318b95",
+      "credentials": {
+        "telegramApi": {
+          "id": "3Mj9CK39TaYbU5UW",
+          "name": "Telegram Monbot"
+        }
+      }
     }
   ],
-  "connections": {},
+  "connections": {
+    "Notificacao": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "saveDataSuccessExecution": "all",
-    "callerPolicy": "workflowsFromSameOwner"
+    "callerPolicy": "workflowsFromSameOwner",
+    "saveDataSuccessExecution": "all"
   },
   "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "2bbef29c-cd3c-4c3a-a5d7-48eb5696e3cc",
-  "activeVersionId": "2bbef29c-cd3c-4c3a-a5d7-48eb5696e3cc",
-  "versionCounter": 4,
+  "pinData": {
+    "Notificacao": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "github.com/go-loco/restful",
+            "content-length": "386",
+            "accept": "application/json",
+            "accept-encoding": "gzip",
+            "content-type": "application/json",
+            "traceparent": "00-8bd630525a12069ff9285fc3062229ba-f3785dfae5b97a7c-00",
+            "x-b3-sampled": "0",
+            "x-b3-spanid": "f3785dfae5b97a7c",
+            "x-b3-traceid": "8bd630525a12069ff9285fc3062229ba",
+            "x-forwarded-for": "35.245.91.34",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "35.245.91.34",
+            "x-rest-pool-name": "pool_unknown",
+            "x-socket-timeout": "700"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "_id": "a85cac47-44dc-4b35-a2ed-c8b8fc03cfaa",
+            "topic": "orders_v2",
+            "resource": "/orders/2000017467066502",
+            "user_id": 459646703,
+            "application_id": 2068436181196849,
+            "sent": "2026-07-22T20:05:31.554Z",
+            "attempts": 1,
+            "received": "2026-07-22T20:05:31.014Z",
+            "actions": [
+              "flows:catalog",
+              "site_id:mlb",
+              "channel:marketplace",
+              "payments",
+              "action:delete_tag",
+              "is_test:false",
+              "pack_order:true",
+              "order_items"
+            ]
+          },
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/9be0fe0b-15c2-494b-bd05-aa9361194f8f",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0,
+          "input": 1
+        }
+      }
+    ]
+  },
+  "versionId": "6c095b3e-c205-4cee-b0f0-e665b06e63e3",
+  "activeVersionId": "6c095b3e-c205-4cee-b0f0-e665b06e63e3",
+  "versionCounter": 33,
   "triggerCount": 2,
   "tags": [],
   "shared": [
