@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-13T19:03:52.019Z",
+  "updatedAt": "2026-08-03T18:40:20.548Z",
   "createdAt": "2026-02-13T18:56:38.844Z",
   "id": "mhEQriwjFVpvomoL",
   "name": "[func] CONSULTA PEDIDO TRAY",
@@ -33,7 +33,7 @@
           "value": "LqTstnWZGbYy8pHB",
           "mode": "list",
           "cachedResultUrl": "/workflow/LqTstnWZGbYy8pHB",
-          "cachedResultName": "[func] Token Imperador"
+          "cachedResultName": "[func] TOKEN IMPERADOR"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -145,9 +145,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "7928cb31-f86f-4b8b-b202-02489a329150",
+  "versionId": "a5ac5248-db47-4776-972e-b9500012a04a",
   "activeVersionId": "7928cb31-f86f-4b8b-b202-02489a329150",
-  "versionCounter": 23,
+  "versionCounter": 26,
   "triggerCount": 0,
   "tags": [],
   "shared": [
