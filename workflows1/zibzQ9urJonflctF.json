@@ -1,0 +1,222 @@
+{
+  "updatedAt": "2026-08-07T12:37:17.181Z",
+  "createdAt": "2026-08-07T11:45:56.088Z",
+  "id": "zibzQ9urJonflctF",
+  "name": "chatwoot teste",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -160
+      ],
+      "id": "8f165082-4330-4415-abd2-b19bebd63354",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "766bec36-4de7-449c-b05b-4e54f8bb558c",
+              "name": "payload[0].id",
+              "value": "={{ $json.payload[1].id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -32,
+        -160
+      ],
+      "id": "cc6755f4-a38e-4e36-b631-2215a7408126",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/1/contacts/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "5193732861"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "nZUjCMDgToJLj6KfkzuaCSJf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -240,
+        -160
+      ],
+      "id": "059591f5-1f53-4841-9e1b-0cb5f0786949",
+      "name": "Contato"
+    },
+    {
+      "parameters": {
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/1/contacts/{{ $json.payload[0].id }}/conversations",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "5193732861"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "nZUjCMDgToJLj6KfkzuaCSJf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        176,
+        -160
+      ],
+      "id": "be0c7c4d-e4fa-456a-9356-5b64abe82b1c",
+      "name": "Conversa"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "766bec36-4de7-449c-b05b-4e54f8bb558c",
+              "name": "payload[0].id",
+              "value": "={{ $json.payload[0].id }}",
+              "type": "number"
+            },
+            {
+              "id": "7cad76ae-c670-4f07-a23b-0aae60e7ad82",
+              "name": "payload[0].identifier",
+              "value": "={{ $json.payload[0].identifier }}",
+              "type": "string"
+            },
+            {
+              "id": "6345476f-0323-4d51-afa7-c667126412ad",
+              "name": "payload[1].contact_inboxes[0].inbox.id",
+              "value": "={{ $json.payload[1].contact_inboxes[0].inbox.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        80
+      ],
+      "id": "22fd4b09-973c-4e11-97f6-354cb2153a98",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contato": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversa": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "8d0f4f6d-5ce0-41e7-86dd-d18af722d7f3",
+  "activeVersionId": null,
+  "versionCounter": 43,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-08-07T11:45:56.088Z",
+      "createdAt": "2026-08-07T11:45:56.088Z",
+      "role": "workflow:owner",
+      "workflowId": "zibzQ9urJonflctF",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
