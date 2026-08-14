@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-03T18:40:20.548Z",
+  "updatedAt": "2026-08-14T17:55:08.577Z",
   "createdAt": "2026-02-13T18:56:38.844Z",
   "id": "mhEQriwjFVpvomoL",
   "name": "[func] CONSULTA PEDIDO TRAY",
@@ -144,10 +144,18 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "nr_pedido": "2329"
+        }
+      }
+    ]
+  },
   "versionId": "a5ac5248-db47-4776-972e-b9500012a04a",
   "activeVersionId": "7928cb31-f86f-4b8b-b202-02489a329150",
-  "versionCounter": 26,
+  "versionCounter": 28,
   "triggerCount": 0,
   "tags": [],
   "shared": [
