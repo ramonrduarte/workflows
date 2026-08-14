@@ -1,0 +1,1932 @@
+{
+  "updatedAt": "2026-08-14T22:29:14.050Z",
+  "createdAt": "2026-08-14T19:22:07.089Z",
+  "id": "FlUKn84EfVb49i5n",
+  "name": "Webhook Tray Imperador copy",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "78a9aca3-7ce5-47f6-b8bf-c667792b6ee8",
+        "options": {}
+      },
+      "id": "0c51a353-98cd-4191-aa9f-cbb5d02102c9",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        -336
+      ],
+      "webhookId": "78a9aca3-7ce5-47f6-b8bf-c667792b6ee8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1d812044-a398-4cc6-bf18-f4ae2f085d28",
+              "leftValue": "={{ $json.body[0].message.body.scope_name }}",
+              "rightValue": "order",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "94182bc2-99ef-43f5-814e-9e3f82af0ceb",
+              "leftValue": "={{ $json.body[0].message.body.seller_id }}",
+              "rightValue": "1145224",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dcf8a35b-0e53-4019-8a8b-222283d86f2f",
+      "name": "Filtro",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        -336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b50dfd72-633a-42d5-80df-addcacc6689a",
+              "leftValue": "={{ $('Webhook').item.json.body[0].message.body.act }}",
+              "rightValue": "insert",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4726f944-7799-4f8a-91fe-aa4b86908165",
+              "leftValue": "={{ $('Webhook').item.json.body[0].message.body.act }}",
+              "rightValue": "update",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        -336
+      ],
+      "id": "d77a4d90-3a1c-48d8-9c60-52a90984c8ec",
+      "name": "Insert Or Update"
+    },
+    {
+      "parameters": {
+        "url": "https://xpaqrwhayhegsmlhrqof.supabase.co/functions/v1/delete",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "queue_name",
+              "value": "tray"
+            },
+            {
+              "name": "message_id",
+              "value": "={{ $('Webhook').first().json.body[0].msg_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3152,
+        -416
+      ],
+      "id": "8bff0a4d-68e5-495d-af12-e164c7b0af53",
+      "name": "Limpa Lista"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "mhEQriwjFVpvomoL",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/mhEQriwjFVpvomoL",
+          "cachedResultName": "[func] CONSULTA PEDIDO TRAY"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nr_pedido": "={{ $json.body[0].message.body.scope_id }}"
+          },
+          "matchingColumns": [
+            "nr_pedido"
+          ],
+          "schema": [
+            {
+              "id": "nr_pedido",
+              "displayName": "nr_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        -336
+      ],
+      "id": "ff8a72db-7196-4586-a03d-111e780b299a",
+      "name": "Call '[func] CONSULTA PEDIDO TRAY'"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad0b4fdc-e204-4c65-81cf-2c979baf475c",
+              "name": "pedido_status",
+              "value": "={{ $json.Order.status }}",
+              "type": "string"
+            },
+            {
+              "id": "2070f90c-5c1a-48d5-b21a-e52a18ce6734",
+              "name": "pedido_observacoes",
+              "value": "={{ $json.Order.store_note }}",
+              "type": "string"
+            },
+            {
+              "id": "0e665a85-38b0-413b-b145-b1f4843e01ae",
+              "name": "pedido_url",
+              "value": "={{ $json.Order.urls.payment }}",
+              "type": "string"
+            },
+            {
+              "id": "60ef3e6f-a4cf-4c70-9e25-6d22393069e2",
+              "name": "cliente_id",
+              "value": "={{ $json.Order.Customer.id }}",
+              "type": "string"
+            },
+            {
+              "id": "3354e635-f116-44b2-9a3b-1fce4ff14831",
+              "name": "cliente_nome",
+              "value": "={{ $json.Order.Customer.name }}",
+              "type": "string"
+            },
+            {
+              "id": "f135a28f-6953-4953-8f21-1d17b6ab5f88",
+              "name": "cliente_telefone",
+              "value": "=+55{{ $json.Order.Customer.cellphone }}",
+              "type": "string"
+            },
+            {
+              "id": "fea8ae27-0378-4773-b6b8-4c1bd34d2420",
+              "name": "nr_pedido",
+              "value": "={{ $('Webhook').item.json.body[0].message.body.scope_id }}",
+              "type": "string"
+            },
+            {
+              "id": "a6893542-0597-497b-9428-181197529794",
+              "name": "url_nota",
+              "value": "={{ $json.Order.OrderInvoice[0].OrderInvoice.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        -336
+      ],
+      "id": "de801c33-84ca-48d3-abad-132c25231f1f",
+      "name": "Normaliza"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "42fa49b0-de14-4f2f-a4c0-88550e58d163",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "EM MONITORAMENTO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "EM MONITORAMENTO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "40de405f-d7b5-49c3-990f-27ab3c50d667",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "PENDENTE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PENDENTE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "44072ed3-8888-4621-a0b8-f1b41f8df21d",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO ENVIO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO ENVIO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6e0004a6-168c-4f7b-a54d-5fe5322f09b6",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO DEVOLUÇÃO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO DEVOLUÇÃO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8df61800-741c-4cf1-92cb-77a22f28fc9d",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "AGUARDANDO VINDI",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGUARDANDO VINDI"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "A ENVIAR",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "26ece9d6-b601-4e4c-882c-f4e3f4ca7491"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A ENVIAR"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e5f428ff-a363-4b02-b5fb-eac5fe104936",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "A ENVIAR VINDI",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "A ENVIAR VINDI"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e1abce58-c8f5-4a8b-85c2-9bb1f0179dbe",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "ENVIADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ENVIADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "66f9ccc4-67b4-4951-b084-4615d039eab3",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "FINALIZADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "FINALIZADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3aa04811-f289-4506-b2f8-1acd66b6cb35",
+                    "leftValue": "={{ $('Normaliza').item.json.pedido_status }}",
+                    "rightValue": "CANCELADO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CANCELADO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        -224
+      ],
+      "id": "9a225f45-8089-4509-b777-630a148f86dd",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE msg_imperador (\n    id SERIAL PRIMARY KEY,\n    nr_pedido INTEGER NOT NULL,\n    tipo VARCHAR(50) NOT NULL,\n    enviado BOOLEAN NOT NULL DEFAULT FALSE,\n    data_envio TIMESTAMP,\n    created_at TIMESTAMP NOT NULL DEFAULT NOW(),\n\n    CONSTRAINT unique_msg UNIQUE (nr_pedido, tipo)\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -256,
+        -736
+      ],
+      "id": "79a1bd45-a610-4a1a-b29d-c44e74a3d859",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS (\n    SELECT 1\n    FROM msg_imperador\n    WHERE nr_pedido = {{ $('Normaliza').item.json.nr_pedido }}\n      AND tipo = '{{ $('Normaliza').item.json.pedido_status }}'\n      AND enviado = TRUE\n) AS ja_enviado;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        272,
+        -336
+      ],
+      "id": "aea3e00e-5b61-4c7d-9d92-39e2e3cdc291",
+      "name": "Consulta mensagens",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "03ad044b-db59-4cb0-b631-eb9c0b3b3dd3",
+              "leftValue": "={{ $json.ja_enviado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        -336
+      ],
+      "id": "3b6ae254-5049-4daa-9047-ba29b1af6d4d",
+      "name": "Ja enviada?"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM msg_imperador",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -48,
+        -736
+      ],
+      "id": "e22378d5-013f-46ff-844b-257a992bad0c",
+      "name": "Consulta tabela",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "msg_imperador",
+          "mode": "list",
+          "cachedResultName": "msg_imperador"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "enviado": true,
+            "nr_pedido": "={{ $('Normaliza').item.json.nr_pedido }}",
+            "tipo": "={{ $('Normaliza').item.json.pedido_status }}",
+            "data_envio": "={{ new Date().toISOString() }}",
+            "created_at": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [
+            "nr_pedido",
+            "tipo"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nr_pedido",
+              "displayName": "nr_pedido",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "enviado",
+              "displayName": "enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "data_envio",
+              "displayName": "data_envio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2608,
+        -64
+      ],
+      "id": "86c49def-bd4f-4f38-bd25-764a66109f64",
+      "name": "Atualiza Tabela",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "msg_imperador",
+          "mode": "list",
+          "cachedResultName": "msg_imperador"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "9"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        176,
+        -736
+      ],
+      "id": "4991510d-9dd0-4809-a591-a38c9a67dcaf",
+      "name": "Deleta Linha",
+      "credentials": {
+        "postgres": {
+          "id": "WNH4QLNLI8FxsOYR",
+          "name": "Postgres token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": 503,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "6643237a-4348-4b73-be1a-8be3465918a1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DESCONECTADO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9397ca82-faa6-490e-8020-83ad0ef13085",
+                    "leftValue": "={{ $json.error.status }}",
+                    "rightValue": 500,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SEM WHATSAPP"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2736,
+        32
+      ],
+      "id": "fb6f562d-7f22-4a9c-9cc7-2c605d22abe3",
+      "name": "Erros"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wsapi.rdmon.com/message/sendText/Ramon",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "WoXyfUvtW2asBKfwfg9J"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "5551993732861@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "=Telefone Imperador Desconectado"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "67e99099-7b86-4565-b489-52ed975e738b",
+      "name": "Aviso desconexao",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2752,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/contacts/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        256
+      ],
+      "id": "f7c1e95c-5f08-4cad-a557-37a9a91f22e3",
+      "name": "Consulta contato"
+    },
+    {
+      "parameters": {
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/contacts/{{ $json.payload[0].id }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1312,
+        48
+      ],
+      "id": "1c5caa3d-b44f-4bdd-8f68-94bd4b2d95ca",
+      "name": "Consulta conversa"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inboxId = 10;\n\nconst conversas = ($json.payload || [])\n  .filter(c => Number(c.inbox_id) === inboxId)\n  .sort((a, b) =>\n    Number(b.last_activity_at || b.updated_at || b.id) -\n    Number(a.last_activity_at || a.updated_at || a.id)\n  );\n\nconst conversa = conversas[0];\n\nreturn [{\n  json: {\n    conversa_existe: !!conversa,\n    conversation_id: conversa?.id ?? null,\n    inbox_id: conversa?.inbox_id ?? inboxId,\n    status: conversa?.status ?? null,\n    precisa_reabrir: !!conversa && conversa.status !== 'open'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1488,
+        48
+      ],
+      "id": "7bec191d-03ec-4938-95fa-0c1e3e36ea6f",
+      "name": "Ajuste conversa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cf9c5fc0-560e-4c04-abd2-c9cebae44dcf",
+              "leftValue": "={{ $json.conversa_existe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1664,
+        48
+      ],
+      "id": "d9a92c64-9a0e-494e-a500-e1d1b810ecf5",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d2f8fa06-c617-4b48-b7af-1b4e6f3740d1",
+              "leftValue": "={{ $json.precisa_reabrir }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1840,
+        -16
+      ],
+      "id": "75815ac6-8902-4810-86e2-1f24ab3c23e1",
+      "name": "Precisa reabrir?"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        1296
+      ],
+      "id": "e4c99592-f67c-4cba-972b-eab6cbbb1e91",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/conversations/{{ $('Ajuste conversa').item.json.conversation_id }}/toggle_status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "open"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2048,
+        -48
+      ],
+      "id": "f1897ce3-ae0d-4600-9ae2-e3c60a473c50",
+      "name": "Reabre Conversa"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $('Dados Chatwoot').item.json.mensagem }}"
+            },
+            {
+              "name": "message_type",
+              "value": "outgoing"
+            },
+            {
+              "name": "private",
+              "value": "false"
+            },
+            {
+              "name": "content_type",
+              "value": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2384,
+        144
+      ],
+      "id": "ad50bd73-16b6-413a-851b-04587b443b1f",
+      "name": "Envia Mensagem",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "inbox_id",
+              "value": "10"
+            },
+            {
+              "name": "name",
+              "value": "={{ $('Dados Chatwoot').item.json.cliente_nome }}"
+            },
+            {
+              "name": "phone_number",
+              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone.replace(/\\D/g, '') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1680,
+        272
+      ],
+      "id": "22cfcd27-d624-49da-b14b-36d1dd567e60",
+      "name": "Cadastra contato"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7d47feea-57bd-40da-b3f2-a746e3b2d49a",
+              "leftValue": "={{ $json.meta.count > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1472,
+        256
+      ],
+      "id": "a696a549-dd6e-422f-8342-86d82500175d",
+      "name": "Contato Existe?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "source_id",
+              "value": "={{ $('Consulta contato').item.json.payload[0].phone_number.replace(/\\\\D/g, '') }}"
+            },
+            {
+              "name": "inbox_id",
+              "value": "10"
+            },
+            {
+              "name": "contact_id",
+              "value": "={{ $('Consulta contato').item.json.payload[0].id }}"
+            },
+            {
+              "name": "status",
+              "value": "open"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1840,
+        128
+      ],
+      "id": "7d209869-c60b-4ccc-844a-cdefaa0d4d1e",
+      "name": "Cria conversa"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "e59rgyHiUfKLw18uFKj9Dk5b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "source_id",
+              "value": "={{ $json.payload.contact.contact_inboxes[0].source_id }}"
+            },
+            {
+              "name": "inbox_id",
+              "value": "10"
+            },
+            {
+              "name": "contact_id",
+              "value": "={{ $json.payload.contact.id }}"
+            },
+            {
+              "name": "status",
+              "value": "open"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1904,
+        272
+      ],
+      "id": "289abe85-08a2-4027-a561-abf985def4a0",
+      "name": "Cria conversa - Novo contato"
+    },
+    {
+      "parameters": {
+        "jsCode": "let conversationId = null;\n\n// Conversa já existente\nif ($json.conversation_id) {\n  conversationId = $json.conversation_id;\n}\n\n// Retorno do node que reabriu a conversa\nelse if ($json.payload?.conversation_id) {\n  conversationId = $json.payload.conversation_id;\n}\n\n// Conversa recém-criada\nelse if ($json.id) {\n  conversationId = $json.id;\n}\n\nif (!conversationId) {\n  throw new Error('Não foi possível identificar o conversation_id');\n}\n\nreturn [{\n  json: {\n    conversation_id: Number(conversationId)\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        144
+      ],
+      "id": "150bed58-d4f9-46b3-8352-45c737a29198",
+      "name": "Prepara Envio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0881f057-df80-47fc-91c7-7439cead9643",
+              "name": "Mensagem",
+              "value": "=Olá! 😊\nRecebemos a confirmação do pagamento do seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}*.\n\nJá estamos preparando tudo com carinho e em breve ele será enviado. Assim que despachar, avisaremos por aqui!\n\nQualquer dúvida, estou à disposição.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        -16
+      ],
+      "id": "8b764fb7-150c-43ac-9cf9-192ab60d73de",
+      "name": "Mensagem - Pagamento"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "361aabc4-722e-4412-98df-f23153193bf1",
+              "name": "Mensagem",
+              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!\n\nNota Fiscal: {{ $('Call \\'[func] CONSULTA PEDIDO TRAY\\'').item.json.Order.OrderInvoice[0].OrderInvoice.link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        144
+      ],
+      "id": "4b5ee782-0a22-4197-8ec6-5600aa959e64",
+      "name": "Mensagem - Enviado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "59818e6f-379c-4175-9a2f-40dfbab2c921",
+              "name": "Mensagem",
+              "value": "=Olá! Tudo bem?\n\nConfirmamos que seu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi entregue.\nGostaríamos de saber como foi sua experiência. Seu feedback é essencial para melhorarmos cada vez mais.\n\nNos envie uma foto do produto instalado, vamos adorar ver como ficou! ✨\nE não deixe de nos acompanhar no Instagram @imperadordoslustres para novidades e inspirações!\n\nAgradecemos pela confiança 💛",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        320
+      ],
+      "id": "3c6bb4fa-2344-4969-8616-5f0ca253351e",
+      "name": "Mensagem - Finalizado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ebe826f-d7f9-4e16-be67-68745fafe2cb",
+              "name": "Mensagem",
+              "value": "=Olá!\nNotamos que o pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi cancelado.\n\nSe quiser finalizar sua compra, é só clicar no link abaixo seu carrinho ainda está salvo:\n{{ $('Normaliza').item.json.pedido_url }}\n\nSe precisar de ajuda, estou aqui para você 😊",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        496
+      ],
+      "id": "e6b5bd0c-daff-4db1-bd89-38d5036387be",
+      "name": "Mensagem - Cancelado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39fe6292-b3da-42ed-b475-1523f6a476d0",
+              "name": "cliente_nome",
+              "value": "={{ $('Normaliza').item.json.cliente_nome }}",
+              "type": "string"
+            },
+            {
+              "id": "bcdbd7f1-03e6-4ec5-8839-cb5a88539cbc",
+              "name": "cliente_telefone",
+              "value": "={{ $('Normaliza').item.json.cliente_telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "95c0cf17-f537-4cb6-ad85-a494801bd50d",
+              "name": "mensagem",
+              "value": "={{ $json.Mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        256
+      ],
+      "id": "326b4707-9d16-46d1-9f2c-c3009b44b8d7",
+      "name": "Dados Chatwoot"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filtro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro": {
+      "main": [
+        [
+          {
+            "node": "Insert Or Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Or Update": {
+      "main": [
+        [
+          {
+            "node": "Call '[func] CONSULTA PEDIDO TRAY'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call '[func] CONSULTA PEDIDO TRAY'": {
+      "main": [
+        [
+          {
+            "node": "Normaliza",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normaliza": {
+      "main": [
+        [
+          {
+            "node": "Consulta mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem - Pagamento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem - Enviado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem - Finalizado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem - Cancelado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta mensagens": {
+      "main": [
+        [
+          {
+            "node": "Ja enviada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ja enviada?": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza Tabela": {
+      "main": [
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta tabela": {
+      "main": [
+        []
+      ]
+    },
+    "Erros": {
+      "main": [
+        [
+          {
+            "node": "Aviso desconexao",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limpa Lista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta contato": {
+      "main": [
+        [
+          {
+            "node": "Contato Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta conversa": {
+      "main": [
+        [
+          {
+            "node": "Ajuste conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajuste conversa": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Precisa reabrir?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cria conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "Precisa reabrir?": {
+      "main": [
+        [
+          {
+            "node": "Reabre Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepara Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reabre Conversa": {
+      "main": [
+        [
+          {
+            "node": "Prepara Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contato Existe?": {
+      "main": [
+        [
+          {
+            "node": "Consulta conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cadastra contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cadastra contato": {
+      "main": [
+        [
+          {
+            "node": "Cria conversa - Novo contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Atualiza Tabela",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria conversa - Novo contato": {
+      "main": [
+        [
+          {
+            "node": "Prepara Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria conversa": {
+      "main": [
+        [
+          {
+            "node": "Prepara Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepara Envio": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem - Cancelado": {
+      "main": [
+        [
+          {
+            "node": "Dados Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem - Finalizado": {
+      "main": [
+        [
+          {
+            "node": "Dados Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem - Enviado": {
+      "main": [
+        [
+          {
+            "node": "Dados Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem - Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Dados Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Chatwoot": {
+      "main": [
+        [
+          {
+            "node": "Consulta contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "QNXmnXzk3oSzrk7q",
+    "saveDataSuccessExecution": "all"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {
+          "phone": "+5551993732867"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhooks.rdmon.com",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.74.3)",
+            "content-length": "1109",
+            "accept": "*/*",
+            "accept-encoding": "gzip,br",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "traceparent": "00-7fcb4e52c928b052c9fa0481a419711a-6a09ad97c71fdc4e-01",
+            "x-forwarded-for": "18.237.163.202",
+            "x-forwarded-host": "webhooks.rdmon.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik_traefik.1",
+            "x-real-ip": "18.237.163.202"
+          },
+          "params": {},
+          "query": {},
+          "body": [
+            {
+              "msg_id": 718,
+              "read_ct": 4,
+              "enqueued_at": "2026-08-14T22:06:41.938287+00:00",
+              "vt": "2026-08-14T22:26:47.894511+00:00",
+              "message": {
+                "body": {
+                  "act": "update",
+                  "scope_id": "2333",
+                  "seller_id": "1145224",
+                  "scope_name": "order"
+                },
+                "headers": {
+                  "host": "edge-runtime.supabase.com",
+                  "accept": "*/*",
+                  "cf-ray": "a2b344a23de9f2b6-GRU",
+                  "baggage": "sb-request-id=01a00250-2090-7ccd-9bfd-2d42fc48d27f",
+                  "cdn-loop": "cloudflare; loops=1",
+                  "cf-ew-via": "15",
+                  "cf-worker": "supabase.co",
+                  "cf-visitor": "{\"scheme\":\"https\"}",
+                  "tracestate": "es=s:0.0",
+                  "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
+                  "traceparent": "00-ad06027676d9cef111a3f68b6d0306a4-1c96c003b8a1a0ba-00",
+                  "content-type": "application/x-www-form-urlencoded",
+                  "sb-request-id": "01a00250-2090-7ccd-9bfd-2d42fc48d27f",
+                  "content-length": "59",
+                  "accept-encoding": "gzip",
+                  "x-amzn-trace-id": "Root=1-6a7f9170-3eb8d4ab2a8e947422aad1c0",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.17",
+                  "cf-connecting-ip": "138.122.172.11",
+                  "x-forwarded-port": "443",
+                  "x-forwarded-proto": "https",
+                  "elastic-apm-traceparent": "00-ad06027676d9cef111a3f68b6d0306a4-1c96c003b8a1a0ba-00"
+                }
+              },
+              "headers": null
+            }
+          ],
+          "webhookUrl": "https://webhooks.rdmon.com/webhook/78a9aca3-7ce5-47f6-b8bf-c667792b6ee8",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "9d7f4b47-b285-4802-9b3f-fc952b000c5e",
+  "activeVersionId": "9d7f4b47-b285-4802-9b3f-fc952b000c5e",
+  "versionCounter": 257,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-08-14T19:22:07.089Z",
+      "createdAt": "2026-08-14T19:22:07.089Z",
+      "role": "workflow:owner",
+      "workflowId": "FlUKn84EfVb49i5n",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
