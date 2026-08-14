@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T17:06:57.137Z",
+  "updatedAt": "2026-08-14T19:17:18.514Z",
   "createdAt": "2026-02-13T19:06:23.785Z",
   "id": "KPNRDUmFfTkowuXq",
   "name": "Webhook Tray Imperador",
@@ -237,6 +237,12 @@
               "id": "5102fef7-e347-4582-baa6-785746602ab3",
               "name": "token_instancia",
               "value": "5d920acc-6080-45d3-9bfb-981e3825285a",
+              "type": "string"
+            },
+            {
+              "id": "a6893542-0597-497b-9428-181197529794",
+              "name": "url_nota",
+              "value": "={{ $json.Order.OrderInvoice[0].OrderInvoice.link }}",
               "type": "string"
             }
           ]
@@ -628,7 +634,7 @@
             },
             {
               "name": "text",
-              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!"
+              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!\n\nNota Fiscal: {{ $('Call \\'[func] CONSULTA PEDIDO TRAY\\'').item.json.Order.OrderInvoice[0].OrderInvoice.link }}"
             }
           ]
         },
@@ -696,7 +702,7 @@
       "typeVersion": 2.6,
       "position": [
         -256,
-        -528
+        -736
       ],
       "id": "4b8df609-3282-401a-9836-77bc7286141d",
       "name": "Execute a SQL query",
@@ -775,7 +781,7 @@
       "typeVersion": 2.6,
       "position": [
         -48,
-        -528
+        -736
       ],
       "id": "e5e29f9f-a9e1-41f2-9ec8-700f2f4f476d",
       "name": "Consulta tabela",
@@ -921,7 +927,7 @@
       "typeVersion": 2.6,
       "position": [
         176,
-        -528
+        -736
       ],
       "id": "83002eb8-abfe-4475-adea-81772bd30c1d",
       "name": "Deleta Linha",
@@ -1349,7 +1355,7 @@
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2209",
+                  "scope_id": "2329",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
@@ -1385,16 +1391,13 @@
           ],
           "webhookUrl": "https://webhooks.rdmon.com/webhook/725bc4e7-f287-4860-86be-3ff94abc9b13",
           "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
         }
       }
     ]
   },
-  "versionId": "4dc3169b-5f4a-4958-915d-7b3dda81d9f8",
-  "activeVersionId": "7f3cfdc5-0d8a-4d21-a4fc-5926e52ff0a3",
-  "versionCounter": 529,
+  "versionId": "32e81171-fe63-4d30-a6a9-70277de86b16",
+  "activeVersionId": "32e81171-fe63-4d30-a6a9-70277de86b16",
+  "versionCounter": 552,
   "triggerCount": 1,
   "tags": [],
   "shared": [
