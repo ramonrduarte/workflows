@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-14T22:29:14.050Z",
+  "updatedAt": "2026-08-15T16:16:14.349Z",
   "createdAt": "2026-08-14T19:22:07.089Z",
   "id": "FlUKn84EfVb49i5n",
   "name": "Webhook Tray Imperador copy",
@@ -132,7 +132,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3152,
+        3360,
         -416
       ],
       "id": "8bff0a4d-68e5-495d-af12-e164c7b0af53",
@@ -706,7 +706,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2608,
+        2816,
         -64
       ],
       "id": "86c49def-bd4f-4f38-bd25-764a66109f64",
@@ -817,7 +817,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        2736,
+        2944,
         32
       ],
       "id": "fb6f562d-7f22-4a9c-9cc7-2c605d22abe3",
@@ -860,7 +860,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2752,
+        2960,
         256
       ]
     },
@@ -872,7 +872,7 @@
           "parameters": [
             {
               "name": "q",
-              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone }}"
+              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone.replace(/\\D/g, '').slice(-8) }}"
             }
           ]
         },
@@ -898,7 +898,7 @@
     },
     {
       "parameters": {
-        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/contacts/{{ $json.payload[0].id }}/conversations",
+        "url": "=https://chatwoot.losangosolucoes.com.br/api/v1/accounts/2/contacts/{{ $json.contact_id }}/conversations",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -926,7 +926,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1488,
+        1696,
         48
       ],
       "id": "7bec191d-03ec-4938-95fa-0c1e3e36ea6f",
@@ -960,7 +960,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1664,
+        1872,
         48
       ],
       "id": "d9a92c64-9a0e-494e-a500-e1d1b810ecf5",
@@ -994,7 +994,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1840,
+        2048,
         -16
       ],
       "id": "75815ac6-8902-4810-86e2-1f24ab3c23e1",
@@ -1038,7 +1038,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2048,
+        2256,
         -48
       ],
       "id": "f1897ce3-ae0d-4600-9ae2-e3c60a473c50",
@@ -1083,7 +1083,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        2384,
+        2592,
         144
       ],
       "id": "ad50bd73-16b6-413a-851b-04587b443b1f",
@@ -1116,7 +1116,7 @@
             },
             {
               "name": "phone_number",
-              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone.replace(/\\D/g, '') }}"
+              "value": "={{ $('Dados Chatwoot').item.json.cliente_telefone }}"
             }
           ]
         },
@@ -1125,7 +1125,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1680,
+        1888,
         272
       ],
       "id": "22cfcd27-d624-49da-b14b-36d1dd567e60",
@@ -1143,7 +1143,7 @@
           "conditions": [
             {
               "id": "7d47feea-57bd-40da-b3f2-a746e3b2d49a",
-              "leftValue": "={{ $json.meta.count > 0 }}",
+              "leftValue": "={{ $json.contato_existe }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
@@ -1159,7 +1159,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1472,
+        1680,
         256
       ],
       "id": "a696a549-dd6e-422f-8342-86d82500175d",
@@ -1183,7 +1183,7 @@
           "parameters": [
             {
               "name": "source_id",
-              "value": "={{ $('Consulta contato').item.json.payload[0].phone_number.replace(/\\\\D/g, '') }}"
+              "value": "={{ $('Valida contato').item.json.source_id }}"
             },
             {
               "name": "inbox_id",
@@ -1191,7 +1191,7 @@
             },
             {
               "name": "contact_id",
-              "value": "={{ $('Consulta contato').item.json.payload[0].id }}"
+              "value": "={{ $('Valida contato').item.json.contact_id }}"
             },
             {
               "name": "status",
@@ -1204,7 +1204,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1840,
+        2048,
         128
       ],
       "id": "7d209869-c60b-4ccc-844a-cdefaa0d4d1e",
@@ -1249,7 +1249,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1904,
+        2112,
         272
       ],
       "id": "289abe85-08a2-4027-a561-abf985def4a0",
@@ -1262,7 +1262,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2208,
+        2416,
         144
       ],
       "id": "150bed58-d4f9-46b3-8352-45c737a29198",
@@ -1398,6 +1398,19 @@
       ],
       "id": "326b4707-9d16-46d1-9f2c-c3009b44b8d7",
       "name": "Dados Chatwoot"
+    },
+    {
+      "parameters": {
+        "jsCode": "const telefoneNovo = $('Dados Chatwoot').item.json.cliente_telefone;\nconst inboxId = 10;\n\n// Somente números\nconst novo = String(telefoneNovo).replace(/\\D/g, '');\n\n// DDD + últimos 8 dígitos\nconst dddNovo = novo.slice(2, 4);\nconst ultimos8Novo = novo.slice(-8);\n\nconst contatos = $json.payload || [];\n\nconst contato = contatos.find(c => {\n  const telefone = String(c.phone_number || '').replace(/\\D/g, '');\n\n  const ddd = telefone.slice(2, 4);\n  const ultimos8 = telefone.slice(-8);\n\n  return (\n    ddd === dddNovo &&\n    ultimos8 === ultimos8Novo\n  );\n});\n\n// Procura especificamente a associação com a Inbox 10\nconst contactInbox = contato?.contact_inboxes?.find(\n  ci => Number(ci.inbox?.id) === inboxId\n);\n\nreturn [{\n  json: {\n    contato_existe: !!contato,\n    contact_id: contato?.id ?? null,\n    source_id: contactInbox?.source_id ?? null\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1504,
+        256
+      ],
+      "id": "ed101aea-da63-49ce-938e-54b53506c513",
+      "name": "Valida contato"
     }
   ],
   "connections": {
@@ -1597,7 +1610,7 @@
       "main": [
         [
           {
-            "node": "Contato Existe?",
+            "node": "Valida contato",
             "type": "main",
             "index": 0
           }
@@ -1812,6 +1825,17 @@
           }
         ]
       ]
+    },
+    "Valida contato": {
+      "main": [
+        [
+          {
+            "node": "Contato Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1841,56 +1865,56 @@
           "headers": {
             "host": "webhooks.rdmon.com",
             "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.74.3)",
-            "content-length": "1109",
+            "content-length": "1110",
             "accept": "*/*",
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "traceparent": "00-7fcb4e52c928b052c9fa0481a419711a-6a09ad97c71fdc4e-01",
-            "x-forwarded-for": "18.237.163.202",
+            "traceparent": "00-a9e8d6b9161dcdec401d199fcc4ceceb-47d4d38f05446d08-01",
+            "x-forwarded-for": "44.250.46.221",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "18.237.163.202"
+            "x-real-ip": "44.250.46.221"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 718,
-              "read_ct": 4,
-              "enqueued_at": "2026-08-14T22:06:41.938287+00:00",
-              "vt": "2026-08-14T22:26:47.894511+00:00",
+              "msg_id": 722,
+              "read_ct": 14,
+              "enqueued_at": "2026-08-15T15:08:02.575521+00:00",
+              "vt": "2026-08-15T16:18:22.770956+00:00",
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2333",
+                  "scope_id": "2337",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "a2b344a23de9f2b6-GRU",
-                  "baggage": "sb-request-id=01a00250-2090-7ccd-9bfd-2d42fc48d27f",
+                  "cf-ray": "a2b91cbf9a39a6c6-GRU",
+                  "baggage": "sb-request-id=01a005f7-33b4-75a6-ad6e-ac05a7180b0a",
                   "cdn-loop": "cloudflare; loops=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
                   "tracestate": "es=s:0.0",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
-                  "traceparent": "00-ad06027676d9cef111a3f68b6d0306a4-1c96c003b8a1a0ba-00",
+                  "traceparent": "00-5ca96bbd576cf60616a00b2a0a1fbfc4-c3e84bd77bc1a6d0-00",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "01a00250-2090-7ccd-9bfd-2d42fc48d27f",
+                  "sb-request-id": "01a005f7-33b4-75a6-ad6e-ac05a7180b0a",
                   "content-length": "59",
                   "accept-encoding": "gzip",
-                  "x-amzn-trace-id": "Root=1-6a7f9170-3eb8d4ab2a8e947422aad1c0",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.17",
+                  "x-amzn-trace-id": "Root=1-6a8080d1-70aa9c9953032a044a9ea834",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "elastic-apm-traceparent": "00-ad06027676d9cef111a3f68b6d0306a4-1c96c003b8a1a0ba-00"
+                  "elastic-apm-traceparent": "00-5ca96bbd576cf60616a00b2a0a1fbfc4-c3e84bd77bc1a6d0-00"
                 }
               },
               "headers": null
@@ -1905,9 +1929,9 @@
       }
     ]
   },
-  "versionId": "9d7f4b47-b285-4802-9b3f-fc952b000c5e",
-  "activeVersionId": "9d7f4b47-b285-4802-9b3f-fc952b000c5e",
-  "versionCounter": 257,
+  "versionId": "1eab7951-0eb9-4350-9137-8745a7f868ef",
+  "activeVersionId": "1eab7951-0eb9-4350-9137-8745a7f868ef",
+  "versionCounter": 277,
   "triggerCount": 1,
   "tags": [],
   "shared": [
