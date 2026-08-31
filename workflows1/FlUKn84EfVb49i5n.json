@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-17T18:22:17.842Z",
+  "updatedAt": "2026-08-31T16:45:25.807Z",
   "createdAt": "2026-08-14T19:22:07.089Z",
   "id": "FlUKn84EfVb49i5n",
   "name": "Webhook Tray Imperador copy",
@@ -1870,51 +1870,51 @@
             "accept-encoding": "gzip,br",
             "accept-language": "*",
             "content-type": "application/json",
-            "traceparent": "00-a9e8d6b9161dcdec401d199fcc4ceceb-47d4d38f05446d08-01",
-            "x-forwarded-for": "44.250.46.221",
+            "traceparent": "00-066b9c77ef986a0e244c8663f4d3c51c-18411d8ac0fdcfe5-01",
+            "x-forwarded-for": "44.250.228.159",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "44.250.46.221"
+            "x-real-ip": "44.250.228.159"
           },
           "params": {},
           "query": {},
           "body": [
             {
-              "msg_id": 722,
-              "read_ct": 14,
-              "enqueued_at": "2026-08-15T15:08:02.575521+00:00",
-              "vt": "2026-08-15T16:18:22.770956+00:00",
+              "msg_id": 749,
+              "read_ct": 1,
+              "enqueued_at": "2026-08-31T16:42:00.719475+00:00",
+              "vt": "2026-08-31T16:47:17.899377+00:00",
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2337",
+                  "scope_id": "2343",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
                 "headers": {
                   "host": "edge-runtime.supabase.com",
                   "accept": "*/*",
-                  "cf-ray": "a2b91cbf9a39a6c6-GRU",
-                  "baggage": "sb-request-id=01a005f7-33b4-75a6-ad6e-ac05a7180b0a",
+                  "cf-ray": "a33d7c645b4ff173-GRU",
+                  "baggage": "sb-request-id=01a058b2-f9e2-734f-960b-8b70a3066caa",
                   "cdn-loop": "cloudflare; loops=1",
                   "cf-ew-via": "15",
                   "cf-worker": "supabase.co",
                   "cf-visitor": "{\"scheme\":\"https\"}",
                   "tracestate": "es=s:0.0",
                   "user-agent": "rest-client/2.1.0 (linux x86_64) ruby/3.4.2p28",
-                  "traceparent": "00-5ca96bbd576cf60616a00b2a0a1fbfc4-c3e84bd77bc1a6d0-00",
+                  "traceparent": "00-11e0b3925cdc6127773ed43b347d5cde-78ea1b2bb6bb03b8-00",
                   "content-type": "application/x-www-form-urlencoded",
-                  "sb-request-id": "01a005f7-33b4-75a6-ad6e-ac05a7180b0a",
+                  "sb-request-id": "01a058b2-f9e2-734f-960b-8b70a3066caa",
                   "content-length": "59",
                   "accept-encoding": "gzip",
-                  "x-amzn-trace-id": "Root=1-6a8080d1-70aa9c9953032a044a9ea834",
-                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.18",
+                  "x-amzn-trace-id": "Root=1-6a95aed7-2cc335c4650e339e2805bddf",
+                  "x-forwarded-for": "138.122.172.11,138.122.172.11, 99.82.164.141",
                   "cf-connecting-ip": "138.122.172.11",
                   "x-forwarded-port": "443",
                   "x-forwarded-proto": "https",
-                  "elastic-apm-traceparent": "00-5ca96bbd576cf60616a00b2a0a1fbfc4-c3e84bd77bc1a6d0-00"
+                  "elastic-apm-traceparent": "00-11e0b3925cdc6127773ed43b347d5cde-78ea1b2bb6bb03b8-00"
                 }
               },
               "headers": null
@@ -1931,7 +1931,7 @@
   },
   "versionId": "df2d9895-fb1b-4108-a113-41b91dc55e61",
   "activeVersionId": "1eab7951-0eb9-4350-9137-8745a7f868ef",
-  "versionCounter": 278,
+  "versionCounter": 279,
   "triggerCount": 1,
   "tags": [],
   "shared": [
