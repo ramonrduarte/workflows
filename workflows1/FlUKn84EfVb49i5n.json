@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-31T16:45:25.807Z",
+  "updatedAt": "2026-09-01T12:56:37.432Z",
   "createdAt": "2026-08-14T19:22:07.089Z",
   "id": "FlUKn84EfVb49i5n",
   "name": "Webhook Tray Imperador copy",
@@ -1889,7 +1889,7 @@
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2343",
+                  "scope_id": "2345",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
@@ -1922,16 +1922,13 @@
           ],
           "webhookUrl": "https://webhooks.rdmon.com/webhook/78a9aca3-7ce5-47f6-b8bf-c667792b6ee8",
           "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
         }
       }
     ]
   },
   "versionId": "df2d9895-fb1b-4108-a113-41b91dc55e61",
   "activeVersionId": "1eab7951-0eb9-4350-9137-8745a7f868ef",
-  "versionCounter": 279,
+  "versionCounter": 280,
   "triggerCount": 1,
   "tags": [],
   "shared": [
