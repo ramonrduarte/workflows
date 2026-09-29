@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-23T17:07:13.893Z",
+  "updatedAt": "2026-09-29T14:37:53.147Z",
   "createdAt": "2026-02-23T13:53:10.332Z",
   "id": "eGnB5QEDPYBmBcNZ",
   "name": "MERCADO LIVRE",
@@ -56,7 +56,7 @@
   "pinData": {},
   "versionId": "d9b7bc82-a5b9-48a4-b32c-12d10d3e0f83",
   "activeVersionId": "3ab740f2-31f2-40d9-9f24-b45a4bfd25e6",
-  "versionCounter": 22,
+  "versionCounter": 28,
   "triggerCount": 2,
   "tags": [],
   "shared": [
