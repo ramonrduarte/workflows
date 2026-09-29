@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-21T14:08:58.694Z",
+  "updatedAt": "2026-09-29T14:37:59.249Z",
   "createdAt": "2026-02-21T13:12:23.264Z",
   "id": "ymfHenvcNrAnNvOR",
   "name": "[EMKT] Chatwoot x UaZapi v1.1.0-Premium",
@@ -2577,7 +2577,7 @@
   "pinData": {},
   "versionId": "bec3d7de-cf05-42a7-89c4-ca0c45566aef",
   "activeVersionId": "bec3d7de-cf05-42a7-89c4-ca0c45566aef",
-  "versionCounter": 20,
+  "versionCounter": 26,
   "triggerCount": 1,
   "tags": [],
   "shared": [
