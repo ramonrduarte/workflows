@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-17T00:36:45.653Z",
+  "updatedAt": "2026-09-29T16:47:10.023Z",
   "createdAt": "2026-02-17T00:07:02.788Z",
   "id": "rknu1ACdU0Q2i1Ov",
   "name": "QRCODE",
@@ -16,7 +16,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -320,
+        -352,
         0
       ],
       "id": "7bf7e753-e78b-4036-b912-da51efb01351",
@@ -119,7 +119,9 @@
     "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "pinData": {
     "Webhook": [
       {
@@ -157,9 +159,9 @@
       }
     ]
   },
-  "versionId": "7babb0dc-a259-412a-9dfe-bac32f36f5df",
-  "activeVersionId": "7babb0dc-a259-412a-9dfe-bac32f36f5df",
-  "versionCounter": 46,
+  "versionId": "db08204e-fd88-4be0-8f6d-86aeb8c88ddf",
+  "activeVersionId": "e5b11069-1a11-40e5-b9dc-91c1ba848f40",
+  "versionCounter": 106,
   "triggerCount": 1,
   "tags": [],
   "shared": [
