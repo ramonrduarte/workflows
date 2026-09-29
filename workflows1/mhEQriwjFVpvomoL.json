@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-14T17:55:08.577Z",
+  "updatedAt": "2026-09-29T17:41:11.731Z",
   "createdAt": "2026-02-13T18:56:38.844Z",
   "id": "mhEQriwjFVpvomoL",
   "name": "[func] CONSULTA PEDIDO TRAY",
@@ -98,6 +98,22 @@
           "name": "Url Imperador"
         }
       }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7785014f-c7ae-4aa8-a65d-6780f957a4d6",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        -160
+      ],
+      "id": "97da755b-5412-439c-bbae-bcce24203b07",
+      "name": "Webhook",
+      "webhookId": "7785014f-c7ae-4aa8-a65d-6780f957a4d6"
     }
   ],
   "connections": {
@@ -133,12 +149,25 @@
           }
         ]
       ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
   "meta": {
@@ -148,15 +177,15 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "nr_pedido": "2329"
+          "nr_pedido": "2361"
         }
       }
     ]
   },
-  "versionId": "a5ac5248-db47-4776-972e-b9500012a04a",
-  "activeVersionId": "7928cb31-f86f-4b8b-b202-02489a329150",
-  "versionCounter": 28,
-  "triggerCount": 0,
+  "versionId": "b53bad0f-9114-4b83-b449-5b9e1a4207e6",
+  "activeVersionId": "b53bad0f-9114-4b83-b449-5b9e1a4207e6",
+  "versionCounter": 45,
+  "triggerCount": 1,
   "tags": [],
   "shared": [
     {
