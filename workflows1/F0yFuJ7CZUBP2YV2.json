@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-02-18T11:32:46.181Z",
+  "updatedAt": "2026-09-29T16:28:58.974Z",
   "createdAt": "2026-02-13T11:05:05.232Z",
   "id": "F0yFuJ7CZUBP2YV2",
   "name": "BACKUP WORKFLOWS",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -499,15 +499,19 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
   "versionId": "2056ff75-3303-4780-a9c4-7d7370e4057f",
-  "activeVersionId": null,
-  "versionCounter": 14,
-  "triggerCount": 0,
+  "activeVersionId": "2056ff75-3303-4780-a9c4-7d7370e4057f",
+  "versionCounter": 23,
+  "triggerCount": 1,
   "tags": [],
   "shared": [
     {
