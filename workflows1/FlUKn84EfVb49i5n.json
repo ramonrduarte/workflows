@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-01T12:56:37.432Z",
+  "updatedAt": "2026-09-29T17:47:49.108Z",
   "createdAt": "2026-08-14T19:22:07.089Z",
   "id": "FlUKn84EfVb49i5n",
   "name": "Webhook Tray Imperador copy",
@@ -231,6 +231,12 @@
               "id": "a6893542-0597-497b-9428-181197529794",
               "name": "url_nota",
               "value": "={{ $json.Order.OrderInvoice[0].OrderInvoice.link }}",
+              "type": "string"
+            },
+            {
+              "id": "e816d477-2296-4ca9-9d60-87b64a9ace15",
+              "name": "rastreio",
+              "value": "={{ $json.Order.tracking_url }}",
               "type": "string"
             }
           ]
@@ -1299,7 +1305,7 @@
             {
               "id": "361aabc4-722e-4412-98df-f23153193bf1",
               "name": "Mensagem",
-              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!\n\nNota Fiscal: {{ $('Call \\'[func] CONSULTA PEDIDO TRAY\\'').item.json.Order.OrderInvoice[0].OrderInvoice.link }}",
+              "value": "=Olá! 🚚\nSeu pedido nº *{{ $('Webhook').item.json.body[0].message.body.scope_id }}* foi enviado com sucesso!\n\nEm breve ele chegará até você. Qualquer dúvida sobre a entrega, pode me chamar aqui.\nObrigado por comprar com a gente!\n\nNota Fiscal: {{ $('Call \\'[func] CONSULTA PEDIDO TRAY\\'').item.json.Order.OrderInvoice[0].OrderInvoice.link }}\nRastreio: {{ $('Normaliza').item.json.rastreio }}",
               "type": "string"
             }
           ]
@@ -1889,7 +1895,7 @@
               "message": {
                 "body": {
                   "act": "update",
-                  "scope_id": "2345",
+                  "scope_id": "2361",
                   "seller_id": "1145224",
                   "scope_name": "order"
                 },
@@ -1926,9 +1932,9 @@
       }
     ]
   },
-  "versionId": "df2d9895-fb1b-4108-a113-41b91dc55e61",
-  "activeVersionId": "1eab7951-0eb9-4350-9137-8745a7f868ef",
-  "versionCounter": 280,
+  "versionId": "f6f22872-f066-4929-a3d3-e58e96a3ae76",
+  "activeVersionId": "f6f22872-f066-4929-a3d3-e58e96a3ae76",
+  "versionCounter": 312,
   "triggerCount": 1,
   "tags": [],
   "shared": [
