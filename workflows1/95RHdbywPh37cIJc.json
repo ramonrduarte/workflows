@@ -1,0 +1,444 @@
+{
+  "updatedAt": "2026-10-16T14:37:10.408Z",
+  "createdAt": "2026-10-16T14:36:29.689Z",
+  "id": "95RHdbywPh37cIJc",
+  "name": "Chatwoot → ML (Respostas)",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Chatwoot → ML\n1. Preencha o nó **Config** (igual ao outro workflow).\n2. Ative o workflow e copie a **Production URL** do webhook.\n3. Cole essa URL no campo *Webhook URL* das 2 caixas API do Chatwoot.\n\nSó mensagens **públicas** de agente são enviadas ao ML. Notas privadas ficam só no Chatwoot.",
+        "height": 240,
+        "width": 520,
+        "color": 4
+      },
+      "name": "Nota 9f80be",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "38396769-75da-4c42-8a0e-6d3ba3082f88"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatwoot-ml",
+        "options": {}
+      },
+      "name": "Webhook Chatwoot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        384
+      ],
+      "webhookId": "0e805148-fce4-4253-a3f3-bdac5f7400a9",
+      "id": "325ecaa0-7ca7-44a1-90e5-9cd5bd11fd14"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d10586d0-02e3-48a0-b7f8-704b3ae61aca",
+              "name": "chatwoot_url",
+              "value": "https://chatwoot.losangosolucoes.com.br",
+              "type": "string"
+            },
+            {
+              "id": "d65ed569-0748-444a-902b-a15e7b98e971",
+              "name": "account_id",
+              "value": 1,
+              "type": "number"
+            },
+            {
+              "id": "838201ff-db23-4b7e-b366-3426957f22bb",
+              "name": "chatwoot_token",
+              "value": "nZUjCMDgToJLj6KfkzuaCSJf",
+              "type": "string"
+            },
+            {
+              "id": "43b0cfe3-630e-483f-812c-c3b1e4e82ce8",
+              "name": "inbox_perguntas",
+              "value": 14,
+              "type": "number"
+            },
+            {
+              "id": "0d1aea2d-59ae-4f17-9d22-c14e6d86b0b8",
+              "name": "inbox_mensagens",
+              "value": 15,
+              "type": "number"
+            },
+            {
+              "id": "013d41d2-2941-4f66-9823-ce806e02d590",
+              "name": "seller_id",
+              "value": 459646703,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        384
+      ],
+      "id": "ba98435f-b1da-45a2-896a-22e9bf4d6dea"
+    },
+    {
+      "parameters": {
+        "jsCode": "const b = $('Webhook Chatwoot').first().json.body || {};\nconst cfg = $('Config').first().json;\nconst inbox = Number(b.inbox?.id ?? b.conversation?.inbox_id);\nconst perguntas = Number(cfg.inbox_perguntas);\nconst mensagens = Number(cfg.inbox_mensagens);\n\nconst valido = b.event === 'message_created'\n  && (b.message_type === 'outgoing' || b.message_type === 1)\n  && b.private !== true\n  && String(b.content || '').trim() !== ''\n  && [perguntas, mensagens].includes(inbox);\n\nif (!valido) return [];\n\nreturn [{ json: {\n  conversation_id: b.conversation?.id,\n  inbox_id: inbox,\n  tipo: inbox === perguntas ? 'pergunta' : 'mensagem',\n  content: String(b.content).trim(),\n} }];\n"
+      },
+      "name": "Filtra Evento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        384
+      ],
+      "id": "1bc36f37-602f-4ac3-bd7d-c7d9946fe608"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $json.conversation_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "CW Busca Conversa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        384
+      ],
+      "id": "ccde7f9f-43ba-49a7-b107-513fbe9ad3c7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a99bedb5-ca1d-4f23-a9c4-3676e20ffa0f",
+                    "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
+                    "rightValue": "pergunta",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pergunta"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "82aa44c7-87be-41cd-86b1-dd3984ba14c7",
+                    "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
+                    "rightValue": "mensagem",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mensagem"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Tipo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        928,
+        384
+      ],
+      "id": "e540ac22-3773-405d-86b4-a4938bcaba1c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.mercadolibre.com/answers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ question_id: Number($json.custom_attributes.ml_question_id), text: $('Filtra Evento').first().json.content }) }}",
+        "options": {}
+      },
+      "name": "ML Responder Pergunta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        224
+      ],
+      "id": "f2f26200-f24f-40a0-a14a-dbe0a5c7016c",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "aO6INQpjYKkRmASl",
+          "name": "Token Mercado Livre Adrofecha"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('Filtra Evento').first().json.conversation_id }}/toggle_status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: 'resolved' }) }}",
+        "options": {}
+      },
+      "name": "CW Resolver Conversa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        144
+      ],
+      "id": "b847f57d-2ac6-4728-b5bf-afda894a286b"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.mercadolibre.com/messages/packs/{{ $json.custom_attributes.ml_pack_id }}/sellers/{{ $('Config').first().json.seller_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "tag",
+              "value": "post_sale"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ from: { user_id: Number($('Config').first().json.seller_id) }, to: { user_id: Number($json.custom_attributes.ml_buyer_id) }, text: $('Filtra Evento').first().json.content }) }}",
+        "options": {}
+      },
+      "name": "ML Enviar Mensagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        544
+      ],
+      "id": "c7266eb8-9faa-45e2-bc22-a819e8673af8",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "aO6INQpjYKkRmASl",
+          "name": "Token Mercado Livre Adrofecha"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('Filtra Evento').first().json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: '⚠️ Esta mensagem NÃO foi entregue no Mercado Livre.\\nMotivo: ' + (typeof $json.error === 'string' ? $json.error : ($json.error?.description || $json.error?.message || JSON.stringify($json).slice(0, 500))), message_type: 'outgoing', private: true }) }}",
+        "options": {}
+      },
+      "name": "CW Nota Erro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        464
+      ],
+      "id": "645c4c45-a430-4d01-9749-b43e0581076b"
+    }
+  ],
+  "connections": {
+    "Webhook Chatwoot": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Filtra Evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra Evento": {
+      "main": [
+        [
+          {
+            "node": "CW Busca Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Busca Conversa": {
+      "main": [
+        [
+          {
+            "node": "Tipo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo": {
+      "main": [
+        [
+          {
+            "node": "ML Responder Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ML Enviar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ML Responder Pergunta": {
+      "main": [
+        [
+          {
+            "node": "CW Resolver Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CW Nota Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ML Enviar Mensagem": {
+      "main": [
+        [],
+        [
+          {
+            "node": "CW Nota Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "QNXmnXzk3oSzrk7q",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "99f6853c-947c-4de9-920f-353654d72534",
+  "activeVersionId": "99f6853c-947c-4de9-920f-353654d72534",
+  "versionCounter": 8,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-10-16T14:36:29.689Z",
+      "createdAt": "2026-10-16T14:36:29.689Z",
+      "role": "workflow:owner",
+      "workflowId": "95RHdbywPh37cIJc",
+      "projectId": "C5aD6UPns470KPiT",
+      "project": {
+        "updatedAt": "2026-02-18T10:56:45.246Z",
+        "createdAt": "2026-02-12T20:28:11.259Z",
+        "id": "C5aD6UPns470KPiT",
+        "name": "Ramon Duarte <ramon26player@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "03aed1aa-1435-40b4-9d79-a70ab09e1ab8"
+      }
+    }
+  ]
+}
