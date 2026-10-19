@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T14:38:40.116Z",
+  "updatedAt": "2026-10-19T11:48:43.781Z",
   "createdAt": "2026-07-21T13:23:13.112Z",
   "id": "JHkKj4oreB7n4U0g",
   "name": "ML → Chatwoot (Perguntas e Mensagens)",
@@ -79,7 +79,7 @@
     {
       "parameters": {
         "chatId": "1430489383",
-        "text": "={{ String($json.body.topic).replace(/_/g, '\\\\_') }}",
+        "text": "={{ $('Notificacao1').item.json.body.topic.replace(/_/g, '\\\\_') }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -87,8 +87,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        288,
-        -192
+        4304,
+        944
       ],
       "id": "6aa37b51-a982-43ba-bdc8-064f5b41c6c9",
       "name": "Envia Mensagem",
@@ -98,8 +98,7 @@
           "id": "3Mj9CK39TaYbU5UW",
           "name": "Telegram Monbot"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -1706,6 +1705,28 @@
           }
         ]
       ]
+    },
+    "CW Nota Anuncio": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Nota Pedido": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1776,41 +1797,44 @@
             "accept": "application/json",
             "accept-encoding": "gzip",
             "content-type": "application/json",
-            "traceparent": "00-a4d56b2e0d50004fb77cf94048d68980-fc9983fddbd48ead-00",
+            "traceparent": "00-9eca7d05fc79b96a77decd488a010a33-c7502fe409772c57-00",
             "x-b3-sampled": "0",
-            "x-b3-spanid": "fc9983fddbd48ead",
-            "x-b3-traceid": "a4d56b2e0d50004fb77cf94048d68980",
-            "x-forwarded-for": "35.245.20.104",
+            "x-b3-spanid": "c7502fe409772c57",
+            "x-b3-traceid": "9eca7d05fc79b96a77decd488a010a33",
+            "x-forwarded-for": "35.186.182.146",
             "x-forwarded-host": "webhooks.rdmon.com",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "35.245.20.104",
+            "x-real-ip": "35.186.182.146",
             "x-rest-pool-name": "pool_unknown",
             "x-socket-timeout": "700"
           },
           "params": {},
           "query": {},
           "body": {
-            "_id": "1d25c526-c102-4de4-ab2f-2c186915d8f5",
+            "_id": "2c2eac85-e832-44bf-bfc1-8a2d4ad6f576",
             "topic": "questions",
-            "resource": "/questions/13675587542",
+            "resource": "/questions/13675968659",
             "user_id": 459646703,
             "application_id": 2068436181196849,
-            "sent": "2026-10-16T13:03:08.068Z",
+            "sent": "2026-10-18T22:15:22.312Z",
             "attempts": 1,
-            "received": "2026-10-16T13:03:07.961Z",
+            "received": "2026-10-18T22:15:22.254Z",
             "actions": []
           },
           "webhookUrl": "https://webhooks.rdmon.com/webhook/9be0fe0b-15c2-494b-bd05-aa9361194f8f",
           "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
   },
-  "versionId": "f046c49d-7b18-4481-9662-c95db97f28c9",
-  "activeVersionId": "f046c49d-7b18-4481-9662-c95db97f28c9",
-  "versionCounter": 104,
+  "versionId": "bae324fa-982d-47ae-94d8-b49c493904b9",
+  "activeVersionId": "bae324fa-982d-47ae-94d8-b49c493904b9",
+  "versionCounter": 121,
   "triggerCount": 1,
   "tags": [],
   "shared": [
