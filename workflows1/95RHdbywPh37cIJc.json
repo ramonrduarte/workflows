@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T14:37:10.408Z",
+  "updatedAt": "2026-10-21T18:21:06.295Z",
   "createdAt": "2026-10-16T14:36:29.689Z",
   "id": "95RHdbywPh37cIJc",
   "name": "Chatwoot → ML (Respostas)",
@@ -14,14 +14,14 @@
         "width": 520,
         "color": 4
       },
-      "name": "Nota 9f80be",
+      "name": "Nota d45fe0",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -384,
+        128
       ],
-      "id": "38396769-75da-4c42-8a0e-6d3ba3082f88"
+      "id": "9198d806-ec20-4748-8f40-da9ac9c28718"
     },
     {
       "parameters": {
@@ -33,48 +33,48 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        0,
-        384
+        -384,
+        512
       ],
-      "webhookId": "0e805148-fce4-4253-a3f3-bdac5f7400a9",
-      "id": "325ecaa0-7ca7-44a1-90e5-9cd5bd11fd14"
+      "webhookId": "35b7dc7b-1da8-4573-a32c-8806924bf116",
+      "id": "65ba4e7a-d28b-49e2-afa6-df2917381b8a"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "d10586d0-02e3-48a0-b7f8-704b3ae61aca",
+              "id": "3f56b8a9-90eb-4773-baab-05eda02fdc1a",
               "name": "chatwoot_url",
               "value": "https://chatwoot.losangosolucoes.com.br",
               "type": "string"
             },
             {
-              "id": "d65ed569-0748-444a-902b-a15e7b98e971",
+              "id": "23004237-7b67-4dea-aba6-80b9de97f0b5",
               "name": "account_id",
               "value": 1,
               "type": "number"
             },
             {
-              "id": "838201ff-db23-4b7e-b366-3426957f22bb",
+              "id": "b57f0d03-f85b-4bb5-9553-cd04658b8468",
               "name": "chatwoot_token",
               "value": "nZUjCMDgToJLj6KfkzuaCSJf",
               "type": "string"
             },
             {
-              "id": "43b0cfe3-630e-483f-812c-c3b1e4e82ce8",
+              "id": "673b46b1-3d61-4676-b94c-896c74bf9caa",
               "name": "inbox_perguntas",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "0d1aea2d-59ae-4f17-9d22-c14e6d86b0b8",
+              "id": "80e31daa-5992-43bf-9f41-59bc92e08c2a",
               "name": "inbox_mensagens",
               "value": 15,
               "type": "number"
             },
             {
-              "id": "013d41d2-2941-4f66-9823-ce806e02d590",
+              "id": "b6b5d102-19bc-495d-bffe-b027cbf0a4e2",
               "name": "seller_id",
               "value": 459646703,
               "type": "number"
@@ -87,23 +87,23 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        224,
-        384
+        -160,
+        512
       ],
-      "id": "ba98435f-b1da-45a2-896a-22e9bf4d6dea"
+      "id": "615eeb85-89a6-49e5-8e26-90a5fd56c565"
     },
     {
       "parameters": {
-        "jsCode": "const b = $('Webhook Chatwoot').first().json.body || {};\nconst cfg = $('Config').first().json;\nconst inbox = Number(b.inbox?.id ?? b.conversation?.inbox_id);\nconst perguntas = Number(cfg.inbox_perguntas);\nconst mensagens = Number(cfg.inbox_mensagens);\n\nconst valido = b.event === 'message_created'\n  && (b.message_type === 'outgoing' || b.message_type === 1)\n  && b.private !== true\n  && String(b.content || '').trim() !== ''\n  && [perguntas, mensagens].includes(inbox);\n\nif (!valido) return [];\n\nreturn [{ json: {\n  conversation_id: b.conversation?.id,\n  inbox_id: inbox,\n  tipo: inbox === perguntas ? 'pergunta' : 'mensagem',\n  content: String(b.content).trim(),\n} }];\n"
+        "jsCode": "const b = $('Webhook Chatwoot').first().json.body || {};\nconst cfg = $('Config').first().json;\nconst inbox = Number(b.inbox?.id ?? b.conversation?.inbox_id);\nconst perguntas = Number(cfg.inbox_perguntas);\nconst mensagens = Number(cfg.inbox_mensagens);\n\nlet ca = b.content_attributes || {};\nif (typeof ca === 'string') { try { ca = JSON.parse(ca); } catch (e) { ca = {}; } }\n\nconst valido = b.event === 'message_created'\n  && !ca.origem_ml  // veio do ML (espelhada pelo n8n): não reenviar\n  && !String(b.source_id || '').startsWith('ml_')\n  && !String(b.client_message_id || '').startsWith('ml_')\n  && (b.message_type === 'outgoing' || b.message_type === 1)\n  && b.private !== true\n  && String(b.content || '').trim() !== ''\n  && [perguntas, mensagens].includes(inbox);\n\nif (!valido) return [];\n\nreturn [{ json: {\n  conversation_id: b.conversation?.id,\n  inbox_id: inbox,\n  tipo: inbox === perguntas ? 'pergunta' : 'mensagem',\n  content: String(b.content).trim(),\n} }];\n"
       },
       "name": "Filtra Evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        448,
-        384
+        64,
+        512
       ],
-      "id": "1bc36f37-602f-4ac3-bd7d-c7d9946fe608"
+      "id": "98402898-e811-48cf-90f1-defa2924dc69"
     },
     {
       "parameters": {
@@ -123,10 +123,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        688,
-        384
+        304,
+        512
       ],
-      "id": "ccde7f9f-43ba-49a7-b107-513fbe9ad3c7"
+      "id": "4ad59f8a-ee28-4ebf-b7f8-c2b1d9d29437"
     },
     {
       "parameters": {
@@ -142,7 +142,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "a99bedb5-ca1d-4f23-a9c4-3676e20ffa0f",
+                    "id": "f41386a4-74fa-4b60-bdb7-ef8809024abc",
                     "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
                     "rightValue": "pergunta",
                     "operator": {
@@ -166,7 +166,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "82aa44c7-87be-41cd-86b1-dd3984ba14c7",
+                    "id": "94568d4f-01c5-4d32-8ac0-bbaa9bccd4cc",
                     "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
                     "rightValue": "mensagem",
                     "operator": {
@@ -188,10 +188,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        928,
-        384
+        544,
+        512
       ],
-      "id": "e540ac22-3773-405d-86b4-a4938bcaba1c"
+      "id": "2dd0c027-d57b-49fc-b473-4f9b1a81c5b0"
     },
     {
       "parameters": {
@@ -208,10 +208,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1184,
-        224
+        800,
+        352
       ],
-      "id": "f2f26200-f24f-40a0-a14a-dbe0a5c7016c",
+      "id": "3cb43d1a-7ad9-407b-9964-d1b0efb61c80",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -242,10 +242,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1440,
-        144
+        1056,
+        272
       ],
-      "id": "b847f57d-2ac6-4728-b5bf-afda894a286b"
+      "id": "c506c4a1-9628-4b0b-8920-dd3301407519"
     },
     {
       "parameters": {
@@ -271,10 +271,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1184,
-        544
+        800,
+        672
       ],
-      "id": "c7266eb8-9faa-45e2-bc22-a819e8673af8",
+      "id": "d293e970-f86c-42ee-a9c0-6482fe943634",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -305,10 +305,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1440,
-        464
+        1056,
+        592
       ],
-      "id": "645c4c45-a430-4d01-9749-b43e0581076b"
+      "id": "332793ec-fa11-42f7-a02a-1ac22e77b1d3"
     }
   ],
   "connections": {
@@ -417,9 +417,9 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "99f6853c-947c-4de9-920f-353654d72534",
-  "activeVersionId": "99f6853c-947c-4de9-920f-353654d72534",
-  "versionCounter": 8,
+  "versionId": "4297ab1e-cf93-4930-950d-dfa5a67a44ed",
+  "activeVersionId": "4297ab1e-cf93-4930-950d-dfa5a67a44ed",
+  "versionCounter": 18,
   "triggerCount": 1,
   "tags": [],
   "shared": [
