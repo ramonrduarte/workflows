@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21T18:33:05.341Z",
+  "updatedAt": "2026-10-23T13:05:18.000Z",
   "createdAt": "2026-07-21T13:23:13.112Z",
   "id": "JHkKj4oreB7n4U0g",
   "name": "ML → Chatwoot (Perguntas e Mensagens)",
@@ -18,8 +18,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3696,
-        320
+        3520,
+        496
       ],
       "id": "6aa37b51-a982-43ba-bdc8-064f5b41c6c9",
       "name": "Envia Mensagem",
@@ -38,14 +38,14 @@
         "width": 520,
         "color": 4
       },
-      "name": "Nota 4facf6",
+      "name": "Nota db2d8f",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -976,
-        -112
+        -1328,
+        -352
       ],
-      "id": "b17a1e4f-ff18-4aa2-a365-f7bf3cb285d3"
+      "id": "b46c78d9-8109-4669-aeca-4837f808c530"
     },
     {
       "parameters": {
@@ -57,48 +57,48 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -976,
-        320
+        -1328,
+        80
       ],
       "webhookId": "9be0fe0b-15c2-494b-bd05-aa9361194f8f",
-      "id": "6b81e422-0ad9-4af6-bc96-5ceafd38a671"
+      "id": "fcc68d35-edfa-4cb5-89eb-274ef2d0a237"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "983dd5ea-7eb6-4473-b0e3-d218da1bff68",
+              "id": "d176867f-c5d6-4fb8-a642-e90a745521cc",
               "name": "chatwoot_url",
               "value": "https://chatwoot.losangosolucoes.com.br",
               "type": "string"
             },
             {
-              "id": "5a3e1c83-0acb-4984-9e95-fdb707700491",
+              "id": "aed40970-cce1-4894-96ee-00a19877a609",
               "name": "account_id",
               "value": 1,
               "type": "number"
             },
             {
-              "id": "f2e697bf-2764-4401-9e0e-edf97bc86951",
+              "id": "719f743b-d6a2-4fa8-b327-834fe6d41592",
               "name": "chatwoot_token",
               "value": "nZUjCMDgToJLj6KfkzuaCSJf",
               "type": "string"
             },
             {
-              "id": "f7de400b-e297-4309-8cc3-d51b84ecdbcc",
+              "id": "84b2e13a-662c-4fbf-b585-0eb3872b0084",
               "name": "inbox_perguntas",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "e96933b0-aa59-4f42-82eb-3c2311fded53",
+              "id": "59318f13-1ae1-4581-9dad-303ca723d273",
               "name": "inbox_mensagens",
               "value": 15,
               "type": "number"
             },
             {
-              "id": "36c6b4f3-fc2e-43a9-8a18-bddab0e73ca8",
+              "id": "1997f2a4-3e03-468b-9034-ded468ad9d8e",
               "name": "seller_id",
               "value": 459646703,
               "type": "number"
@@ -111,10 +111,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -752,
-        320
+        -1104,
+        80
       ],
-      "id": "ea4d9d01-76f7-4238-b8cc-fb7751419284"
+      "id": "334bdd3e-a16f-462e-96d9-c298cc711fb9"
     },
     {
       "parameters": {
@@ -130,7 +130,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "4417cbef-48a2-485f-b852-87a259e12290",
+                    "id": "2d3c0ebe-a04e-43d3-b03f-9189e4b0915c",
                     "leftValue": "={{ $('Notificacao').first().json.body.topic }}",
                     "rightValue": "questions",
                     "operator": {
@@ -154,7 +154,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "860aceac-9331-4d1d-a153-e72506e60d36",
+                    "id": "6b9a01af-28b3-48ee-af59-c088eecd95cd",
                     "leftValue": "={{ $('Notificacao').first().json.body.topic }}",
                     "rightValue": "messages",
                     "operator": {
@@ -176,10 +176,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -544,
-        320
+        -896,
+        80
       ],
-      "id": "3a01ae8f-eddb-4744-aa1c-5fa91de03657"
+      "id": "e4f271a2-410c-4693-83c4-94c289b012ce"
     },
     {
       "parameters": {
@@ -201,10 +201,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -304,
-        16
+        -656,
+        -224
       ],
-      "id": "fdd83d1a-290c-4839-9387-9a296e5e13cf",
+      "id": "4f6ac746-4d65-4626-a8cd-a08c26de38c9",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -235,11 +235,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -64,
-        16
+        -416,
+        -224
       ],
       "alwaysOutputData": true,
-      "id": "1b8e27dc-cc8c-4f6b-8274-a2b6d485938c"
+      "id": "1e616dd8-87af-437e-b272-d1e05972f919"
     },
     {
       "parameters": {
@@ -249,10 +249,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        176,
-        16
+        -176,
+        -224
       ],
-      "id": "fe979e44-6c83-41fa-bbeb-5da2e918e491"
+      "id": "20bae2c6-aec6-456c-8b05-f3f197c85677"
     },
     {
       "parameters": {
@@ -268,7 +268,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "35d723ae-3a07-46c8-8cf6-97254e384213",
+                    "id": "f2258dc3-dc07-41e3-b1f8-3ee8e78dad32",
                     "leftValue": "={{ $json.acao }}",
                     "rightValue": "criar",
                     "operator": {
@@ -292,7 +292,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "b6563149-343e-4ce7-a60a-d8f53c82a51a",
+                    "id": "fc9af58d-7f3b-40ce-acb5-51bf80167592",
                     "leftValue": "={{ $json.acao }}",
                     "rightValue": "fechar",
                     "operator": {
@@ -314,10 +314,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        432,
-        16
+        80,
+        -224
       ],
-      "id": "7fde1161-5311-450a-8640-b43c82e295b1"
+      "id": "eef1fc57-3792-4b33-a8b7-37cddb927657"
     },
     {
       "parameters": {
@@ -330,10 +330,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        672,
-        -112
+        320,
+        -352
       ],
-      "id": "ba6aba95-e1e1-4491-9490-1a2f28d6216a",
+      "id": "ee9d095d-446f-4dad-9bab-b5aeeff76da5",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -353,10 +353,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        896,
-        -112
+        544,
+        -352
       ],
-      "id": "6a7ad2e7-29a0-4b3e-8e99-b84ac6453d13",
+      "id": "0be281eb-81ac-489d-b21c-5e15bb3063e3",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -373,10 +373,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1104,
-        -112
+        752,
+        -352
       ],
-      "id": "c9aa500c-ac76-48a4-903a-79a69b3dba23"
+      "id": "e139b64e-3f28-49f7-bd27-37179021d1d6"
     },
     {
       "parameters": {
@@ -396,25 +396,25 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        672,
-        128
+        320,
+        -112
       ],
       "alwaysOutputData": true,
-      "id": "9284871d-f4a8-46f4-a032-662251b22552",
+      "id": "2df5974b-96ea-45ee-8874-7b0acf699035",
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
-        "jsCode": "// client_message_id torna a criação idempotente: reenvio do ML não duplica.\nconst cmid = s => ('ml_' + String(s)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 128);\nconst norm = s => String(s || '').toLowerCase().replace(/\\s+/g, '');\nconst attrs = m => { try { return typeof m.content_attributes === 'string' ? JSON.parse(m.content_attributes) : (m.content_attributes || {}); } catch (e) { return {}; } };\n// true quando um agente já escreveu este mesmo texto no Chatwoot (mensagem que saiu do Chatwoot para o ML)\nfunction jaExisteNoChatwoot(resp, texto) {\n  const lista = Array.isArray(resp?.payload) ? resp.payload : [];\n  const alvo = norm(texto);\n  if (!alvo) return false;\n  const limite = Date.now() / 1000 - 24 * 3600;\n  return lista.some(m => (m.message_type === 1 || m.message_type === 'outgoing') && !m.private\n    && !attrs(m).origem_ml && norm(m.content) === alvo && Number(m.created_at || 0) >= limite);\n}\n\nconst q = $('Decide Pergunta').first().json.pergunta;\nlet out;\nif (q.status === 'ANSWERED') {\n  const resposta = q.answer?.text || '';\n  // Se a resposta saiu do Chatwoot, ela já está na conversa: só resolve.\n  out = jaExisteNoChatwoot($input.first().json, resposta)\n    ? { postar: false }\n    : { postar: true, content: '🛒 Respondido pelo painel do ML\\n' + resposta, private: false, client_message_id: cmid('q_answer_' + q.id) };\n} else {\n  out = { postar: true, content: `🗑️ Pergunta ficou com status ${q.status} no Mercado Livre.`, private: true,\n          client_message_id: cmid('q_status_' + q.id + '_' + q.status) };\n}\nreturn [{ json: out }];\n"
+        "jsCode": "// client_message_id torna a criação idempotente: reenvio do ML não duplica.\nconst cmid = s => ('ml_' + String(s)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 128);\nconst TEXTO_ANEXO = 'Segue anexo.'; // texto usado quando o agente envia só anexo\nconst norm = s => String(s || '').toLowerCase().replace(/\\s+/g, '');\nconst attrs = m => { try { return typeof m.content_attributes === 'string' ? JSON.parse(m.content_attributes) : (m.content_attributes || {}); } catch (e) { return {}; } };\n// true quando um agente já escreveu este mesmo texto no Chatwoot (mensagem que saiu do Chatwoot para o ML)\nfunction jaExisteNoChatwoot(resp, texto) {\n  const lista = Array.isArray(resp?.payload) ? resp.payload : [];\n  const alvo = norm(texto);\n  if (!alvo) return false;\n  const limite = Date.now() / 1000 - 24 * 3600;\n  return lista.some(m => (m.message_type === 1 || m.message_type === 'outgoing') && !m.private\n    && !attrs(m).origem_ml && norm(m.content || TEXTO_ANEXO) === alvo && Number(m.created_at || 0) >= limite);\n}\n\nconst q = $('Decide Pergunta').first().json.pergunta;\nlet out;\nif (q.status === 'ANSWERED') {\n  const resposta = q.answer?.text || '';\n  // Se a resposta saiu do Chatwoot, ela já está na conversa: só resolve.\n  out = jaExisteNoChatwoot($input.first().json, resposta)\n    ? { postar: false }\n    : { postar: true, content: '🛒 Respondido pelo painel do ML\\n' + resposta, private: false, client_message_id: cmid('q_answer_' + q.id) };\n} else {\n  out = { postar: true, content: `🗑️ Pergunta ficou com status ${q.status} no Mercado Livre.`, private: true,\n          client_message_id: cmid('q_status_' + q.id + '_' + q.status) };\n}\nreturn [{ json: out }];\n"
       },
       "name": "Monta Fechamento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        896,
-        128
+        544,
+        -112
       ],
-      "id": "5854f473-d59a-4432-a664-ca94c9df094c"
+      "id": "b00187d8-a26b-4636-bd06-227419a8f08e"
     },
     {
       "parameters": {
@@ -427,7 +427,7 @@
           },
           "conditions": [
             {
-              "id": "09c3671c-f6c6-4503-9bb5-868f774cd460",
+              "id": "f1db1b45-2b0e-4f3c-9519-364f8e171b6b",
               "leftValue": "={{ $json.postar }}",
               "rightValue": "",
               "operator": {
@@ -446,10 +446,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1104,
-        128
+        752,
+        -112
       ],
-      "id": "3f4b9c18-995f-40b4-9064-4856787d5e9c"
+      "id": "fab2cfb1-93c2-4797-943e-43e802bad182"
     },
     {
       "parameters": {
@@ -473,10 +473,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1328,
-        80
+        976,
+        -160
       ],
-      "id": "9a1eeadf-8780-42a5-a562-8b1e6695838d",
+      "id": "5c40de4b-2754-4a46-908b-5d9743b520ed",
       "onError": "continueRegularOutput"
     },
     {
@@ -501,10 +501,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1552,
-        128
+        1200,
+        -112
       ],
-      "id": "26a003e2-a4a9-4fb8-ba6b-e8281136a93a"
+      "id": "11340ae1-5e29-491e-bdfb-3753162c4826"
     },
     {
       "parameters": {
@@ -526,10 +526,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -304,
-        608
+        -656,
+        368
       ],
-      "id": "7ec5616f-b717-4596-8c29-a5fd8dbd099f",
+      "id": "4ab62996-b027-4725-acff-54e2ef3a9e07",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -540,16 +540,16 @@
     },
     {
       "parameters": {
-        "jsCode": "const r = $input.first().json;\nconst m = Array.isArray(r.messages) ? r.messages[0] : r;\nconst seller = Number($('Config').first().json.seller_id);\nconst recursos = m.message_resources || [];\nconst pack = recursos.find(x => x.name === 'packs') || recursos.find(x => x.name === 'orders') || recursos[0] || {};\nconst de = Number(m.from?.user_id);\nconst para = Number(m.to?.user_id);\nconst texto = typeof m.text === 'string' ? m.text : (m.text?.plain || '');\nconst anexos = (m.message_attachments || []).length;\n\nreturn [{ json: {\n  message_id: m.id,\n  pack_id: pack.id ? String(pack.id) : '',\n  buyer_id: de === seller ? para : de,\n  do_vendedor: de === seller,\n  cmid: ('ml_msg_' + String(m.id)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 128),\n  texto: texto + (anexos ? `\\n\\n📎 ${anexos} anexo(s) – veja no painel do ML` : ''),\n} }];\n"
+        "jsCode": "const r = $input.first().json;\nconst m = Array.isArray(r.messages) ? r.messages[0] : r;\nconst seller = Number($('Config').first().json.seller_id);\nconst recursos = m.message_resources || [];\nconst pack = recursos.find(x => x.name === 'packs') || recursos.find(x => x.name === 'orders') || recursos[0] || {};\nconst de = Number(m.from?.user_id);\nconst para = Number(m.to?.user_id);\nconst texto = typeof m.text === 'string' ? m.text : (m.text?.plain || '');\nconst anexos = (m.message_attachments || [])\n  .map(a => ({ id: a.filename, nome: a.original_filename || a.filename, mime: a.type || '' }))\n  .filter(a => a.id);\n\nreturn [{ json: {\n  message_id: m.id,\n  pack_id: pack.id ? String(pack.id) : '',\n  buyer_id: de === seller ? para : de,\n  do_vendedor: de === seller,\n  cmid: ('ml_msg_' + String(m.id)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 120),\n  texto: texto.trim(),\n  anexos,\n} }];\n"
       },
       "name": "Normaliza Mensagem",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -64,
-        608
+        -416,
+        368
       ],
-      "id": "c5ea1a71-db77-463a-946c-4781a62266ef"
+      "id": "e43c8728-5b3d-4c50-9ba1-14d1528b1fab"
     },
     {
       "parameters": {
@@ -562,7 +562,7 @@
           },
           "conditions": [
             {
-              "id": "5246b6b2-3c69-4c02-a8cb-6aef2a8e91fe",
+              "id": "fa04adc8-33f1-45b4-844e-6ceb9a419d91",
               "leftValue": "={{ !!$json.pack_id }}",
               "rightValue": "",
               "operator": {
@@ -581,10 +581,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        176,
-        608
+        -176,
+        368
       ],
-      "id": "02418265-041d-4b07-af6c-cf525c0b2cf6"
+      "id": "6f1aaa0f-251e-4288-9752-679b190bdc87"
     },
     {
       "parameters": {
@@ -608,11 +608,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        432,
-        608
+        80,
+        368
       ],
       "alwaysOutputData": true,
-      "id": "ccff049e-7784-4b7a-8ac9-8bb9e5b7b34e"
+      "id": "8142b4e3-0b69-4c97-92d3-e3e6b16bcd3a"
     },
     {
       "parameters": {
@@ -622,10 +622,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        672,
-        608
+        320,
+        368
       ],
-      "id": "416ca62b-a885-4f45-949f-0aa2af86630d"
+      "id": "e139c51b-9549-4bf4-b3cb-fd76260bc466"
     },
     {
       "parameters": {
@@ -641,7 +641,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "3cc3bee7-f482-4114-a653-1fe21d743b92",
+                    "id": "70425d64-d0a6-46e0-9512-061a80206090",
                     "leftValue": "={{ $json.acao }}",
                     "rightValue": "adicionar",
                     "operator": {
@@ -665,7 +665,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "556cd874-1409-4d4a-bdf2-fee6499b87be",
+                    "id": "298e1c9c-9c72-45e4-9f88-765e74d9e34e",
                     "leftValue": "={{ $json.acao }}",
                     "rightValue": "criar",
                     "operator": {
@@ -689,7 +689,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "492aac5e-53a6-43e5-b48f-9d575732a369",
+                    "id": "79622704-3ef4-4a10-8fff-0f8d4199b0ac",
                     "leftValue": "={{ $json.acao }}",
                     "rightValue": "espelhar",
                     "operator": {
@@ -711,10 +711,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        896,
-        608
+        544,
+        368
       ],
-      "id": "ccc4e44b-97e5-4abb-9c36-5cfe49433f8c"
+      "id": "6da91337-9427-4427-94d1-a9587d6e4cf7"
     },
     {
       "parameters": {
@@ -738,38 +738,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1136,
-        512
+        784,
+        272
       ],
-      "id": "f31e51d3-5c04-4174-acac-a3da8603a65f"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('Decide Mensagem').first().json.conversation_id }}/messages",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "={{ $('Config').first().json.chatwoot_token }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ content: $('Normaliza Mensagem').first().json.texto, message_type: 'incoming', client_message_id: $('Normaliza Mensagem').first().json.cmid, content_attributes: { origem_ml: true } }) }}",
-        "options": {}
-      },
-      "name": "CW Msg Cliente",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1344,
-        512
-      ],
-      "id": "d4deecb2-8ac4-4a8d-8683-7c712cf16ac3",
-      "onError": "continueRegularOutput"
+      "id": "4ce3e77a-814a-4fc8-a845-b97cfec47410"
     },
     {
       "parameters": {
@@ -789,53 +761,25 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1136,
-        928
+        784,
+        688
       ],
       "alwaysOutputData": true,
-      "id": "84fffbe6-0353-41e4-ada8-b7ba8149e886",
+      "id": "b9d7f242-f04c-4586-9c02-d3a0f96ec6d5",
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
-        "jsCode": "// client_message_id torna a criação idempotente: reenvio do ML não duplica.\nconst cmid = s => ('ml_' + String(s)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 128);\nconst norm = s => String(s || '').toLowerCase().replace(/\\s+/g, '');\nconst attrs = m => { try { return typeof m.content_attributes === 'string' ? JSON.parse(m.content_attributes) : (m.content_attributes || {}); } catch (e) { return {}; } };\n// true quando um agente já escreveu este mesmo texto no Chatwoot (mensagem que saiu do Chatwoot para o ML)\nfunction jaExisteNoChatwoot(resp, texto) {\n  const lista = Array.isArray(resp?.payload) ? resp.payload : [];\n  const alvo = norm(texto);\n  if (!alvo) return false;\n  const limite = Date.now() / 1000 - 24 * 3600;\n  return lista.some(m => (m.message_type === 1 || m.message_type === 'outgoing') && !m.private\n    && !attrs(m).origem_ml && norm(m.content) === alvo && Number(m.created_at || 0) >= limite);\n}\n\nconst m = $('Normaliza Mensagem').first().json;\n// Mensagem enviada pelo Chatwoot volta como notificação do ML: já está na conversa, ignora.\nif (jaExisteNoChatwoot($input.first().json, m.texto)) return [];\nreturn [{ json: { ok: true } }];\n"
+        "jsCode": "// client_message_id torna a criação idempotente: reenvio do ML não duplica.\nconst cmid = s => ('ml_' + String(s)).replace(/[^a-zA-Z0-9_.:-]/g, '').slice(0, 128);\nconst TEXTO_ANEXO = 'Segue anexo.'; // texto usado quando o agente envia só anexo\nconst norm = s => String(s || '').toLowerCase().replace(/\\s+/g, '');\nconst attrs = m => { try { return typeof m.content_attributes === 'string' ? JSON.parse(m.content_attributes) : (m.content_attributes || {}); } catch (e) { return {}; } };\n// true quando um agente já escreveu este mesmo texto no Chatwoot (mensagem que saiu do Chatwoot para o ML)\nfunction jaExisteNoChatwoot(resp, texto) {\n  const lista = Array.isArray(resp?.payload) ? resp.payload : [];\n  const alvo = norm(texto);\n  if (!alvo) return false;\n  const limite = Date.now() / 1000 - 24 * 3600;\n  return lista.some(m => (m.message_type === 1 || m.message_type === 'outgoing') && !m.private\n    && !attrs(m).origem_ml && norm(m.content || TEXTO_ANEXO) === alvo && Number(m.created_at || 0) >= limite);\n}\n\nconst m = $('Normaliza Mensagem').first().json;\n// Mensagem enviada pelo Chatwoot volta como notificação do ML: já está na conversa (com os anexos), ignora.\nif (jaExisteNoChatwoot($input.first().json, m.texto)) return [];\nreturn [{ json: { ok: true } }];\n"
       },
       "name": "E Eco do Chatwoot?",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1344,
-        928
+        992,
+        688
       ],
-      "id": "1d3be453-0591-4cf7-b103-cf29b0d77aa6"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('Decide Mensagem').first().json.conversation_id }}/messages",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "={{ $('Config').first().json.chatwoot_token }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ content: '🛒 Enviado pelo painel do ML\\n' + $('Normaliza Mensagem').first().json.texto, message_type: 'outgoing', private: false, client_message_id: $('Normaliza Mensagem').first().json.cmid, content_attributes: { origem_ml: true } }) }}",
-        "options": {}
-      },
-      "name": "CW Msg Vendedor",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1568,
-        928
-      ],
-      "id": "d54faef1-06ea-4d1c-83a9-0920dc0412e8",
-      "onError": "continueRegularOutput"
+      "id": "682782f0-a3bd-44ef-92ac-df29569d238e"
     },
     {
       "parameters": {
@@ -848,10 +792,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1136,
-        736
+        784,
+        496
       ],
-      "id": "0c18725e-b35d-48a4-9e3c-911d4e0f39d7",
+      "id": "31dfde10-c56e-4660-b211-7baf4ea569cb",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -862,16 +806,16 @@
     },
     {
       "parameters": {
-        "jsCode": "const cfg = $('Config').first().json;\nconst m = $('Normaliza Mensagem').first().json;\nconst o = $('ML Busca Pedido').first().json || {};\n\nconst brl = v => v == null ? '-' : Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });\nconst itens = (o.order_items || []).map(i => `• ${i.quantity}x ${i.item?.title}`).join('\\n');\nconst nota = [\n  '💬 Mensagem pós-venda do Mercado Livre',\n  `🧾 Pack/Pedido: ${m.pack_id}`,\n  o.id ? `Status: ${o.status} | Total: ${brl(o.total_amount)}` : null,\n  itens || null,\n  o.shipping?.id ? `🚚 Envio: ${o.shipping.id}` : null,\n  '',\n  'Mensagens para o ML têm limite de 350 caracteres. A conversa fica aberta.',\n].filter(x => x !== null).join('\\n');\n\nreturn [{ json: {\n  tipo: 'mensagem',\n  buyer_id: String(m.buyer_id),\n  nome: o.buyer?.nickname || `Comprador ML ${m.buyer_id}`,\n  inbox_id: Number(cfg.inbox_mensagens),\n  nota,\n} }];\n"
+        "jsCode": "const cfg = $('Config').first().json;\nconst m = $('Normaliza Mensagem').first().json;\nconst o = $('ML Busca Pedido').first().json || {};\n\nconst brl = v => v == null ? '-' : Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });\nconst itens = (o.order_items || []).map(i => `• ${i.quantity}x ${i.item?.title}`).join('\\n');\nconst nota = [\n  '💬 Mensagem pós-venda do Mercado Livre',\n  `🧾 Pack/Pedido: ${m.pack_id}`,\n  o.id ? `Status: ${o.status} | Total: ${brl(o.total_amount)}` : null,\n  itens || null,\n  o.shipping?.id ? `🚚 Envio: ${o.shipping.id}` : null,\n  '',\n  'Mensagens para o ML têm limite de 350 caracteres. Anexos aceitos: JPG, PNG, PDF e TXT. A conversa fica aberta.',\n].filter(x => x !== null).join('\\n');\n\nreturn [{ json: {\n  tipo: 'mensagem',\n  buyer_id: String(m.buyer_id),\n  nome: o.buyer?.nickname || `Comprador ML ${m.buyer_id}`,\n  inbox_id: Number(cfg.inbox_mensagens),\n  nota,\n} }];\n"
       },
       "name": "Contato Mensagem",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1344,
-        736
+        992,
+        496
       ],
-      "id": "d8f5b9dd-6070-46af-bfd0-278e49934ea8"
+      "id": "6a7af75e-70c1-4468-8be8-8ca0824155b6"
     },
     {
       "parameters": {
@@ -900,11 +844,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1632,
-        320
+        1280,
+        80
       ],
       "alwaysOutputData": true,
-      "id": "b7e3707b-3336-4a77-8239-3d183fbead25"
+      "id": "3f809d4f-9481-41f3-a38b-07f85fea7e82"
     },
     {
       "parameters": {
@@ -914,10 +858,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1856,
-        320
+        1504,
+        80
       ],
-      "id": "6d6714b4-95da-400d-9b52-7247b2f8f46c"
+      "id": "7989cbb7-8316-4548-90be-035844ba4d79"
     },
     {
       "parameters": {
@@ -930,7 +874,7 @@
           },
           "conditions": [
             {
-              "id": "187bf38e-c825-4c1d-bfce-3dcc1687472e",
+              "id": "675397e7-c39d-4340-b35d-4ff96b151f50",
               "leftValue": "={{ !!$json.contact_id }}",
               "rightValue": "",
               "operator": {
@@ -949,10 +893,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2064,
-        320
+        1712,
+        80
       ],
-      "id": "a51fb221-a6a5-48ab-b7eb-b5621eb1178d"
+      "id": "8e22646b-584e-4655-88cc-7cb092b617fe"
     },
     {
       "parameters": {
@@ -976,10 +920,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2288,
-        432
+        1936,
+        192
       ],
-      "id": "ba782651-ab65-457b-b2a8-a5da55e4abde"
+      "id": "ec05cf7c-fa2c-4dde-a2d9-f3f7f09c9c6a"
     },
     {
       "parameters": {
@@ -989,10 +933,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2512,
-        320
+        2160,
+        80
       ],
-      "id": "5ed54cee-3292-4c76-b317-3e7f9b5c658b"
+      "id": "2bd3a6ef-a176-43a9-9407-f997665d059e"
     },
     {
       "parameters": {
@@ -1008,7 +952,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "d7eb4476-6610-45ab-bcb1-47ac857b6ae1",
+                    "id": "ee76046e-4d81-4e27-8f3b-6d628fd7dd8a",
                     "leftValue": "={{ $json.tipo }}",
                     "rightValue": "pergunta",
                     "operator": {
@@ -1032,7 +976,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "9ad8ee5d-229e-4468-becf-f3bc9b012e28",
+                    "id": "3d43ad8d-8522-4d31-9849-234cc87d9a41",
                     "leftValue": "={{ $json.tipo }}",
                     "rightValue": "mensagem",
                     "operator": {
@@ -1054,10 +998,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2736,
-        320
+        2384,
+        80
       ],
-      "id": "1b0df8a6-93f9-4e96-b9b8-24bcac9b3b35"
+      "id": "b637c924-7842-4072-b700-7a2e501597c4"
     },
     {
       "parameters": {
@@ -1081,10 +1025,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2976,
-        160
+        2624,
+        -80
       ],
-      "id": "ebf1242d-66da-4a3b-a085-6f6360bc70ed"
+      "id": "4e5f716f-002b-40d0-ab0e-2117241f0a7f"
     },
     {
       "parameters": {
@@ -1108,10 +1052,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3184,
-        160
+        2832,
+        -80
       ],
-      "id": "effaac8a-8be1-4bea-a456-5014c4a5cc66",
+      "id": "fb5856d8-0b9e-4a8d-a6d1-f58c5179e098",
       "onError": "continueRegularOutput"
     },
     {
@@ -1136,10 +1080,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3408,
-        160
+        3056,
+        -80
       ],
-      "id": "96216aed-f4e3-41eb-93bb-c7ec63604d58"
+      "id": "5049f74c-eed8-42e1-a5f9-46e617c30e9c"
     },
     {
       "parameters": {
@@ -1163,10 +1107,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2976,
-        480
+        2624,
+        240
       ],
-      "id": "d16fbbe9-a376-4443-a6cf-10d8bb0dbb4d"
+      "id": "aa23782f-f044-4d09-8e3e-eb8f7605dc08"
     },
     {
       "parameters": {
@@ -1190,15 +1134,78 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3184,
-        480
+        2832,
+        240
       ],
-      "id": "f0c93fb7-872c-4749-b14d-4ff7ffd2e5df"
+      "id": "27f2cd92-b4a5-4447-beac-e349d47cd754"
+    },
+    {
+      "parameters": {
+        "content": "### Mensagem do ML → Chatwoot\nTexto vira 1 mensagem; cada anexo vira 1 mensagem com o arquivo.\n`client_message_id` impede duplicar se o ML reenviar a notificação.",
+        "width": 640,
+        "color": 7
+      },
+      "name": "Nota 32a94e",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        832
+      ],
+      "id": "9be31f05-482d-43db-a7ce-c0567745e0c8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const m = $('Normaliza Mensagem').first().json;\nlet conversation_id = $('Decide Mensagem').first().json.conversation_id;\nif (!conversation_id) conversation_id = $('CW Criar Conversa Mensagem').first().json.id;\nconst vend = m.do_vendedor;\nreturn [{ json: {\n  conversation_id,\n  message_type: vend ? 'outgoing' : 'incoming',\n  prefixo: vend ? '🛒 Enviado pelo painel do ML' : '',\n  texto: m.texto,\n  cmid: m.cmid,\n  anexos: m.anexos || [],\n} }];\n"
+      },
+      "name": "Prepara Envio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        1040
+      ],
+      "id": "aa26fc25-1cc1-41be-b52f-f0e45663cfbd"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "34beb3ce-2336-4770-b720-02b06203f8cd",
+              "leftValue": "={{ !!$json.texto }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "name": "Tem Texto?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        1040
+      ],
+      "id": "a8c9980f-8912-492e-9355-c24f3cbf6302"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('CW Criar Conversa Mensagem').first().json.id }}/messages",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -1210,17 +1217,204 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ content: ($('Normaliza Mensagem').first().json.do_vendedor ? '🛒 Enviado pelo painel do ML\\n' : '') + $('Normaliza Mensagem').first().json.texto, message_type: $('Normaliza Mensagem').first().json.do_vendedor ? 'outgoing' : 'incoming', private: false, client_message_id: $('Normaliza Mensagem').first().json.cmid, content_attributes: { origem_ml: true } }) }}",
+        "jsonBody": "={{ JSON.stringify({ content: ($json.prefixo ? $json.prefixo + '\\n' : '') + $json.texto, message_type: $json.message_type, private: false, client_message_id: $json.cmid, content_attributes: { origem_ml: true } }) }}",
         "options": {}
       },
-      "name": "CW Msg Nova Conversa",
+      "name": "CW Msg Texto",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3408,
-        480
+        1712,
+        960
       ],
-      "id": "b8c48ef7-3227-4f2a-9e7a-38d9a20a9695",
+      "id": "d00805db-bd2e-43cd-a7ef-0a1f420f025e",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const p = $('Prepara Envio').first().json;\nreturn (p.anexos || []).map((a, i) => ({ json: {\n  ...a,\n  conversation_id: p.conversation_id,\n  message_type: p.message_type,\n  content: p.prefixo ? '🛒 Anexo enviado pelo painel do ML' : '',\n  cmid: `${p.cmid}_a${i}`,\n} }));\n"
+      },
+      "name": "Lista Anexos ML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        1040
+      ],
+      "id": "25c00f7e-05bd-43bd-a2ad-c1af31a5340e"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mercadolibre.com/messages/attachments/{{ encodeURIComponent($json.id) }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "tag",
+              "value": "post_sale"
+            },
+            {
+              "name": "site_id",
+              "value": "MLB"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "name": "ML Baixa Anexo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        1040
+      ],
+      "id": "1efc1ea2-d966-4a9c-9a9a-67e78183329d",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "aO6INQpjYKkRmASl",
+          "name": "Token Mercado Livre Adrofecha"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const lista = $('Lista Anexos ML').all();\nreturn $input.all().map((it, i) => {\n  const a = lista[i]?.json || {};\n  const bin = it.binary?.data;\n  const out = { json: { ...a, baixou: !!bin } };\n  if (bin) {\n    bin.fileName = a.nome || bin.fileName;\n    if (a.mime) bin.mimeType = a.mime;\n    out.binary = { data: bin };\n  }\n  return out;\n});\n"
+      },
+      "name": "Ajusta Anexo ML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2384,
+        1040
+      ],
+      "id": "5789226e-c22a-4897-bb56-4cb8ec84d3f2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b1b68609-b209-4718-877a-cd41a6053946",
+              "leftValue": "={{ $json.baixou }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "name": "Baixou?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2592,
+        1040
+      ],
+      "id": "0ddc0fc4-9e84-4841-b687-c0aacce3014f"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.content }}"
+            },
+            {
+              "name": "message_type",
+              "value": "={{ $json.message_type }}"
+            },
+            {
+              "name": "private",
+              "value": "false"
+            },
+            {
+              "name": "client_message_id",
+              "value": "={{ $json.cmid }}"
+            },
+            {
+              "name": "content_attributes[origem_ml]",
+              "value": "true"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "attachments[]",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "CW Msg Anexo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2832,
+        960
+      ],
+      "id": "11427233-26c7-4bd9-8389-ece5d7e5eb30",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: '📎 Anexo \"' + $json.nome + '\" não pôde ser baixado do ML. Veja no painel.', message_type: $json.message_type, private: false, client_message_id: $json.cmid, content_attributes: { origem_ml: true } }) }}",
+        "options": {}
+      },
+      "name": "CW Msg Anexo Falhou",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2832,
+        1136
+      ],
+      "id": "84d950cc-c560-4965-9a78-af185a93daf9",
       "onError": "continueRegularOutput"
     }
   ],
@@ -1473,7 +1667,7 @@
       "main": [
         [
           {
-            "node": "CW Msg Cliente",
+            "node": "Prepara Envio",
             "type": "main",
             "index": 0
           }
@@ -1495,7 +1689,7 @@
       "main": [
         [
           {
-            "node": "CW Msg Vendedor",
+            "node": "Prepara Envio",
             "type": "main",
             "index": 0
           }
@@ -1652,7 +1846,98 @@
       "main": [
         [
           {
-            "node": "CW Msg Nova Conversa",
+            "node": "Prepara Envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepara Envio": {
+      "main": [
+        [
+          {
+            "node": "Tem Texto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem Texto?": {
+      "main": [
+        [
+          {
+            "node": "CW Msg Texto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lista Anexos ML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Msg Texto": {
+      "main": [
+        [
+          {
+            "node": "Lista Anexos ML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lista Anexos ML": {
+      "main": [
+        [
+          {
+            "node": "ML Baixa Anexo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ML Baixa Anexo": {
+      "main": [
+        [
+          {
+            "node": "Ajusta Anexo ML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajusta Anexo ML": {
+      "main": [
+        [
+          {
+            "node": "Baixou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixou?": {
+      "main": [
+        [
+          {
+            "node": "CW Msg Anexo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CW Msg Anexo Falhou",
             "type": "main",
             "index": 0
           }
@@ -1670,7 +1955,18 @@
         ]
       ]
     },
-    "CW Msg Nova Conversa": {
+    "CW Msg Anexo": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Msg Anexo Falhou": {
       "main": [
         [
           {
@@ -1695,54 +1991,10 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Notificacao": [
-      {
-        "json": {
-          "headers": {
-            "host": "webhooks.rdmon.com",
-            "user-agent": "github.com/go-loco/restful",
-            "content-length": "269",
-            "accept": "application/json",
-            "accept-encoding": "gzip",
-            "content-type": "application/json",
-            "traceparent": "00-99ec2fd33652c8919da85926122a15d2-b418989d4da22595-00",
-            "x-b3-sampled": "0",
-            "x-b3-spanid": "b418989d4da22595",
-            "x-b3-traceid": "99ec2fd33652c8919da85926122a15d2",
-            "x-forwarded-for": "35.186.182.146",
-            "x-forwarded-host": "webhooks.rdmon.com",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "traefik_traefik.1",
-            "x-real-ip": "35.186.182.146",
-            "x-rest-pool-name": "pool_unknown",
-            "x-socket-timeout": "800"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "_id": "e8359ac0-e466-4220-b305-a6e8ed95167b",
-            "topic": "messages",
-            "resource": "01a15e240b6575268bf0b7127c5e283a",
-            "user_id": 459646703,
-            "application_id": 2068436181196849,
-            "sent": "2026-10-21T12:08:29.541Z",
-            "attempts": 1,
-            "received": "2026-10-21T12:08:29.142Z",
-            "actions": [
-              "read"
-            ]
-          },
-          "webhookUrl": "https://webhooks.rdmon.com/webhook/9be0fe0b-15c2-494b-bd05-aa9361194f8f",
-          "executionMode": "production"
-        }
-      }
-    ]
-  },
-  "versionId": "d1c92941-99a2-424e-96e7-b4f832e67a2b",
-  "activeVersionId": "d1c92941-99a2-424e-96e7-b4f832e67a2b",
-  "versionCounter": 163,
+  "pinData": {},
+  "versionId": "c1292a5c-6fdb-497e-b5f1-e4dec7a84a4f",
+  "activeVersionId": "c1292a5c-6fdb-497e-b5f1-e4dec7a84a4f",
+  "versionCounter": 178,
   "triggerCount": 1,
   "tags": [],
   "shared": [
