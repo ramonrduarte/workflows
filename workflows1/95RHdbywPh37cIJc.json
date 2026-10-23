@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21T18:21:06.295Z",
+  "updatedAt": "2026-10-23T13:06:59.353Z",
   "createdAt": "2026-10-16T14:36:29.689Z",
   "id": "95RHdbywPh37cIJc",
   "name": "Chatwoot → ML (Respostas)",
@@ -9,19 +9,19 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Chatwoot → ML\n1. Preencha o nó **Config** (igual ao outro workflow).\n2. Ative o workflow e copie a **Production URL** do webhook.\n3. Cole essa URL no campo *Webhook URL* das 2 caixas API do Chatwoot.\n\nSó mensagens **públicas** de agente são enviadas ao ML. Notas privadas ficam só no Chatwoot.",
-        "height": 240,
-        "width": 520,
+        "content": "## Chatwoot → ML\n1. Preencha o nó **Config** (igual ao outro workflow).\n2. Ative o workflow e copie a **Production URL** do webhook.\n3. Cole essa URL no campo *Webhook URL* das 2 caixas API do Chatwoot.\n\nSó mensagens **públicas** de agente são enviadas ao ML. Notas privadas ficam só no Chatwoot.\nAnexos (JPG, PNG, PDF, TXT) são enviados só nas **mensagens pós-venda**; perguntas não aceitam anexo.",
+        "height": 280,
+        "width": 560,
         "color": 4
       },
-      "name": "Nota d45fe0",
+      "name": "Nota 2cd0b4",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -384,
-        128
+        -832,
+        352
       ],
-      "id": "9198d806-ec20-4748-8f40-da9ac9c28718"
+      "id": "8826291a-13d4-4698-901b-df4fcac6dff3"
     },
     {
       "parameters": {
@@ -33,48 +33,48 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -384,
-        512
+        -832,
+        752
       ],
-      "webhookId": "35b7dc7b-1da8-4573-a32c-8806924bf116",
-      "id": "65ba4e7a-d28b-49e2-afa6-df2917381b8a"
+      "webhookId": "ed5316de-22da-441c-a5b1-41b7335da460",
+      "id": "dd600b0e-e7f2-46e3-bff0-07fd48ead960"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "3f56b8a9-90eb-4773-baab-05eda02fdc1a",
+              "id": "2e96a41b-0cd2-4411-ac68-aad8c490107a",
               "name": "chatwoot_url",
               "value": "https://chatwoot.losangosolucoes.com.br",
               "type": "string"
             },
             {
-              "id": "23004237-7b67-4dea-aba6-80b9de97f0b5",
+              "id": "c236e483-eeb6-40fa-b39a-03f39b9f612b",
               "name": "account_id",
               "value": 1,
               "type": "number"
             },
             {
-              "id": "b57f0d03-f85b-4bb5-9553-cd04658b8468",
+              "id": "8c4c603d-292f-4566-a718-142d67e2ced5",
               "name": "chatwoot_token",
               "value": "nZUjCMDgToJLj6KfkzuaCSJf",
               "type": "string"
             },
             {
-              "id": "673b46b1-3d61-4676-b94c-896c74bf9caa",
+              "id": "64ecc446-2047-4180-941a-a726ec6ec964",
               "name": "inbox_perguntas",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "80e31daa-5992-43bf-9f41-59bc92e08c2a",
+              "id": "6144cf68-8b1c-4d7a-b8a6-bba1815c3d86",
               "name": "inbox_mensagens",
               "value": 15,
               "type": "number"
             },
             {
-              "id": "b6b5d102-19bc-495d-bffe-b027cbf0a4e2",
+              "id": "5148445c-d6ab-45c3-80e3-c900f1cbb2a0",
               "name": "seller_id",
               "value": 459646703,
               "type": "number"
@@ -87,23 +87,23 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -160,
-        512
+        -608,
+        752
       ],
-      "id": "615eeb85-89a6-49e5-8e26-90a5fd56c565"
+      "id": "5a76a8ac-870a-4751-890e-fbd6a1abc057"
     },
     {
       "parameters": {
-        "jsCode": "const b = $('Webhook Chatwoot').first().json.body || {};\nconst cfg = $('Config').first().json;\nconst inbox = Number(b.inbox?.id ?? b.conversation?.inbox_id);\nconst perguntas = Number(cfg.inbox_perguntas);\nconst mensagens = Number(cfg.inbox_mensagens);\n\nlet ca = b.content_attributes || {};\nif (typeof ca === 'string') { try { ca = JSON.parse(ca); } catch (e) { ca = {}; } }\n\nconst valido = b.event === 'message_created'\n  && !ca.origem_ml  // veio do ML (espelhada pelo n8n): não reenviar\n  && !String(b.source_id || '').startsWith('ml_')\n  && !String(b.client_message_id || '').startsWith('ml_')\n  && (b.message_type === 'outgoing' || b.message_type === 1)\n  && b.private !== true\n  && String(b.content || '').trim() !== ''\n  && [perguntas, mensagens].includes(inbox);\n\nif (!valido) return [];\n\nreturn [{ json: {\n  conversation_id: b.conversation?.id,\n  inbox_id: inbox,\n  tipo: inbox === perguntas ? 'pergunta' : 'mensagem',\n  content: String(b.content).trim(),\n} }];\n"
+        "jsCode": "const b = $('Webhook Chatwoot').first().json.body || {};\nconst cfg = $('Config').first().json;\nconst inbox = Number(b.inbox?.id ?? b.conversation?.inbox_id);\nconst perguntas = Number(cfg.inbox_perguntas);\nconst mensagens = Number(cfg.inbox_mensagens);\n\nlet ca = b.content_attributes || {};\nif (typeof ca === 'string') { try { ca = JSON.parse(ca); } catch (e) { ca = {}; } }\n\nconst content = String(b.content || '').trim();\nconst anexos = (b.attachments || []).map(a => {\n  let url = a.data_url || a.file_url || '';\n  if (url && !/^https?:/i.test(url)) url = cfg.chatwoot_url + url;\n  let nome = 'anexo';\n  try { nome = decodeURIComponent(url.split('?')[0].split('/').pop()) || 'anexo'; } catch (e) {}\n  return { url, nome, tipo: a.file_type || '' };\n}).filter(a => a.url);\n\nconst valido = b.event === 'message_created'\n  && !ca.origem_ml  // veio do ML (espelhada pelo n8n): não reenviar\n  && !String(b.source_id || '').startsWith('ml_')\n  && !String(b.client_message_id || '').startsWith('ml_')\n  && (b.message_type === 'outgoing' || b.message_type === 1)\n  && b.private !== true\n  && (content !== '' || anexos.length > 0)\n  && [perguntas, mensagens].includes(inbox);\n\nif (!valido) return [];\n\nreturn [{ json: {\n  conversation_id: b.conversation?.id,\n  inbox_id: inbox,\n  tipo: inbox === perguntas ? 'pergunta' : 'mensagem',\n  content,\n  anexos,\n} }];\n"
       },
       "name": "Filtra Evento",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        64,
-        512
+        -400,
+        752
       ],
-      "id": "98402898-e811-48cf-90f1-defa2924dc69"
+      "id": "a9f71523-a32c-4222-8055-86c40915c594"
     },
     {
       "parameters": {
@@ -123,10 +123,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        304,
-        512
+        -160,
+        752
       ],
-      "id": "4ad59f8a-ee28-4ebf-b7f8-c2b1d9d29437"
+      "id": "abc87000-a79f-452f-b9bf-4e5151351e1d"
     },
     {
       "parameters": {
@@ -142,7 +142,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "f41386a4-74fa-4b60-bdb7-ef8809024abc",
+                    "id": "f8685f90-a203-4192-8ef3-5b7a152e8ec8",
                     "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
                     "rightValue": "pergunta",
                     "operator": {
@@ -166,7 +166,7 @@
                 },
                 "conditions": [
                   {
-                    "id": "94568d4f-01c5-4d32-8ac0-bbaa9bccd4cc",
+                    "id": "1896472a-7c8e-4206-9d66-4395444e2e77",
                     "leftValue": "={{ $('Filtra Evento').first().json.tipo }}",
                     "rightValue": "mensagem",
                     "operator": {
@@ -188,10 +188,72 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        544,
-        512
+        96,
+        752
       ],
-      "id": "2dd0c027-d57b-49fc-b473-4f9b1a81c5b0"
+      "id": "bd2936f1-6927-45a7-a619-e549e03f523f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3fda4853-8624-4fe0-aa0f-37a7a5991670",
+              "leftValue": "={{ $('Filtra Evento').first().json.anexos.length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "name": "Pergunta com Anexo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        496
+      ],
+      "id": "80e0da00-7a79-4e14-94ba-cef9d4e622f1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.chatwoot_url }}/api/v1/accounts/{{ $('Config').first().json.account_id }}/conversations/{{ $('Filtra Evento').first().json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Config').first().json.chatwoot_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ content: '⚠️ Perguntas do Mercado Livre não aceitam anexos. O arquivo NÃO foi enviado; só o texto (se houver).', message_type: 'outgoing', private: true }) }}",
+        "options": {}
+      },
+      "name": "CW Nota Anexo Pergunta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        416
+      ],
+      "id": "34fe876b-e60c-43a8-a573-18844ad7f2a1"
     },
     {
       "parameters": {
@@ -201,17 +263,17 @@
         "genericAuthType": "oAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ question_id: Number($json.custom_attributes.ml_question_id), text: $('Filtra Evento').first().json.content }) }}",
+        "jsonBody": "={{ JSON.stringify({ question_id: Number($('CW Busca Conversa').first().json.custom_attributes.ml_question_id), text: $('Filtra Evento').first().json.content }) }}",
         "options": {}
       },
       "name": "ML Responder Pergunta",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        800,
-        352
+        816,
+        496
       ],
-      "id": "3cb43d1a-7ad9-407b-9964-d1b0efb61c80",
+      "id": "48b8779c-66d8-4ce3-aaee-a95f46c30bba",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -243,14 +305,158 @@
       "typeVersion": 4.2,
       "position": [
         1056,
-        272
+        416
       ],
-      "id": "c506c4a1-9628-4b0b-8920-dd3301407519"
+      "id": "5165eb22-2c3c-4711-8cef-115b0ff36615"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1c3f31ee-430d-462d-9b7b-0feaf8c275ed",
+              "leftValue": "={{ $('Filtra Evento').first().json.anexos.length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "name": "Tem Anexo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        960
+      ],
+      "id": "92edf604-e304-4ba2-a39f-7a56ba6660f4"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('Filtra Evento').first().json.anexos.map(a => ({ json: a }));\n"
+      },
+      "name": "Lista Anexos CW",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        1056
+      ],
+      "id": "f2a26faf-de77-45bc-b7c8-d63ccf2a7860"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "name": "CW Baixa Anexo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        1056
+      ],
+      "id": "8bd5d589-7411-4696-bfe9-dcb53dbdce1f",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const lista = $('Lista Anexos CW').all();\nreturn $input.all().map((it, i) => {\n  const a = lista[i]?.json || {};\n  const bin = it.binary?.data;\n  const out = { json: { ...a, baixou: !!bin } };\n  if (bin) { bin.fileName = a.nome || bin.fileName; out.binary = { data: bin }; }\n  return out;\n});\n"
+      },
+      "name": "Ajusta Anexo CW",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        1056
+      ],
+      "id": "ed495152-a3c7-499e-a4de-77392c8840eb"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.mercadolibre.com/messages/packs/{{ $json.custom_attributes.ml_pack_id }}/sellers/{{ $('Config').first().json.seller_id }}",
+        "url": "=https://api.mercadolibre.com/messages/attachments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "tag",
+              "value": "post_sale"
+            },
+            {
+              "name": "site_id",
+              "value": "MLB"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "ML Sobe Anexo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1232,
+        1056
+      ],
+      "alwaysOutputData": true,
+      "id": "cd640606-01bb-473a-a6fb-c73d75067941",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "aO6INQpjYKkRmASl",
+          "name": "Token Mercado Livre Adrofecha"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ids = $input.all().map(i => i.json.id || i.json.filename).filter(Boolean);\n// nada subiu e não há texto: não manda mensagem vazia\nif (!ids.length && !$('Filtra Evento').first().json.content) return [];\nreturn [{ json: { attachment_ids: ids } }];\n"
+      },
+      "name": "Junta Anexos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        992
+      ],
+      "id": "13070ae9-7dde-4db0-8505-128a47c75ef8"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.mercadolibre.com/messages/packs/{{ $('CW Busca Conversa').first().json.custom_attributes.ml_pack_id }}/sellers/{{ $('Config').first().json.seller_id }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "oAuth2Api",
         "sendQuery": true,
@@ -264,17 +470,17 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ from: { user_id: Number($('Config').first().json.seller_id) }, to: { user_id: Number($json.custom_attributes.ml_buyer_id) }, text: $('Filtra Evento').first().json.content }) }}",
+        "jsonBody": "={{ JSON.stringify({ from: { user_id: Number($('Config').first().json.seller_id) }, to: { user_id: Number($('CW Busca Conversa').first().json.custom_attributes.ml_buyer_id) }, text: $('Filtra Evento').first().json.content || 'Segue anexo.', attachments: ($json.attachment_ids && $json.attachment_ids.length) ? $json.attachment_ids : undefined }) }}",
         "options": {}
       },
       "name": "ML Enviar Mensagem",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        800,
-        672
+        1712,
+        880
       ],
-      "id": "d293e970-f86c-42ee-a9c0-6482fe943634",
+      "id": "3a98ce56-903b-4e05-a719-a65aba72f6f0",
       "credentials": {
         "oAuth2Api": {
           "id": "aO6INQpjYKkRmASl",
@@ -298,17 +504,17 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ content: '⚠️ Esta mensagem NÃO foi entregue no Mercado Livre.\\nMotivo: ' + (typeof $json.error === 'string' ? $json.error : ($json.error?.description || $json.error?.message || JSON.stringify($json).slice(0, 500))), message_type: 'outgoing', private: true }) }}",
+        "jsonBody": "={{ JSON.stringify({ content: '⚠️ Não foi entregue no Mercado Livre' + ($json.nome ? ' (anexo ' + $json.nome + ')' : '') + '.\\nMotivo: ' + (typeof $json.error === 'string' ? $json.error : ($json.error?.description || $json.error?.message || JSON.stringify($json).slice(0, 500))), message_type: 'outgoing', private: true }) }}",
         "options": {}
       },
       "name": "CW Nota Erro",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1056,
-        592
+        1952,
+        1056
       ],
-      "id": "332793ec-fa11-42f7-a02a-1ac22e77b1d3"
+      "id": "5fc86b1d-d03b-46c6-996b-5d304b2f94de"
     }
   ],
   "connections": {
@@ -360,14 +566,43 @@
       "main": [
         [
           {
-            "node": "ML Responder Pergunta",
+            "node": "Pergunta com Anexo?",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "ML Enviar Mensagem",
+            "node": "Tem Anexo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pergunta com Anexo?": {
+      "main": [
+        [
+          {
+            "node": "CW Nota Anexo Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ML Responder Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Nota Anexo Pergunta": {
+      "main": [
+        [
+          {
+            "node": "ML Responder Pergunta",
             "type": "main",
             "index": 0
           }
@@ -386,6 +621,86 @@
         [
           {
             "node": "CW Nota Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem Anexo?": {
+      "main": [
+        [
+          {
+            "node": "Lista Anexos CW",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ML Enviar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lista Anexos CW": {
+      "main": [
+        [
+          {
+            "node": "CW Baixa Anexo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CW Baixa Anexo": {
+      "main": [
+        [
+          {
+            "node": "Ajusta Anexo CW",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajusta Anexo CW": {
+      "main": [
+        [
+          {
+            "node": "ML Sobe Anexo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ML Sobe Anexo": {
+      "main": [
+        [
+          {
+            "node": "Junta Anexos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CW Nota Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Junta Anexos": {
+      "main": [
+        [
+          {
+            "node": "ML Enviar Mensagem",
             "type": "main",
             "index": 0
           }
@@ -417,9 +732,9 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "4297ab1e-cf93-4930-950d-dfa5a67a44ed",
-  "activeVersionId": "4297ab1e-cf93-4930-950d-dfa5a67a44ed",
-  "versionCounter": 18,
+  "versionId": "2c444217-f7f7-4285-af06-aac5fe013b70",
+  "activeVersionId": "2c444217-f7f7-4285-af06-aac5fe013b70",
+  "versionCounter": 25,
   "triggerCount": 1,
   "tags": [],
   "shared": [
